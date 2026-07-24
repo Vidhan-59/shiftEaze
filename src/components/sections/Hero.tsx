@@ -6,15 +6,17 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { HeroVisual } from "@/components/visuals/HeroVisual";
 import { Aurora } from "@/components/visuals/Aurora";
+import { HeroPoster } from "@/components/three/HeroPoster";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ArrowRight } from "@/components/ui/icons";
 import { cta, site } from "@/content/site";
 import { easeExpo } from "@/lib/motion";
 
-// three.js is heavy — load it client-only, after hydration, off the critical path.
-const NetworkScene = dynamic(
-  () => import("@/components/visuals/NetworkScene").then((m) => m.NetworkScene),
-  { ssr: false }
+// react-three-fiber is heavy — load it client-only, after hydration, off the
+// critical path; the static poster holds the space until the chunk arrives.
+const HeroScene = dynamic(
+  () => import("@/components/three/HeroScene").then((m) => m.HeroScene),
+  { ssr: false, loading: () => <HeroPoster className="opacity-70" /> }
 );
 
 const stat = [
@@ -31,9 +33,14 @@ export function Hero() {
     >
       {/* backdrop */}
       <Aurora variant="mixed" className="opacity-90" />
-      <NetworkScene className="opacity-70 mix-blend-multiply" />
+      <HeroScene className="opacity-80" />
       <div className="pointer-events-none absolute inset-0 bg-blueprint" aria-hidden />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[600px] bg-hero-glow" aria-hidden />
+      {/* contrast scrim so the 3D scene never fights the headline's legibility */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#f5f7fd] via-[#f5f7fd]/85 to-transparent lg:from-[#f5f7fd] lg:via-[#f5f7fd]/70 lg:to-transparent"
+        aria-hidden
+      />
 
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">

@@ -237,11 +237,21 @@ export const metrics = [
 
 export type PricingFeature = { label: string; addon?: boolean; badge?: string };
 
+/**
+ * INR-only pricing. `amount`/`perUnit` carry both annual and monthly values so
+ * the billing toggle switches real figures. NOTE: the numbers below are
+ * indicative placeholders — replace with final ShiftEaze pricing before launch.
+ */
 export type PricingTier = {
   id: string;
   name: string;
   tagline: string;
-  price: { amount: string; period: string };
+  price: {
+    amount: { annual: string; monthly: string };
+    period: string;
+    caption?: string;
+    perUnit?: { annual: string; monthly: string };
+  };
   meta: { label: string; value: string }[];
   featuresIntro?: string;
   features: PricingFeature[];
@@ -254,7 +264,11 @@ export const pricingTiers: PricingTier[] = [
     id: "starter",
     name: "Starter",
     tagline: "Single-site pilots, small ops teams",
-    price: { amount: "₹0", period: "free forever" },
+    price: {
+      amount: { annual: "₹0", monthly: "₹0" },
+      period: "/mo",
+      caption: "Up to 50 operators · free forever",
+    },
     meta: [
       { label: "Operators", value: "Up to 50" },
       { label: "Terminals / sites", value: "1" },
@@ -275,7 +289,15 @@ export const pricingTiers: PricingTier[] = [
     id: "professional",
     name: "Professional",
     tagline: "Multi-terminal, growing operations",
-    price: { amount: "Per-operator", period: "/ month" },
+    price: {
+      amount: { annual: "₹2,499", monthly: "₹2,999" },
+      period: "/mo",
+      caption: "For the first 30 operators",
+      perUnit: {
+        annual: "₹69 / mo per additional operator",
+        monthly: "₹83 / mo per additional operator",
+      },
+    },
     meta: [
       { label: "Operators", value: "Up to 500" },
       { label: "Terminals / sites", value: "Up to 5" },
@@ -302,7 +324,11 @@ export const pricingTiers: PricingTier[] = [
     id: "enterprise",
     name: "Enterprise",
     tagline: "Large-scale port / industrial deployments",
-    price: { amount: "Custom", period: "quote" },
+    price: {
+      amount: { annual: "Custom", monthly: "Custom" },
+      period: "",
+      caption: "Volume pricing · 500+ operators",
+    },
     meta: [
       { label: "Operators", value: "Unlimited" },
       { label: "Terminals / sites", value: "Unlimited" },
@@ -312,7 +338,7 @@ export const pricingTiers: PricingTier[] = [
     features: [
       {
         label: "AI Rostering Prediction Engine — proactive OT backfill planning for Roster Planners",
-        badge: "AUC-ROC 0.8668",
+        badge: "~0.87 AUC",
       },
       { label: "AI Calling (Superdash-powered) — full 5-scenario suite" },
       { label: "RGID portable worker identity — full cross-site history" },
@@ -327,6 +353,120 @@ export const pricingTiers: PricingTier[] = [
     cta: { label: "Talk to sales", href: "#demo" },
   },
 ];
+
+/** Full feature comparison — a value per tier, in Starter/Professional/Enterprise order. */
+export type CompareValue = boolean | string;
+export type CompareRow = {
+  feature: string;
+  note?: string;
+  values: [CompareValue, CompareValue, CompareValue];
+};
+export type CompareGroup = { group: string; rows: CompareRow[] };
+
+export const pricingCompareTiers = [
+  "Starter",
+  "Professional",
+  "Enterprise",
+] as const;
+
+export const pricingComparison: CompareGroup[] = [
+  {
+    group: "Scheduling & rostering",
+    rows: [
+      { feature: "DDNNOO shift scheduling", note: "Continuous rotation patterns", values: ["Basic", true, true] },
+      { feature: "Auto Roster + Roster Manager", values: [false, true, true] },
+      { feature: "Shift Extender", note: "OT timing, conflict prevention", values: [false, true, true] },
+      { feature: "Multi-shift dynamic legends", values: [false, true, true] },
+      { feature: "AI Rostering Prediction Engine", note: "Proactive absence + OT backfill", values: [false, false, "~0.87 AUC"] },
+    ],
+  },
+  {
+    group: "Attendance & geofencing",
+    rows: [
+      { feature: "Geofenced attendance", note: "Mobile check-in + QR scan", values: [true, true, true] },
+      { feature: "Punch regularisation workflows", values: [false, true, true] },
+      { feature: "Shift attendance dashboard", values: [false, true, true] },
+    ],
+  },
+  {
+    group: "Leave & overtime",
+    rows: [
+      { feature: "Leave module — apply / approve", values: [true, true, true] },
+      { feature: "Leave summary & balance tracking", values: ["Basic", true, true] },
+      { feature: "Overtime requests", values: [false, true, true] },
+    ],
+  },
+  {
+    group: "AI Calling — ShiftEaze Voice",
+    rows: [
+      { feature: "Punch-in / punch-out IVR reminders", values: [false, "Add-on", true] },
+      { feature: "Full 5-scenario voice suite", values: [false, false, true] },
+      { feature: "Multilingual — EN / HI / GU", values: [false, "Add-on", true] },
+    ],
+  },
+  {
+    group: "Worker identity & performance",
+    rows: [
+      { feature: "Worker Performance Passbook", values: [false, "Basic", "Full"] },
+      { feature: "RGID portable worker identity", values: [false, "Basic", "Cross-site"] },
+      { feature: "Crane / terminal performance (GCR)", values: [false, false, true] },
+    ],
+  },
+  {
+    group: "Analytics & dashboards",
+    rows: [
+      { feature: "Manpower Summary dashboard", values: ["View-only", true, true] },
+      { feature: "Attendance + trend dashboards", values: [false, true, true] },
+      { feature: "Custom site dashboard", values: [false, false, true] },
+      { feature: "Helpdesk ticketing", values: ["Basic", true, true] },
+    ],
+  },
+  {
+    group: "Access, admin & security",
+    rows: [
+      { feature: "Operators included", values: ["Up to 50", "Up to 500", "Unlimited"] },
+      { feature: "Terminals / sites", values: ["1", "Up to 5", "Unlimited"] },
+      { feature: "Role-based access control (RBAC)", values: ["Single role", "Full", "Full"] },
+      { feature: "API access + custom integrations", values: [false, false, true] },
+      { feature: "Support", values: ["Email", "Priority + chat", "Dedicated AM + SLA"] },
+    ],
+  },
+];
+
+export const pricingFaqs = [
+  {
+    q: "What counts as an “operator”?",
+    a: "Any worker with an active ShiftEaze profile who is rostered or tracked in a given billing month. Planners and admins who only manage the platform aren’t billed as operators.",
+  },
+  {
+    q: "Can we start with a single terminal?",
+    a: "Yes. Most deployments go live on one representative terminal first, then roll out site by site once planners are comfortable — you don’t have to move your whole operation at once.",
+  },
+  {
+    q: "How is the Professional plan priced?",
+    a: "Per active operator, per month, scaling with your operator count — with volume pricing at 500+ and 1,000+ operators. Talk to us for an exact quote sized to your terminals.",
+  },
+  {
+    q: "Is onboarding and implementation included?",
+    a: "Professional includes guided setup. Enterprise adds dedicated onboarding, a named account manager, and an uptime SLA so large multi-terminal rollouts have hands-on support.",
+  },
+  {
+    q: "Is the AI absence prediction a black box?",
+    a: "No. It combines deterministic hard rules with a trained, recall-weighted scorecard (~0.87 AUC absence prediction), and every flag traces back to the inputs behind it — planners see why, not just a number.",
+  },
+  {
+    q: "Where is our data hosted?",
+    a: "Data can be hosted in India to meet residency requirements. Specific hosting, retention and access controls are covered during Enterprise onboarding.",
+  },
+  {
+    q: "Can we add AI Calling later?",
+    a: "Yes. ShiftEaze Voice is available as an add-on on Professional (punch-in / punch-out reminders) and is bundled in full on Enterprise — you can enable it whenever you’re ready.",
+  },
+  {
+    q: "What’s the contract length?",
+    a: "Both monthly and annual billing are available, and annual includes a discount. There’s no long lock-in required to get started on a pilot.",
+  },
+] as const;
 
 export const trustLogos = [
   "Terminal Operator",

@@ -1,29 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { Menu, Close } from "@/components/ui/icons";
 import { nav, cta } from "@/content/site";
 import { cn } from "@/lib/utils";
 
+// Minimum continuous scroll travel (px) before the hide/show state flips —
+// without this hysteresis, Lenis's smoothed momentum causes the direction
+// check to flap back and forth near the threshold, which reads as a "wobble".
+const DIRECTION_HYSTERESIS = 24;
+const HIDE_AFTER = 340;
+
 export function Navbar() {
+  const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const anchor = useRef(0);
 
-  useEffect(() => {
-    let last = 0;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 12);
-      setHidden(y > last && y > 340 && !open);
-      last = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [open]);
+  // Driven off a Framer Motion value (synced to the single Lenis/GSAP raf
+  // loop), not a raw `scroll` listener — avoids fighting Lenis's own frame.
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 12);
+
+    if (y < HIDE_AFTER || open) {
+      anchor.current = y;
+      setHidden(false);
+      return;
+    }
+    const diff = y - anchor.current;
+    if (diff > DIRECTION_HYSTERESIS) {
+      anchor.current = y;
+      setHidden(true);
+    } else if (diff < -DIRECTION_HYSTERESIS) {
+      anchor.current = y;
+      setHidden(false);
+    }
+  });
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -37,10 +58,11 @@ export function Navbar() {
       initial={{ y: -80 }}
       animate={{ y: hidden ? -90 : 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      style={{ willChange: "transform", transform: "translateZ(0)" }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        "fixed inset-x-0 top-0 z-50 isolate transition-colors duration-300",
         scrolled
-          ? "border-b border-line bg-white/80 shadow-[0_6px_24px_-16px_rgba(20,24,70,0.35)] backdrop-blur-xl"
+          ? "border-b border-line bg-white/85 shadow-[0_6px_24px_-16px_rgba(20,24,70,0.35)] backdrop-blur-md sm:bg-white/80"
           : "border-b border-transparent"
       )}
     >
@@ -49,7 +71,7 @@ export function Navbar() {
         aria-label="Primary"
       >
         <a href="#top" className="rounded-md" aria-label="ShiftEaze home">
-          <Logo />
+          <Logo priority />
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">

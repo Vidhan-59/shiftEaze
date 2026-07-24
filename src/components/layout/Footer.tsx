@@ -49,14 +49,11 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-line pt-6 text-[13px] text-fg-faint sm:flex-row sm:items-center">
           <span>
-            © {new Date().getFullYear()} {site.name} · {site.liveAt} · 6,000+
-            operators · 12+ terminals
+            © {new Date().getFullYear()} {site.name} · 6,000+ operators · 12+
+            terminals
           </span>
-          <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest">
-            Powered by{" "}
-            <span className="font-sans text-[14px] font-semibold tracking-normal text-teal-300">
-              {site.poweredBy}
-            </span>
+          <span className="font-mono text-[11px] uppercase tracking-widest">
+            {site.liveAt}
           </span>
         </div>
       </Container>

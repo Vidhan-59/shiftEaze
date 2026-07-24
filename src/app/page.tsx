@@ -8,6 +8,7 @@ import { MotionShowcase } from "@/components/sections/MotionShowcase";
 import { ShiftEaze } from "@/components/sections/ShiftEaze";
 import { Metrics } from "@/components/sections/Metrics";
 import { Pricing } from "@/components/sections/Pricing";
+import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
 
 export default function HomePage() {
@@ -23,6 +24,7 @@ export default function HomePage() {
       <ShiftEaze />
       <Metrics />
       <Pricing />
+      <FAQ />
       <CTA />
     </>
   );

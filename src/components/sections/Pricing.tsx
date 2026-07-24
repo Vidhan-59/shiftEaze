@@ -1,23 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
-import { Check } from "@/components/ui/icons";
+import { PricingComparison } from "./PricingComparison";
+import { Check, Container as ContainerIcon, Bolt, Layers } from "@/components/ui/icons";
 import { pricingTiers, type PricingTier } from "@/content/sections";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
-function PricingCard({ tier }: { tier: PricingTier }) {
+type Billing = "annual" | "monthly";
+
+const TIER_ICON = {
+  starter: ContainerIcon,
+  professional: Bolt,
+  enterprise: Layers,
+} as const;
+
+function PricingCard({ tier, billing }: { tier: PricingTier; billing: Billing }) {
   const reduced = usePrefersReducedMotion();
+  const Icon = TIER_ICON[tier.id as keyof typeof TIER_ICON] ?? ContainerIcon;
+  const amount = tier.price.amount[billing];
+  const isCustom = amount === "Custom";
+  const metered = !!tier.price.perUnit;
+
   return (
     <RevealItem
       className={cn(
         "relative flex h-full flex-col rounded-3xl border p-7 transition-all duration-300 sm:p-8",
         tier.highlight
-          ? "border-teal-400/40 bg-white shadow-float lg:-translate-y-3"
+          ? "border-teal-400/40 bg-gradient-to-b from-teal-400/[0.14] to-teal-400/[0.04] shadow-float lg:-translate-y-3"
           : "glass hover:-translate-y-1.5 hover:shadow-card-hover"
       )}
     >
@@ -33,7 +48,16 @@ function PricingCard({ tier }: { tier: PricingTier }) {
         </motion.span>
       )}
 
-      <div>
+      <span
+        className={cn(
+          "grid h-11 w-11 place-items-center rounded-xl",
+          tier.highlight ? "bg-teal-400 text-white" : "bg-teal-400/12 text-teal-300"
+        )}
+      >
+        <Icon width={20} height={20} />
+      </span>
+
+      <div className="mt-5">
         <h3 className="text-xl font-semibold tracking-tight text-fg">
           {tier.name}
         </h3>
@@ -42,13 +66,25 @@ function PricingCard({ tier }: { tier: PricingTier }) {
         </p>
       </div>
 
-      <div className="mt-6 flex items-baseline gap-2">
-        <span className="text-[clamp(1.6rem,2.6vw,2rem)] font-semibold tracking-tight text-fg">
-          {tier.price.amount}
+      <div className="mt-6 flex items-baseline gap-1.5">
+        <span className="text-[clamp(2rem,3.4vw,2.75rem)] font-semibold tracking-tight text-fg">
+          {amount}
         </span>
-        <span className="font-mono text-[12px] uppercase tracking-wider text-fg-faint">
-          {tier.price.period}
-        </span>
+        {!isCustom && tier.price.period && (
+          <span className="text-[15px] font-medium text-fg-faint">
+            {tier.price.period}
+          </span>
+        )}
+      </div>
+
+      <div className="mt-1.5 min-h-[2.5rem] text-[12.5px] leading-snug text-fg-faint">
+        {tier.price.caption && <p>{tier.price.caption}</p>}
+        {tier.price.perUnit && <p>{tier.price.perUnit[billing]}</p>}
+        {metered && billing === "annual" && (
+          <span className="mt-1 inline-block rounded-full bg-teal-400/12 px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-wider text-teal-300">
+            2 months free
+          </span>
+        )}
       </div>
 
       <Button
@@ -106,7 +142,47 @@ function PricingCard({ tier }: { tier: PricingTier }) {
   );
 }
 
+function BillingToggle({
+  billing,
+  onChange,
+}: {
+  billing: Billing;
+  onChange: (b: Billing) => void;
+}) {
+  return (
+    <div className="mt-10 flex items-center justify-center gap-3">
+      <div className="relative inline-flex rounded-full border border-line bg-white p-1 shadow-card">
+        {(["annual", "monthly"] as const).map((b) => (
+          <button
+            key={b}
+            onClick={() => onChange(b)}
+            aria-pressed={billing === b}
+            className={cn(
+              "relative z-10 rounded-full px-4 py-1.5 text-[13px] font-medium capitalize transition-colors",
+              billing === b ? "text-white" : "text-fg-muted hover:text-fg"
+            )}
+          >
+            {billing === b && (
+              <motion.span
+                layoutId="billing-pill"
+                className="absolute inset-0 -z-10 rounded-full bg-teal-400"
+                transition={{ type: "spring", stiffness: 400, damping: 32 }}
+              />
+            )}
+            {b}
+          </button>
+        ))}
+      </div>
+      <span className="hidden text-[12.5px] text-fg-faint sm:inline">
+        Save ~2 months with annual billing
+      </span>
+    </div>
+  );
+}
+
 export function Pricing() {
+  const [billing, setBilling] = useState<Billing>("annual");
+
   return (
     <section id="pricing" className="relative scroll-mt-20 py-24 sm:py-28">
       <div className="pointer-events-none absolute inset-0 bg-blueprint opacity-40" aria-hidden />
@@ -122,17 +198,22 @@ export function Pricing() {
           lead="Every tier runs on the same platform — the jump from Starter to Enterprise is predictive AI, voice automation and the access control large operations need, not a different product."
         />
 
-        <RevealGroup className="mt-14 grid gap-6 lg:grid-cols-3 lg:items-start">
+        <BillingToggle billing={billing} onChange={setBilling} />
+
+        <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
           {pricingTiers.map((tier) => (
-            <PricingCard key={tier.id} tier={tier} />
+            <PricingCard key={tier.id} tier={tier} billing={billing} />
           ))}
         </RevealGroup>
 
         <p className="mx-auto mt-10 max-w-2xl text-center text-[13px] leading-relaxed text-fg-faint">
-          Professional is billed per operator, per month, sized to your terminal
-          count — talk to us for an exact quote. Enterprise pricing is scoped to
-          your deployment.
+          All prices in <span className="font-medium text-fg-muted">INR (₹)</span>,
+          per operator, per month, with volume pricing at 500+ and 1,000+
+          operators. Enterprise is scoped to your deployment. Figures shown are
+          indicative — replace with final pricing before launch.
         </p>
+
+        <PricingComparison />
       </Container>
     </section>
   );

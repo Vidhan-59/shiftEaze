@@ -5,8 +5,7 @@ export const site = {
   domain: "shifteaze.com",
   description:
     "ShiftEaze auto-builds rosters across every terminal, predicts no-shows before they cost you a berth, and turns workforce data into decisions — then places the calls automatically with ShiftEaze Voice.",
-  poweredBy: "RCSL",
-  liveAt: "Live in production at Mundra Port",
+  liveAt: "Deployed across major Indian port & terminal operations",
 } as const;
 
 export const nav = [
@@ -37,9 +36,9 @@ export const footerNav = [
     title: "Company",
     links: [
       { label: "Pricing", href: "#pricing" },
+      { label: "FAQ", href: "#faq" },
       { label: "Results", href: "#results" },
       { label: "Book a demo", href: "#demo" },
-      { label: "Security", href: "#demo" },
       { label: "Contact", href: "#demo" },
     ],
   },

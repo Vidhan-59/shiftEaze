@@ -35,7 +35,7 @@ export function Metrics() {
                 Proven on the ground
               </span>
               <h2 className="mt-4 text-[clamp(1.6rem,3vw,2.25rem)] font-semibold tracking-tight text-white">
-                Running live at Mundra Port.
+                Deployed across major Indian port &amp; terminal operations.
               </h2>
             </Reveal>
 
