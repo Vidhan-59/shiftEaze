@@ -4,7 +4,6 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { CursorDot } from "@/components/ui/CursorDot";
 import { site } from "@/content/site";
 
 const inter = Inter({
@@ -70,7 +69,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <CursorDot />
         <SmoothScroll>
           <Navbar />
           <main>{children}</main>

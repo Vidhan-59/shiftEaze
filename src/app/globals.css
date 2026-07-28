@@ -181,25 +181,102 @@
 }
 
 /*
- * The custom cursor dot (CursorDot.tsx) replaces the native pointer on
- * fine-pointer, motion-enabled devices — otherwise it renders centered under
- * the OS arrow glyph and is barely visible. Text fields keep the I-beam.
+ * ── Hero container-yard backdrop ───────────────────────────────────────────
+ * Stacked shipping containers, drawn entirely in CSS.
+ *
+ * Performance shape (this is the whole point of the design):
+ *   • Every container tile is a FLAT background-colour div with no animation
+ *     and no background-image — painted once, then never repainted.
+ *   • The corrugation / bevel / door-seam texture is ONE tiled overlay
+ *     element for the entire yard, not a background stack per tile.
+ *   • Only the handful of "beat" tiles animate, and strictly on opacity and
+ *     transform, so they stay on the compositor and never trigger repaint.
+ *   • No mask-image (it forces the whole animated subtree through an extra
+ *     compositing pass); the yard is faded out with plain gradient scrims.
  */
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  html,
-  body {
-    cursor: none;
-  }
 
-  a,
-  button,
-  [role="button"],
-  select {
-    cursor: none;
-  }
+/* Cell pitch. Fixed px — NOT fractional — so containers are the same physical
+   size on every screen and the tiled texture stays locked to the grid. */
+.yard {
+  --cw: 62px;
+  --ch: 26px;
+  /* Overhang one column so a partly-visible column gets clipped rather than
+     leaving a bare gutter — fixed-pitch columns can't divide evenly into an
+     arbitrary viewport width. */
+  width: calc(100% + var(--cw));
+}
 
-  input,
-  textarea {
-    cursor: text;
+@media (min-width: 640px) {
+  .yard {
+    --cw: 96px;
+    --ch: 40px;
   }
 }
+
+@media (min-width: 1024px) {
+  .yard {
+    --cw: 132px;
+    --ch: 55px;
+  }
+}
+
+.yard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--cw));
+  grid-auto-rows: var(--ch);
+  justify-content: start;
+  align-content: start;
+}
+
+/* Trim the tile inside its cell without disturbing the cell pitch, so the
+   texture overlay keeps aligning to every container. */
+.yard-tile {
+  margin: 1px;
+  border-radius: 2px;
+}
+
+/* Cull tiles that could never be on-screen at this width. `display:none`
+   skips layout and paint entirely — the cheapest possible way to make the
+   scene lighter on phones without shipping a second code path. */
+@media (max-width: 639px) {
+  .yard-tile:nth-child(n + 85) {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .yard-tile:nth-child(n + 151) {
+    display: none;
+  }
+}
+
+/* One tiled texture for the whole yard: top highlight + bottom shadow (the
+   3D bevel of a container), fine vertical corrugation ridges, and the darker
+   door-end seam. Tiles at exactly one cell, so it lands on every container. */
+.yard-texture {
+  background-size: var(--cw) var(--ch);
+  background-image: linear-gradient(
+      90deg,
+      transparent 0 80%,
+      rgba(10, 12, 40, 0.18) 80% 82.5%,
+      transparent 82.5% 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.075) 0 1px,
+      transparent 1px 5px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.32) 0 9%,
+      transparent 9% 68%,
+      rgba(10, 12, 40, 0.2) 90% 100%
+    );
+}
+
+/* Offscreen or backgrounded tab → freeze the beats instead of burning
+   battery for nobody. One attribute toggle, no per-frame JS. */
+[data-paused="true"] .yard-beat {
+  animation-play-state: paused;
+}
+

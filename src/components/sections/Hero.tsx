@@ -1,23 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { HeroVisual } from "@/components/visuals/HeroVisual";
 import { Aurora } from "@/components/visuals/Aurora";
-import { HeroPoster } from "@/components/three/HeroPoster";
+import { ContainerYard } from "@/components/visuals/ContainerYard";
+import { PortCrane } from "@/components/visuals/PortCrane";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ArrowRight } from "@/components/ui/icons";
 import { cta, site } from "@/content/site";
 import { easeExpo } from "@/lib/motion";
-
-// react-three-fiber is heavy — load it client-only, after hydration, off the
-// critical path; the static poster holds the space until the chunk arrives.
-const HeroScene = dynamic(
-  () => import("@/components/three/HeroScene").then((m) => m.HeroScene),
-  { ssr: false, loading: () => <HeroPoster className="opacity-70" /> }
-);
 
 const stat = [
   { value: 6000, suffix: "+", label: "Operators" },
@@ -33,7 +26,8 @@ export function Hero() {
     >
       {/* backdrop */}
       <Aurora variant="mixed" className="opacity-90" />
-      <HeroScene className="opacity-80" />
+      <ContainerYard className="opacity-[0.62]" />
+      <PortCrane className="right-[3%] top-[-6%] hidden h-[420px] w-[350px] text-teal-500 opacity-[0.16] lg:block" />
       <div className="pointer-events-none absolute inset-0 bg-blueprint" aria-hidden />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[600px] bg-hero-glow" aria-hidden />
       {/* contrast scrim so the 3D scene never fights the headline's legibility */}

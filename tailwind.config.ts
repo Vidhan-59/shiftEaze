@@ -133,6 +133,27 @@ const config: Config = {
           "0%,100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        /**
+         * Container-yard hero backdrop. Every one of these animates ONLY
+         * `opacity` or `transform` — never colour, size or position — so each
+         * runs entirely on the compositor with zero per-frame repaint. That is
+         * what keeps the scene cheap on low-end phones.
+         */
+        "yard-absence": {
+          "0%,4%": { opacity: "0" },
+          "9%,30%": { opacity: "1" },
+          "38%,100%": { opacity: "0" },
+        },
+        "yard-backfill": {
+          "0%,32%": { opacity: "0" },
+          "40%,54%": { opacity: "1" },
+          "64%,100%": { opacity: "0" },
+        },
+        "yard-lift": {
+          "0%,4%": { transform: "translate3d(0,0,0)" },
+          "12%,50%": { transform: "translate3d(0,-3px,0)" },
+          "62%,100%": { transform: "translate3d(0,0,0)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both",
@@ -143,6 +164,9 @@ const config: Config = {
         aurora: "aurora 18s ease-in-out infinite",
         "spin-slow": "spin-slow 22s linear infinite",
         "gradient-x": "gradient-x 8s ease infinite",
+        "yard-absence": "yard-absence 9s ease-in-out infinite",
+        "yard-backfill": "yard-backfill 9s ease-in-out infinite",
+        "yard-lift": "yard-lift 9s ease-in-out infinite",
       },
     },
   },
