@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
@@ -9,6 +10,7 @@ import { ContainerYard } from "@/components/visuals/ContainerYard";
 import { PortCrane } from "@/components/visuals/PortCrane";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ArrowRight } from "@/components/ui/icons";
+import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 import { cta, site } from "@/content/site";
 import { easeExpo } from "@/lib/motion";
 
@@ -19,8 +21,15 @@ const stat = [
 ] as const;
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Halts every decorative loop in the hero once it's scrolled past — the
+  // headline shimmer especially, which repaints gradient-clipped text each
+  // frame and would otherwise run for the whole session.
+  usePauseOffscreen(sectionRef);
+
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative overflow-hidden pb-20 pt-28 sm:pt-32 lg:pb-28"
     >

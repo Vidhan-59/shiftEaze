@@ -73,14 +73,18 @@ export function PipelineGraph({ active }: { active: number }) {
                   >
                     {s.title}
                   </div>
+                  {/*
+                    Opacity only — deliberately never height. This graph is
+                    also rendered inline in the mobile flow (HowItWorks.tsx),
+                    where `active` comes from a scrubbed ScrollTrigger. An
+                    animated height there changed the document height on
+                    scroll, which fed straight back into Lenis's smooth
+                    scrolling. Reserving the row keeps it inert.
+                  */}
                   <motion.div
                     initial={false}
-                    animate={{
-                      height: isActive ? "auto" : 0,
-                      opacity: isActive ? 1 : 0,
-                    }}
+                    animate={{ opacity: isActive ? 1 : 0 }}
                     transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
                   >
                     <span className="mt-1.5 inline-block font-mono text-[10.5px] text-teal-300">
                       {s.tag}

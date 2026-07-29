@@ -59,9 +59,21 @@ export function AnimatedCounter({
     );
   }
 
+  /*
+   * Counting 0 → 6,000 grows the string from one character to five. Even with
+   * `tabular-nums` the element widens as it runs, which can re-wrap a flex row
+   * of stats and shift the section's height mid-count. So the final value is
+   * also rendered, invisible and un-removed from layout, to hold the full
+   * width from the very first frame; the live value is overlaid on top.
+   */
   return (
-    <motion.span ref={ref} className={className}>
-      {rounded}
-    </motion.span>
+    <span ref={ref} className={className} style={{ display: "inline-grid" }}>
+      <span aria-hidden className="invisible col-start-1 row-start-1">
+        {formatNumber(value)}
+      </span>
+      <motion.span className="col-start-1 row-start-1 justify-self-start">
+        {rounded}
+      </motion.span>
+    </span>
   );
 }

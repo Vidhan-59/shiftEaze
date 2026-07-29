@@ -13,7 +13,6 @@ import { pillars, type Pillar } from "@/content/sections";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 import {
-  RosterAccent,
   PredictionAccent,
   AnalyticsAccent,
 } from "@/components/visuals/FeatureAccents";
@@ -33,11 +32,23 @@ const BADGE_COPY: Record<
   analytics: { label: "Terminals live", value: "12+", tone: "teal" },
 };
 
-function Accent({ kind }: { kind: Pillar["visual"] }) {
-  if (kind === "roster") return <RosterAccent />;
-  if (kind === "prediction") return <PredictionAccent />;
-  return <AnalyticsAccent />;
-}
+/**
+ * Supporting accent under each pillar's screenshot.
+ *
+ * `roster` deliberately has none. Its accent was a live feed on an 850ms
+ * interval whose AnimatePresence `exit` faded opacity without collapsing
+ * height, so the list oscillated between four and five rows forever — the
+ * document height changed twice a second and the whole page visibly wobbled
+ * against Lenis's smooth scrolling. The interval also had no offscreen stop,
+ * so it kept running long after the section was scrolled past.
+ *
+ * Both remaining accents animate once on enter and then settle, so neither
+ * can shift layout after it has played.
+ */
+const ACCENTS: Partial<Record<Pillar["visual"], () => JSX.Element>> = {
+  prediction: PredictionAccent,
+  analytics: AnalyticsAccent,
+};
 
 function ParallaxVisual({
   children,
@@ -63,6 +74,7 @@ function ParallaxVisual({
 
 function FeatureBlock({ pillar, flip }: { pillar: Pillar; flip: boolean }) {
   const badge = BADGE_COPY[pillar.visual];
+  const Accent = ACCENTS[pillar.visual];
   return (
     <div
       id={pillar.id}
@@ -126,9 +138,11 @@ function FeatureBlock({ pillar, flip }: { pillar: Pillar; flip: boolean }) {
           </p>
 
           {/* Supporting interactive accent */}
-          <div className="glass mt-4 rounded-xl p-5">
-            <Accent kind={pillar.visual} />
-          </div>
+          {Accent && (
+            <div className="glass mt-4 rounded-xl p-5">
+              <Accent />
+            </div>
+          )}
 
           {/* Floating proof badge — scroll-triggered, matches the Hero's floating cards */}
           <FloatCard

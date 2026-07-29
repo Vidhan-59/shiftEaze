@@ -1,93 +1,19 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
-import { Check } from "@/components/ui/icons";
 
-const ROSTER_TARGET = 128;
-const ROSTER_ENTRIES = [
-  "A. J. Gohil → Day · CT2",
-  "Abhay Verma → Night · CT3",
-  "A. Kumar → Off · Gate",
-  "A. Baraiya → Day · CT4",
-  "R. Solanki → Night · T2",
-  "K. Meena → Day · SPRH",
-  "Imran S. → Night · CT2",
-  "Dinesh R. → Day · Gate",
-];
-
-/** Auto-rostering: a live feed of shifts being auto-resolved, with a running progress count. */
-export function RosterAccent() {
-  const reduced = usePrefersReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  const [resolved, setResolved] = useState(0);
-  const [feed, setFeed] = useState<{ id: number; label: string }[]>([]);
-
-  useEffect(() => {
-    if (!inView) return;
-    if (reduced) {
-      setResolved(ROSTER_TARGET);
-      setFeed(ROSTER_ENTRIES.slice(0, 4).map((label, id) => ({ id, label })));
-      return;
-    }
-    let n = 0;
-    const push = () => {
-      setFeed((f) =>
-        [{ id: Date.now() + n, label: ROSTER_ENTRIES[n % ROSTER_ENTRIES.length] }, ...f].slice(0, 4)
-      );
-      setResolved((r) => Math.min(ROSTER_TARGET, r + Math.ceil(Math.random() * 7)));
-      n++;
-    };
-    push();
-    const t = setInterval(push, 850);
-    return () => clearInterval(t);
-  }, [inView, reduced]);
-
-  return (
-    <div ref={ref} className="w-full">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="font-mono text-[10.5px] uppercase tracking-wider text-fg-faint">
-          Auto-resolved this cycle
-        </span>
-        <span className="font-mono text-sm font-bold tabular-nums text-teal-400">
-          {resolved}
-          <span className="text-fg-faint">/{ROSTER_TARGET}</span>
-        </span>
-      </div>
-
-      <div className="h-1.5 overflow-hidden rounded-full bg-ink-700">
-        <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-teal-400 to-teal-500"
-          animate={{ width: `${(resolved / ROSTER_TARGET) * 100}%` }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        />
-      </div>
-
-      <div className="mt-3 space-y-1.5">
-        <AnimatePresence initial={false}>
-          {feed.map((f) => (
-            <motion.div
-              key={f.id}
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="flex items-center gap-2 rounded-lg border border-line bg-ink-800/50 px-2.5 py-1.5 text-[11.5px]"
-            >
-              <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-teal-400/15 text-teal-300">
-                <Check width={9} height={9} />
-              </span>
-              <span className="truncate text-fg-muted">{f.label}</span>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
+/*
+ * Note: there was a third accent here (`RosterAccent`) — a live "auto-resolved
+ * this cycle" feed on an 850ms interval. It was removed because it shifted
+ * layout forever; see the comment on ACCENTS in sections/Features.tsx.
+ *
+ * The two below are safe by construction: each is gated on `useInView({ once:
+ * true })`, animates to a fixed end state, and then stops. Neither holds a
+ * repeating timer, so neither can move the page after it has settled.
+ */
 
 /** Attendance prediction: a risk gauge sweeping to a probability, with the recall-tuned threshold marked. */
 export function PredictionAccent() {

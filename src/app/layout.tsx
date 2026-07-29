@@ -63,15 +63,24 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body className="min-h-screen antialiased">
+        {/*
+          Targets <main>, not the hero. It used to point at `#top` — the very
+          top of the page, above the navbar — so "skip to content" skipped
+          nothing. `tabIndex={-1}` makes <main> focusable so focus genuinely
+          lands there; SmoothScroll special-cases this link so its scroll
+          hijacking doesn't swallow the focus move.
+        */}
         <a
-          href="#top"
+          href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-teal-400 focus:px-4 focus:py-2 focus:text-white"
         >
           Skip to content
         </a>
         <SmoothScroll>
           <Navbar />
-          <main>{children}</main>
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
           <Footer />
         </SmoothScroll>
       </body>

@@ -12,15 +12,33 @@ import { cn } from "@/lib/utils";
 
 const GRID = "grid grid-cols-[minmax(9rem,1.7fr)_repeat(3,minmax(5rem,1fr))]";
 
-function Cell({ value }: { value: CompareValue }) {
+/**
+ * A tick and an em-dash carry the entire meaning of this table visually, but
+ * neither has any text for a screen reader — a row used to be announced as the
+ * feature name followed by three silences. Each cell now states its own value.
+ */
+function Cell({ value, tier }: { value: CompareValue; tier: string }) {
   if (value === true)
     return (
       <span className="mx-auto grid h-5 w-5 place-items-center rounded-full bg-teal-400/15 text-teal-300">
-        <Check width={12} height={12} />
+        <Check width={12} height={12} aria-hidden />
+        <span className="sr-only">{tier}: included</span>
       </span>
     );
-  if (!value) return <span className="text-fg-faint/60">—</span>;
-  return <span className="text-[12.5px] font-medium leading-tight text-fg">{value}</span>;
+  // Explicitly `=== false`: a bare falsy check would also swallow "".
+  if (value === false || value === undefined)
+    return (
+      <span className="text-fg-faint/60">
+        <span aria-hidden>—</span>
+        <span className="sr-only">{tier}: not included</span>
+      </span>
+    );
+  return (
+    <span className="text-[12.5px] font-medium leading-tight text-fg">
+      <span className="sr-only">{tier}: </span>
+      {value}
+    </span>
+  );
 }
 
 function Chevron({ open }: { open: boolean }) {
@@ -66,11 +84,18 @@ export function PricingComparison() {
 
       <div className="mt-10 overflow-x-auto">
         <div className="min-w-[640px] overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-          {/* Sticky tier header */}
+          {/*
+            Tier header. Deliberately not `sticky` — it used to be, but it
+            could never engage: the horizontal scroller above sets
+            `overflow-x: auto`, and CSS resolves the other axis to `auto` too,
+            making that div the sticky containing block. It never scrolls
+            vertically, so the header simply sat in place while reading like a
+            working feature.
+          */}
           <div
             className={cn(
               GRID,
-              "sticky top-0 z-10 items-end border-b border-line bg-white/95 px-5 py-4 backdrop-blur"
+              "items-end border-b border-line bg-white/95 px-5 py-4 backdrop-blur"
             )}
           >
             <span className="font-mono text-[11px] uppercase tracking-wider text-fg-faint">
@@ -103,6 +128,7 @@ export function PricingComparison() {
                 <button
                   onClick={() => toggle(gi)}
                   aria-expanded={isOpen}
+                  aria-controls={`compare-group-${gi}`}
                   className="flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-ink-800/40"
                 >
                   <span className="text-[13px] font-semibold uppercase tracking-wide text-fg">
@@ -116,6 +142,7 @@ export function PricingComparison() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`compare-group-${gi}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -147,7 +174,7 @@ export function PricingComparison() {
                                 vi === 1 && "rounded-md bg-teal-500/[0.04] py-2"
                               )}
                             >
-                              <Cell value={v} />
+                              <Cell value={v} tier={pricingCompareTiers[vi]} />
                             </span>
                           ))}
                         </div>

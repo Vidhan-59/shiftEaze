@@ -26,9 +26,13 @@ export const footerNav = [
   {
     title: "Platform",
     links: [
-      { label: "Auto-rostering", href: "#platform" },
-      { label: "Attendance prediction", href: "#how-it-works" },
-      { label: "Workforce analytics", href: "#dashboards" },
+      // These three point at the individual pillar blocks rendered by
+      // Features.tsx, not the section wrappers around them — each pillar has
+      // its own id, so linking to the enclosing section landed the reader
+      // next to the topic they clicked rather than on it.
+      { label: "Auto-rostering", href: "#auto-rostering" },
+      { label: "Attendance prediction", href: "#attendance-prediction" },
+      { label: "Workforce analytics", href: "#workforce-analytics" },
       { label: "ShiftEaze Voice", href: "#voice" },
     ],
   },
@@ -38,8 +42,8 @@ export const footerNav = [
       { label: "Pricing", href: "#pricing" },
       { label: "FAQ", href: "#faq" },
       { label: "Results", href: "#results" },
+      // "Contact" was a second label for this same target — one entry only.
       { label: "Book a demo", href: "#demo" },
-      { label: "Contact", href: "#demo" },
     ],
   },
   {

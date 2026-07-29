@@ -206,12 +206,19 @@ export const callTypes = [
   },
 ] as const;
 
+/**
+ * Every entry carries `animate`, so all four run through the same number
+ * formatter. Previously two were plain strings that bypassed it, and the row
+ * rendered "1000+" next to "6,000+" — two thousands conventions side by side.
+ * The last one also concatenated straight onto its suffix as "1000+hrs".
+ */
 export const metrics = [
   {
     value: "1000",
     suffix: "+",
     label: "Fewer unplanned no-shows",
     note: "vs. manual confirmation",
+    animate: 1000,
   },
   {
     value: "6000",
@@ -228,10 +235,11 @@ export const metrics = [
     animate: 12,
   },
   {
-    value: "1000+",
-    suffix: "hrs",
+    value: "1000",
+    suffix: "+ hrs",
     label: "Planning saved / cycle",
     note: "vs. spreadsheet rostering",
+    animate: 1000,
   },
 ] as const;
 

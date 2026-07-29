@@ -43,24 +43,33 @@ export function FAQ() {
             const open = openIndex === i;
             return (
               <div key={item.q} className="border-b border-line first:border-t">
-                <button
-                  onClick={() => setOpenIndex(open ? null : i)}
-                  aria-expanded={open}
-                  className="flex w-full items-center justify-between gap-6 py-5 text-left"
-                >
-                  <span
-                    className={cn(
-                      "text-[16px] font-medium transition-colors",
-                      open ? "text-fg" : "text-fg-muted"
-                    )}
+                {/* Wrapped in a heading so the FAQ is navigable by heading —
+                    a bare list of buttons gives screen readers no structure. */}
+                <h3>
+                  <button
+                    onClick={() => setOpenIndex(open ? null : i)}
+                    aria-expanded={open}
+                    aria-controls={`faq-panel-${i}`}
+                    id={`faq-trigger-${i}`}
+                    className="flex w-full items-center justify-between gap-6 py-5 text-left"
                   >
-                    {item.q}
-                  </span>
-                  <PlusToggle open={open} />
-                </button>
+                    <span
+                      className={cn(
+                        "text-[16px] font-medium transition-colors",
+                        open ? "text-fg" : "text-fg-muted"
+                      )}
+                    >
+                      {item.q}
+                    </span>
+                    <PlusToggle open={open} />
+                  </button>
+                </h3>
                 <AnimatePresence initial={false}>
                   {open && (
                     <motion.div
+                      id={`faq-panel-${i}`}
+                      role="region"
+                      aria-labelledby={`faq-trigger-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

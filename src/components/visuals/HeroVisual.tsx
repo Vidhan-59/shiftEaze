@@ -7,6 +7,7 @@ import {
   useTransform,
   useMotionValue,
   useSpring,
+  useInView,
 } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,12 @@ export function HeroVisual() {
   });
   const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -60]);
 
+  // The board's "live" timers below only make sense while it is actually on
+  // screen. Without this they kept firing — and re-rendering the whole board
+  // every couple of seconds — for as long as the tab stayed open, no matter
+  // how far past the hero you had scrolled.
+  const inView = useInView(wrapRef, { amount: 0.15 });
+
   // Pointer tilt — a subtle 3D lean toward the cursor.
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
@@ -72,6 +79,10 @@ export function HeroVisual() {
     []
   );
   const [flip, setFlip] = useState<string | null>(null);
+  // Must outlive the effect below. The effect re-runs every time the board
+  // scrolls back into view, so a counter declared inside it would restart and
+  // hand out ids that are still present in `feed` — duplicate React keys.
+  const feedId = useRef(3);
 
   // Reveal risk bars once mounted.
   useEffect(() => {
@@ -79,7 +90,8 @@ export function HeroVisual() {
     return () => clearTimeout(t);
   }, []);
 
-  // Live behaviour — disabled under reduced motion.
+  // Live behaviour — disabled under reduced motion, and suspended whenever the
+  // board is scrolled out of view.
   useEffect(() => {
     if (reduced) {
       setFeed([
@@ -88,12 +100,13 @@ export function HeroVisual() {
       ]);
       return;
     }
-    let n = 3;
+    if (!inView) return;
+
     const pushFeed = () => {
       setFeed((f) =>
         [
           {
-            id: n++,
+            id: feedId.current++,
             name: FEED_NAMES[Math.floor(Math.random() * FEED_NAMES.length)],
             term: TERMS[Math.floor(Math.random() * TERMS.length)],
           },
@@ -105,20 +118,30 @@ export function HeroVisual() {
     pushFeed();
     const a = setInterval(pushFeed, 2400);
     const b = setInterval(() => {
-      setConfirmed((c) => (c > 128 ? 113 : c + Math.floor(Math.random() * 3)));
+      // Check the value we're about to show, not the one we already showed —
+      // testing before the increment let it display 130 against a 128 ceiling.
+      setConfirmed((c) => {
+        const next = c + Math.floor(Math.random() * 3);
+        return next > 128 ? 113 : next;
+      });
     }, 2600);
+    // Track the nested reset timer so unmounting (or scrolling away) mid-flip
+    // doesn't leave a stray timeout firing into a dead component.
+    let resetFlip: ReturnType<typeof setTimeout> | undefined;
     const c = setInterval(() => {
       const ri = Math.floor(Math.random() * ROWS.length);
       const ci = Math.floor(Math.random() * 6);
       setFlip(`${ri}-${ci}`);
-      setTimeout(() => setFlip(null), 620);
+      clearTimeout(resetFlip);
+      resetFlip = setTimeout(() => setFlip(null), 620);
     }, 2000);
     return () => {
       clearInterval(a);
       clearInterval(b);
       clearInterval(c);
+      clearTimeout(resetFlip);
     };
-  }, [reduced]);
+  }, [reduced, inView]);
 
   return (
     <motion.div
@@ -271,7 +294,9 @@ export function HeroVisual() {
             133
           </span>
         </div>
-        <div className="space-y-1.5">
+        {/* Height reserved for the full three rows — the feed starts empty and
+            fills in, which would otherwise resize the card as it populates. */}
+        <div className="min-h-[3.75rem] space-y-1.5">
           {feed.map((f) => (
             <motion.div
               key={f.id}

@@ -1,9 +1,15 @@
+"use client";
+
+import { useRef } from "react";
+import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 import { cn } from "@/lib/utils";
 
 /**
- * Ambient, softly-drifting color field for the light theme. Pure CSS so it can
- * render in a server component and it freezes automatically under
- * prefers-reduced-motion (the global media query halts the keyframes).
+ * Ambient, softly-drifting color field for the light theme. It freezes
+ * automatically under prefers-reduced-motion (the global media query halts the
+ * keyframes) and, via usePauseOffscreen, whenever it is scrolled away or the
+ * tab is backgrounded — these are large `blur(70px)` layers animating `scale`,
+ * which re-rasterise every frame, and two Aurora fields render per page.
  */
 export function Aurora({
   className,
@@ -12,8 +18,12 @@ export function Aurora({
   className?: string;
   variant?: "brand" | "accent" | "mixed";
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  usePauseOffscreen(ref);
+
   return (
     <div
+      ref={ref}
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       aria-hidden
     >

@@ -113,10 +113,27 @@ export function DashboardShowcase() {
             </div>
           </FloatCard>
 
-          <p className="mx-auto mt-5 max-w-2xl text-center text-[15px] leading-relaxed text-fg-muted">
-            <span className="font-medium text-fg">{current.title}.</span>{" "}
-            {current.blurb}
-          </p>
+          {/*
+            All captions are stacked in one grid cell so this paragraph is
+            always as tall as the longest of them. Rendering only the active
+            caption meant its height tracked whichever blurb was showing, and
+            the carousel swaps every 5.5s forever — so each rotation that
+            crossed a line-wrap boundary shunted every section below this one
+            (Metrics, Pricing, FAQ, CTA, footer) down and back up again.
+          */}
+          <div className="mx-auto mt-5 grid max-w-2xl">
+            {dashboards.map((d) => (
+              <p
+                key={d.id}
+                className="col-start-1 row-start-1 text-center text-[15px] leading-relaxed text-fg-muted transition-opacity duration-300"
+                style={{ opacity: d.id === current.id ? 1 : 0 }}
+                aria-hidden={d.id !== current.id}
+              >
+                <span className="font-medium text-fg">{d.title}.</span>{" "}
+                {d.blurb}
+              </p>
+            ))}
+          </div>
         </motion.div>
       </Container>
     </section>

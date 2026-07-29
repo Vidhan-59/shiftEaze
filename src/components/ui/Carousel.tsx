@@ -1,13 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, animate as animateValue } from "framer-motion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useInView,
+  animate as animateValue,
+} from "framer-motion";
 import type { PanInfo } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { ArrowLeft, ArrowRight } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 const SPRING = { type: "spring", stiffness: 320, damping: 34 } as const;
+
+/** `useLayoutEffect` warns when it runs during SSR; fall back on the server. */
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
  * Generic slide carousel — drag/swipe, arrow nav, dot nav and optional
@@ -44,10 +53,16 @@ export function Carousel({
   const [width, setWidth] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
+  // Don't advance slides nobody is looking at.
+  const inView = useInView(wrapRef, { amount: 0.2 });
 
-  useEffect(() => {
+  // Measure before paint. With a plain effect the first frame rendered every
+  // slide at `width: 100%` side by side in the flex track (an n-fold overflow)
+  // and only snapped to real widths once the observer fired.
+  useIsoLayoutEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
+    setWidth(el.getBoundingClientRect().width);
     const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
     ro.observe(el);
     return () => ro.disconnect();
@@ -65,16 +80,27 @@ export function Carousel({
   }, [index, width, reduced, x]);
 
   useEffect(() => {
-    if (!autoplay || reduced || paused || n <= 1) return;
+    if (!autoplay || reduced || paused || !inView || n <= 1) return;
     const t = setInterval(() => goTo(index + 1), interval);
     return () => clearInterval(t);
+    // `width` is deliberately NOT a dependency: goTo never reads it, and
+    // including it meant every ResizeObserver tick restarted the timer — so
+    // while a window was being dragged the carousel never advanced at all.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoplay, reduced, paused, index, interval, n, width]);
+  }, [autoplay, reduced, paused, inView, index, interval, n]);
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (!width) return;
     const projected = -index * width + info.offset.x;
     const nearest = Math.min(n - 1, Math.max(0, Math.round(-projected / width)));
+    if (nearest === index) {
+      // Drag was shorter than half a slide, so the index doesn't change — which
+      // means the sync effect won't re-run and nothing would pull the track
+      // back (dragMomentum is off and the constraints only clamp the ends).
+      // Settle it here or it stays stranded wherever the pointer let go.
+      animateValue(x, -index * width, reduced ? { duration: 0 } : SPRING);
+      return;
+    }
     goTo(nearest);
   };
 

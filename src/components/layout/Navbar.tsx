@@ -11,6 +11,7 @@ import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { Menu, Close } from "@/components/ui/icons";
 import { nav, cta } from "@/content/site";
+import { getLenis } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
 
 // Minimum continuous scroll travel (px) before the hide/show state flips —
@@ -46,10 +47,36 @@ export function Navbar() {
     }
   });
 
+  // Lock the page behind the mobile menu.
+  //
+  // Two things this has to get right that plain `overflow: hidden` does not:
+  // removing the scrollbar reclaims its width and shunts the whole layout
+  // sideways, so the gap is paid back as padding; and Lenis drives scrolling
+  // itself, so it has to be told to stop or the page keeps gliding underneath
+  // the overlay.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const body = document.body;
+    const gap = window.innerWidth - document.documentElement.clientWidth;
+    const prevOverflow = body.style.overflow;
+    const prevPad = body.style.paddingRight;
+
+    body.style.overflow = "hidden";
+    if (gap > 0) body.style.paddingRight = `${gap}px`;
+    getLenis()?.stop();
+
+    // Escape closes it — with scrolling locked, a keyboard user otherwise has
+    // no way out of the overlay.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      body.style.overflow = prevOverflow;
+      body.style.paddingRight = prevPad;
+      getLenis()?.start();
     };
   }, [open]);
 
@@ -88,12 +115,11 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#demo"
-            className="relative hidden text-[14px] text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 sm:block"
-          >
-            Sign in
-          </a>
+          {/*
+            A "Sign in" link used to sit here pointing at #demo — clicking it
+            scrolled you to the demo-request form, which is not signing in.
+            Restore it when there's a real login URL to send people to.
+          */}
           <Button href={cta.primary.href} size="md" className="hidden sm:inline-flex">
             {cta.primary.label}
           </Button>
@@ -102,6 +128,7 @@ export function Navbar() {
             className="grid h-10 w-10 place-items-center rounded-lg border border-line text-fg transition-all duration-200 hover:border-teal-400/40 hover:bg-teal-500/[0.06] active:scale-95 md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-menu"
           >
             {open ? <Close /> : <Menu />}
           </button>
@@ -111,6 +138,7 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

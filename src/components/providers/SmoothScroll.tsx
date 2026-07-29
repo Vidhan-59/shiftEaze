@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { setLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +29,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     });
 
     document.documentElement.classList.add("lenis");
+    setLenis(lenis);
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -37,16 +39,35 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     // Anchor links route through Lenis for a consistent glide.
     const onClick = (e: MouseEvent) => {
+      // Leave modified clicks alone — swallowing these broke ctrl/cmd-click
+      // (open in new tab), shift-click (new window) and middle-click.
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
       const anchor = (e.target as HTMLElement)?.closest?.(
         'a[href^="#"]'
       ) as HTMLAnchorElement | null;
       if (!anchor) return;
-      const id = anchor.getAttribute("href");
-      if (!id || id === "#") return;
-      const el = document.querySelector(id);
+      const href = anchor.getAttribute("href");
+      if (!href || href === "#") return;
+
+      // `href` is author-controlled but may not be a valid selector (an id
+      // starting with a digit, or containing "." or ":") — getElementById
+      // takes a raw id, so it can't throw the way querySelector would.
+      const el = document.getElementById(href.slice(1));
       if (!el) return;
+
       e.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: -84 });
+      lenis.scrollTo(el, { offset: -84 });
+
+      // Keep the URL deep-linkable and move keyboard focus with the scroll —
+      // preventDefault() suppresses the browser doing either for us, which
+      // silently stranded screen-reader and keyboard users at the old spot.
+      history.replaceState(null, "", href);
+      const hadTabIndex = el.hasAttribute("tabindex");
+      if (!hadTabIndex) el.setAttribute("tabindex", "-1");
+      el.focus({ preventScroll: true });
+      if (!hadTabIndex) el.removeAttribute("tabindex");
     };
     document.addEventListener("click", onClick);
 
@@ -54,6 +75,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       document.removeEventListener("click", onClick);
       gsap.ticker.remove(raf);
       lenis.destroy();
+      setLenis(null);
       document.documentElement.classList.remove("lenis");
     };
   }, [reduced]);

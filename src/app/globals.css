@@ -280,3 +280,15 @@
   animation-play-state: paused;
 }
 
+/*
+ * Generic counterpart, driven by usePauseOffscreen(): halt every decorative
+ * animation in a subtree that is scrolled away or in a background tab. These
+ * are all `infinite` loops that would otherwise run for the life of the page.
+ */
+[data-anim-paused="true"],
+[data-anim-paused="true"] *,
+[data-anim-paused="true"] *::before,
+[data-anim-paused="true"] *::after {
+  animation-play-state: paused !important;
+}
+
