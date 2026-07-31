@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { pricingFaqs } from "@/content/sections";
+import { pricingFaqs } from "@/content/pricing";
 import { cn } from "@/lib/utils";
 
 function PlusToggle({ open }: { open: boolean }) {

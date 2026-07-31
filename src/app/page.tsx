@@ -7,6 +7,7 @@ import { DashboardShowcase } from "@/components/sections/DashboardShowcase";
 import { MotionShowcase } from "@/components/sections/MotionShowcase";
 import { ShiftEaze } from "@/components/sections/ShiftEaze";
 import { Metrics } from "@/components/sections/Metrics";
+import { ROIStats } from "@/components/sections/ROIStats";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
@@ -23,6 +24,8 @@ export default function HomePage() {
       <MotionShowcase />
       <ShiftEaze />
       <Metrics />
+      {/* Answer "what do we get back" before "what does it cost". */}
+      <ROIStats />
       <Pricing />
       <FAQ />
       <CTA />
