@@ -10,7 +10,7 @@ import {
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { Menu, Close } from "@/components/ui/icons";
-import { nav, cta } from "@/content/site";
+import { nav, cta, site } from "@/content/site";
 import { getLenis } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
 
@@ -115,11 +115,15 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          {/*
-            A "Sign in" link used to sit here pointing at #demo — clicking it
-            scrolled you to the demo-request form, which is not signing in.
-            Restore it when there's a real login URL to send people to.
-          */}
+          {/* Real app login — external, so it opens in a new tab. */}
+          <a
+            href={site.loginUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative hidden text-[14px] font-medium text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 sm:block"
+          >
+            Log in
+          </a>
           <Button href={cta.primary.href} size="md" className="hidden sm:inline-flex">
             {cta.primary.label}
           </Button>
@@ -156,10 +160,19 @@ export function Navbar() {
                   {item.label}
                 </a>
               ))}
+              <a
+                href={site.loginUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-lg border border-line px-3 py-3 text-center text-[15px] font-medium text-fg-muted hover:bg-teal-500/[0.05] hover:text-fg"
+              >
+                Log in
+              </a>
               <Button
                 href={cta.primary.href}
                 size="lg"
-                className="mt-3 w-full"
+                className="mt-2 w-full"
                 onClick={() => setOpen(false)}
               >
                 {cta.primary.label}

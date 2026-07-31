@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { problems } from "@/content/sections";
 import { ArrowRight } from "@/components/ui/icons";
 
@@ -19,24 +20,43 @@ export function ProblemSolution() {
           lead="Manual rostering and no-show guesswork don't only slow the back office — they leave expensive machinery and berths idle, and you only find out at the gate."
         />
 
-        <RevealGroup className="mt-14 grid gap-4 md:grid-cols-3">
-          {problems.map((p) => (
-            <RevealItem
-              key={p.label}
-              className="glass rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-400/30 hover:shadow-card-hover"
-            >
-              <div className="font-mono text-[11px] uppercase tracking-wider text-risk-high">
-                {p.label}
-              </div>
-              <div className="mt-2 text-2xl font-semibold tracking-tight text-fg">
-                {p.stat}
-              </div>
-              <p className="mt-3 text-[14.5px] leading-relaxed text-fg-muted">
-                {p.text}
-              </p>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        {/* The manual way, shown next to what it costs. */}
+        <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-[0.95fr_1fr]">
+          <Reveal>
+            <figure className="h-full">
+              <Photo
+                name="planning-office"
+                alt="Two terminal planners comparing a printed shift roster against a whiteboard rotation grid and a headcount chart on a laptop"
+                ratio="4/3"
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="h-full rounded-2xl border border-line shadow-card"
+              />
+              <figcaption className="mt-3 px-1 text-[13px] leading-relaxed text-fg-faint">
+                How most terminals still plan: a whiteboard rotation, a printed
+                roster and a headcount chart that&apos;s already out of date.
+              </figcaption>
+            </figure>
+          </Reveal>
+
+          <RevealGroup className="grid content-start gap-4">
+            {problems.map((p) => (
+              <RevealItem
+                key={p.label}
+                className="glass rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-400/30 hover:shadow-card-hover"
+              >
+                <div className="font-mono text-[11px] uppercase tracking-wider text-risk-high">
+                  {p.label}
+                </div>
+                <div className="mt-2 text-2xl font-semibold tracking-tight text-fg">
+                  {p.stat}
+                </div>
+                <p className="mt-3 text-[14.5px] leading-relaxed text-fg-muted">
+                  {p.text}
+                </p>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
 
         {/* Solution band */}
         <Reveal delay={0.1}>

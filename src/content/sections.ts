@@ -208,9 +208,13 @@ export const callTypes = [
 
 /**
  * Every entry carries `animate`, so all four run through the same number
- * formatter. Previously two were plain strings that bypassed it, and the row
- * rendered "1000+" next to "6,000+" — two thousands conventions side by side.
- * The last one also concatenated straight onto its suffix as "1000+hrs".
+ * formatter — two used to be plain strings that bypassed it, rendering "1000+"
+ * beside "6,000+".
+ *
+ * `suffix` is only ever the short accent glyph ("+"). A unit like "hrs" goes in
+ * `unit` and is typeset smaller: folding it into the suffix made that figure
+ * far wider than the other three, so it wrapped onto a second line and knocked
+ * its labels out of alignment with the rest of the row.
  */
 export const metrics = [
   {
@@ -236,7 +240,8 @@ export const metrics = [
   },
   {
     value: "1000",
-    suffix: "+ hrs",
+    suffix: "+",
+    unit: "hrs",
     label: "Planning saved / cycle",
     note: "vs. spreadsheet rostering",
     animate: 1000,

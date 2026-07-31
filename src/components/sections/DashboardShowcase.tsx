@@ -9,6 +9,7 @@ import { SmartShot } from "@/components/ui/SmartShot";
 import { Carousel } from "@/components/ui/Carousel";
 import { FloatCard } from "@/components/ui/FloatCard";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { Photo } from "@/components/ui/Photo";
 import { dashboards } from "@/content/sections";
 import { cn } from "@/lib/utils";
 
@@ -135,6 +136,28 @@ export function DashboardShowcase() {
             ))}
           </div>
         </motion.div>
+
+        {/* Where those dashboards actually live: the terminal runs all night. */}
+        <motion.figure
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mx-auto mt-20 max-w-6xl"
+        >
+          <Photo
+            name="control-room-night"
+            alt="Night shift in a terminal operations centre, planners at a bank of live dashboards overlooking a lit container yard"
+            ratio="21/9"
+            sizes="(min-width: 1280px) 1152px, 100vw"
+            className="rounded-3xl border border-line shadow-float"
+          />
+          <figcaption className="mt-4 text-center text-[14px] leading-relaxed text-fg-muted">
+            <span className="font-medium text-fg">The operation never stops.</span>{" "}
+            Neither does the data — nightly ingestion keeps every dashboard and
+            every prediction current for the shift that&apos;s about to start.
+          </figcaption>
+        </motion.figure>
       </Container>
     </section>
   );

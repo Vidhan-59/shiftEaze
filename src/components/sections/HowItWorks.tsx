@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PipelineGraph } from "@/components/visuals/PipelineGraph";
+import { Photo } from "@/components/ui/Photo";
 import { pipeline } from "@/content/sections";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
@@ -65,6 +66,22 @@ export function HowItWorks() {
           }
           lead="The prediction that flags a no-show isn't a mystery number. Deterministic rules decide what's certain; a trained scorecard estimates the rest — and it keeps re-learning each terminal's patterns."
         />
+
+        {/* Where the raw signal comes from, before any of the modelling. */}
+        <figure className="mx-auto mt-14 max-w-5xl">
+          <Photo
+            name="gate-punch-in"
+            alt="Terminal operators queuing at a biometric gate kiosk to punch in for the A-shift, supervisor checking the roster on a tablet"
+            ratio="21/9"
+            sizes="(min-width: 1024px) 960px, 100vw"
+            className="rounded-3xl border border-line shadow-card"
+          />
+          <figcaption className="mt-4 text-center text-[14px] leading-relaxed text-fg-muted">
+            <span className="font-medium text-fg">It starts at the gate.</span>{" "}
+            Every punch-in, leave record and roster change feeds the nightly
+            ingestion the model learns from.
+          </figcaption>
+        </figure>
 
         <div className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_1fr] lg:gap-16">
           {/* Sticky graph (desktop) */}

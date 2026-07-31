@@ -32,6 +32,8 @@ type Props = {
   "aria-label"?: string;
   magnetic?: boolean;
   external?: boolean;
+  /** Button-only; ignored when `href` is set. */
+  disabled?: boolean;
 };
 
 export function Button({
@@ -44,6 +46,7 @@ export function Button({
   type = "button",
   magnetic = true,
   external,
+  disabled,
   ...rest
 }: Props) {
   const reduced = usePrefersReducedMotion();
@@ -54,7 +57,7 @@ export function Button({
   const y = useSpring(my, { stiffness: 300, damping: 20 });
 
   const handleMove = (e: React.PointerEvent) => {
-    if (reduced || !magnetic || !ref.current) return;
+    if (reduced || !magnetic || disabled || !ref.current) return;
     const r = ref.current.getBoundingClientRect();
     mx.set(((e.clientX - r.left) / r.width - 0.5) * 10);
     my.set(((e.clientY - r.top) / r.height - 0.5) * 10);
@@ -69,6 +72,7 @@ export function Button({
     "transition-colors duration-200 focus-visible:outline-teal-300",
     styles[variant],
     sizes[size],
+    disabled && "cursor-not-allowed opacity-60",
     className
   );
 
@@ -82,8 +86,8 @@ export function Button({
     onClick,
     onPointerMove: handleMove,
     onPointerLeave: reset,
-    whileHover: reduced ? undefined : { scale: 1.035 },
-    whileTap: reduced ? undefined : { scale: 0.96 },
+    whileHover: reduced || disabled ? undefined : { scale: 1.035 },
+    whileTap: reduced || disabled ? undefined : { scale: 0.96 },
     transition: { type: "spring", stiffness: 400, damping: 24 },
     style: { x, y },
     className: cls,
@@ -108,6 +112,7 @@ export function Button({
     <motion.button
       ref={ref as React.Ref<HTMLButtonElement>}
       type={type}
+      disabled={disabled}
       {...shared}
     >
       {inner}

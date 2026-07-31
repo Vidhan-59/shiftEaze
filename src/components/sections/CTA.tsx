@@ -1,10 +1,6 @@
-"use client";
-
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
-import { Check, ArrowRight } from "@/components/ui/icons";
+import { Photo } from "@/components/ui/Photo";
+import { DemoForm } from "@/components/sections/DemoForm";
 import { site } from "@/content/site";
 
 const steps = [
@@ -14,30 +10,36 @@ const steps = [
 ];
 
 export function CTA() {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [err, setErr] = useState(false);
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-    if (!ok) {
-      setErr(true);
-      return;
-    }
-    setErr(false);
-    setSent(true);
-  };
-
   return (
     <section id="demo" className="scroll-mt-20 py-24 sm:py-28">
       <Container>
+        {/* The shift change itself — the moment the whole product exists for. */}
+        <figure className="relative mb-10 overflow-hidden rounded-3xl border border-line shadow-float">
+          <Photo
+            name="shift-change"
+            alt="Shift change at a container terminal at sunrise, operators walking in past staff transport buses while a supervisor checks the roster on a tablet"
+            ratio="21/9"
+            sizes="(min-width: 1200px) 1152px, 100vw"
+          />
+          <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d0c28]/85 via-[#0d0c28]/45 to-transparent px-6 pb-6 pt-16 sm:px-10 sm:pb-8">
+            <p className="max-w-xl text-[15px] font-medium leading-relaxed text-white sm:text-[17px]">
+              Six hundred operators, twelve terminals, one shift change.
+              ShiftEaze knows who&apos;s coming before the gate does.
+            </p>
+          </figcaption>
+        </figure>
+
         <div className="relative overflow-hidden rounded-3xl border border-line-strong bg-white p-8 shadow-float sm:p-14">
           <div
             className="pointer-events-none absolute -inset-x-20 -top-40 h-[420px] bg-hero-glow"
             aria-hidden
           />
-          <div className="relative grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          {/*
+            The form now collects qualifying detail, so it takes the wider
+            column and the steps sit alongside as a narrower rail — at
+            `items-start`, since the two columns are no longer similar heights.
+          */}
+          <div className="relative grid gap-12 lg:grid-cols-[1.35fr_1fr] lg:items-start">
             <div>
               <span className="eyebrow">
                 <span className="h-px w-6 bg-teal-400/70" aria-hidden />
@@ -47,68 +49,17 @@ export function CTA() {
                 Get the platform that knows{" "}
                 <span className="text-gradient">who&apos;ll show up.</span>
               </h2>
-              <p className="mt-5 max-w-md text-[16.5px] leading-relaxed text-fg-muted">
-                See {site.name} run on a terminal like yours. We&apos;ll walk
-                through auto-rostering, the prediction pipeline and {site.module}{" "}
-                calling on real shift patterns.
+              <p className="mt-5 max-w-lg text-[16.5px] leading-relaxed text-fg-muted">
+                See {site.name} run on a terminal like yours. Tell us how your
+                operation is set up and we&apos;ll tailor the walkthrough —
+                auto-rostering, the prediction pipeline and {site.module} calling
+                on real shift patterns.
               </p>
 
-              <form onSubmit={submit} className="mt-8 max-w-md" noValidate>
-                <AnimatePresence mode="wait">
-                  {sent ? (
-                    <motion.div
-                      key="ok"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-3 rounded-xl border border-teal-500/30 bg-teal-500/10 px-4 py-4"
-                    >
-                      <span className="grid h-8 w-8 place-items-center rounded-full bg-teal-400 text-white">
-                        <Check width={16} height={16} />
-                      </span>
-                      <div>
-                        <div className="text-[15px] font-medium text-fg">
-                          Request received.
-                        </div>
-                        <div className="text-[13px] text-fg-muted">
-                          We&apos;ll reach out to {email} within one business day.
-                        </div>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div key="form" exit={{ opacity: 0 }}>
-                      <div className="flex flex-col gap-2.5 sm:flex-row">
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            setErr(false);
-                          }}
-                          placeholder="you@terminal.com"
-                          aria-label="Work email"
-                          aria-invalid={err}
-                          className="h-[52px] flex-1 rounded-full border border-line-strong bg-ink-850 px-5 text-[15px] text-fg placeholder:text-fg-faint focus:border-teal-400/60 focus:bg-white focus:outline-none"
-                        />
-                        <Button size="lg" type="submit">
-                          Book a demo
-                          <ArrowRight width={16} height={16} />
-                        </Button>
-                      </div>
-                      {err && (
-                        <p className="mt-2 pl-2 text-[13px] text-risk-high">
-                          Please enter a valid work email.
-                        </p>
-                      )}
-                      <p className="mt-3 pl-2 text-[12.5px] text-fg-faint">
-                        No spam. A workforce specialist, not a sales sequence.
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </form>
+              <DemoForm />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 lg:sticky lg:top-28">
               {steps.map((s) => (
                 <div
                   key={s.n}
@@ -127,6 +78,24 @@ export function CTA() {
                   </div>
                 </div>
               ))}
+
+              <div className="rounded-xl border border-line bg-ink-850 p-5">
+                <div className="text-[14px] font-medium text-fg">
+                  Already a customer?
+                </div>
+                <p className="mt-1 text-[13.5px] leading-snug text-fg-muted">
+                  Sign in to your terminal&apos;s {site.name} workspace.
+                </p>
+                <a
+                  href={site.loginUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-teal-300 transition-colors hover:text-teal-400"
+                >
+                  Log in
+                  <span aria-hidden>→</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

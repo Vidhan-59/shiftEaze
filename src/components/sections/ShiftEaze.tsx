@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { CallFlow } from "@/components/visuals/CallFlow";
 import { Aurora } from "@/components/visuals/Aurora";
+import { Photo } from "@/components/ui/Photo";
 import { Phone } from "@/components/ui/icons";
 import { site } from "@/content/site";
 
@@ -57,6 +58,39 @@ export function ShiftEaze() {
         <Reveal delay={0.15} className="mt-12">
           <CallFlow />
         </Reveal>
+
+        {/* Both ends of an automated call: the control room that fires it and
+            the operator who picks it up. */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <Reveal delay={0.2}>
+            <figure>
+              <Photo
+                name="control-room"
+                alt="Terminal control room with a live call-confirmation queue and colour-coded shift-status board on screen"
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="rounded-2xl border border-line shadow-card"
+              />
+              <figcaption className="mt-3 px-1 text-[13px] leading-relaxed text-fg-faint">
+                The call queue runs itself — planners watch outcomes instead of
+                dialling.
+              </figcaption>
+            </figure>
+          </Reveal>
+          <Reveal delay={0.25}>
+            <figure>
+              <Photo
+                name="yard-operator-call"
+                alt="Terminal operator in high-visibility gear taking a shift-confirmation call on the container yard gantry walkway"
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="rounded-2xl border border-line shadow-card"
+              />
+              <figcaption className="mt-3 px-1 text-[13px] leading-relaxed text-fg-faint">
+                Operators confirm in their own language, wherever they are on
+                the terminal.
+              </figcaption>
+            </figure>
+          </Reveal>
+        </div>
       </Container>
     </section>
   );

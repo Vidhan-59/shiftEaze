@@ -6,6 +6,8 @@ export const site = {
   description:
     "ShiftEaze auto-builds rosters across every terminal, predicts no-shows before they cost you a berth, and turns workforce data into decisions — then places the calls automatically with ShiftEaze Voice.",
   liveAt: "Deployed across major Indian port & terminal operations",
+  /** Customer-facing app login. */
+  loginUrl: "https://shifteaze.riddhicorporate.net/web/login",
 } as const;
 
 export const nav = [
