@@ -26,13 +26,19 @@ export function Photo({
   imgClassName?: string;
   sizes?: string;
   priority?: boolean;
+  /** Use "fill" to stretch with the parent height instead of a fixed ratio. */
   ratio?: string;
 }) {
   const blur = photoBlur[name];
+  const fill = ratio === "fill";
   return (
     <div
-      className={cn("relative overflow-hidden bg-ink-800", className)}
-      style={{ aspectRatio: ratio }}
+      className={cn(
+        "relative overflow-hidden bg-ink-800",
+        fill && "h-full min-h-0",
+        className
+      )}
+      style={fill ? undefined : { aspectRatio: ratio }}
     >
       <Image
         src={`/assets/photos/${name}.webp`}
@@ -43,6 +49,9 @@ export function Photo({
         loading={priority ? undefined : "lazy"}
         placeholder={blur ? "blur" : undefined}
         blurDataURL={blur}
+        // Sources are already 1920px WebP; skip the optimizer so local
+        // static files always resolve reliably in dev and on deploy.
+        unoptimized
         className={cn("object-cover", imgClassName)}
       />
     </div>

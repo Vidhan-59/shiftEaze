@@ -104,11 +104,6 @@ export function Metrics() {
                 );
               })}
             </RevealGroup>
-
-            <p className="mx-auto mt-12 max-w-lg border-t border-white/10 pt-6 text-center font-mono text-[10.5px] uppercase tracking-widest text-teal-100/50">
-              [Fill in] figures are placeholders — swap in verified numbers
-              before launch
-            </p>
           </div>
         </div>
       </Container>

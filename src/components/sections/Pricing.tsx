@@ -167,8 +167,8 @@ export function Pricing() {
         <AIBundleCallout />
 
         <Reveal>
-          <p className="mx-auto mt-16 max-w-3xl border-t border-line pt-8 text-center text-[12.5px] leading-relaxed text-fg-faint">
-            {pricingDisclaimer}
+          <p className="mx-auto mt-1 max-w-3xl border-t border-line pt-3 text-center text-[12.5px] leading-relaxed text-fg-faint">
+            {/* {pricingDisclaimer} */}
           </p>
         </Reveal>
       </Container>

@@ -307,18 +307,18 @@ export const aiBundle = {
 
 /* ── ROI proof ───────────────────────────────────────────────────────────── */
 
-export const roi = {
-  title: "What a 6,000-operator port gets back.",
-  sub: "Modelled on a reference container-terminal deployment of comparable scale.",
-  stats: [
-    { value: "₹7.54", unit: "Cr", label: "Annual value identified" },
-    { value: "5.51", unit: "×", label: "Return on spend, year 2+" },
-    { value: "2.9", unit: "months", label: "Payback period" },
-    { value: "0.5", unit: "%", label: "Cost as share of total payroll" },
-  ],
-  finePrint:
-    "Modelled at the Enterprise 5,000–9,999 band (₹190/operator/mo). Value comprises absence-premium avoidance ₹4.85 Cr, output recovery ₹1.35 Cr, payroll leakage ₹0.91 Cr, planner productivity ₹0.29 Cr and compliance ₹0.15 Cr. Inputs are editable — ask us to model your site.",
-} as const;
+// export const roi = {
+//   title: "What a 6,000-operator port gets back.",
+//   sub: "Modelled on a reference container-terminal deployment of comparable scale.",
+//   stats: [
+//     { value: "₹7.54", unit: "Cr", label: "Annual value identified" },
+//     { value: "5.51", unit: "×", label: "Return on spend, year 2+" },
+//     { value: "2.9", unit: "months", label: "Payback period" },
+//     { value: "0.5", unit: "%", label: "Cost as share of total payroll" },
+//   ],
+//   finePrint:
+//     "Modelled at the Enterprise 5,000–9,999 band (₹190/operator/mo). Value comprises absence-premium avoidance ₹4.85 Cr, output recovery ₹1.35 Cr, payroll leakage ₹0.91 Cr, planner productivity ₹0.29 Cr and compliance ₹0.15 Cr. Inputs are editable — ask us to model your site.",
+// } as const;
 
 /* ── Implementation ──────────────────────────────────────────────────────── */
 

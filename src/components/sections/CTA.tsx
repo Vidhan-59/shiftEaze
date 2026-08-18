@@ -16,14 +16,14 @@ export function CTA() {
         {/* The shift change itself — the moment the whole product exists for. */}
         <figure className="relative mb-10 overflow-hidden rounded-3xl border border-line shadow-float">
           <Photo
-            name="shift-change"
-            alt="Shift change at a container terminal at sunrise, operators walking in past staff transport buses while a supervisor checks the roster on a tablet"
+            name="mining-operation"
+            alt="Open-pit mining operation with haul trucks, excavators and workers on shift"
             ratio="21/9"
             sizes="(min-width: 1200px) 1152px, 100vw"
           />
           <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d0c28]/85 via-[#0d0c28]/45 to-transparent px-6 pb-6 pt-16 sm:px-10 sm:pb-8">
             <p className="max-w-xl text-[15px] font-medium leading-relaxed text-white sm:text-[17px]">
-              Six hundred operators, twelve terminals, one shift change.
+              Six hundred operators, twelve sites, one shift change.
               ShiftEaze knows who&apos;s coming before the gate does.
             </p>
           </figcaption>

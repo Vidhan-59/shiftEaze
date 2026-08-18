@@ -22,18 +22,18 @@ export function ProblemSolution() {
 
         {/* The manual way, shown next to what it costs. */}
         <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-[0.95fr_1fr]">
-          <Reveal>
-            <figure className="h-full">
+          <Reveal className="h-full">
+            <figure className="flex h-full flex-col gap-3">
               <Photo
-                name="planning-office"
-                alt="Two terminal planners comparing a printed shift roster against a whiteboard rotation grid and a headcount chart on a laptop"
-                ratio="4/3"
+                name="warehouse-fulfillment"
+                alt="Large fulfillment warehouse with workers sorting packages on conveyor belts and loading delivery vehicles"
+                ratio="fill"
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                className="h-full rounded-2xl border border-line shadow-card"
+                className="min-h-[240px] flex-1 rounded-2xl border border-line shadow-card"
               />
-              <figcaption className="mt-3 px-1 text-[13px] leading-relaxed text-fg-faint">
-                How most terminals still plan: a whiteboard rotation, a printed
-                roster and a headcount chart that&apos;s already out of date.
+              <figcaption className="shrink-0 px-1 text-[13px] leading-relaxed text-fg-faint">
+                How most operations still plan: spreadsheets, whiteboards and
+                headcount charts that are already out of date.
               </figcaption>
             </figure>
           </Reveal>

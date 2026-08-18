@@ -70,14 +70,14 @@ export function HowItWorks() {
         {/* Where the raw signal comes from, before any of the modelling. */}
         <figure className="mx-auto mt-14 max-w-5xl">
           <Photo
-            name="gate-punch-in"
-            alt="Terminal operators queuing at a biometric gate kiosk to punch in for the A-shift, supervisor checking the roster on a tablet"
+            name="factory-assembly"
+            alt="Factory assembly line with workers at production benches assembling components"
             ratio="21/9"
             sizes="(min-width: 1024px) 960px, 100vw"
             className="rounded-3xl border border-line shadow-card"
           />
           <figcaption className="mt-4 text-center text-[14px] leading-relaxed text-fg-muted">
-            <span className="font-medium text-fg">It starts at the gate.</span>{" "}
+            <span className="font-medium text-fg">It starts on the floor.</span>{" "}
             Every punch-in, leave record and roster change feeds the nightly
             ingestion the model learns from.
           </figcaption>

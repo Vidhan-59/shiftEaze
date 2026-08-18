@@ -23,10 +23,10 @@ const SHIFT_STYLE: Record<Shift, string> = {
 };
 
 const ROWS: { op: string; role: string; pat: Shift[] }[] = [
-  { op: "A. J. Gohil", role: "QC Operator", pat: ["D", "D", "N", "N", "O", "O"] },
-  { op: "Abhay Verma", role: "RTG Operator", pat: ["N", "N", "O", "O", "D", "D"] },
-  { op: "A. Kumar", role: "Gate Operator", pat: ["O", "D", "D", "N", "N", "O"] },
-  { op: "A. Baraiya", role: "QC Operator", pat: ["D", "O", "O", "D", "N", "N"] },
+  { op: "Amit", role: "QC Operator", pat: ["D", "D", "N", "N", "O", "O"] },
+  { op: "Nehang", role: "RTG Operator", pat: ["N", "N", "O", "O", "D", "D"] },
+  { op: "Jaykumar", role: "Gate Operator", pat: ["O", "D", "D", "N", "N", "O"] },
+  { op: "Vidhan", role: "QC Operator", pat: ["D", "O", "O", "D", "N", "N"] },
 ];
 
 const FEED_NAMES = [
