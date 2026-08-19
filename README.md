@@ -92,3 +92,4 @@ layout or motion code. Placeholder metrics are marked `[FILL IN]`.
 - Swap the placeholder wordmarks in `TrustBar` for real client logos.
 - Point the demo form (`CTA.tsx`) at your CRM / form endpoint.
 - Add an OG image and confirm `metadataBase` in `layout.tsx` (`shifteaze.com`).
+- Thanks
