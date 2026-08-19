@@ -2,7 +2,6 @@
 
 import { Container } from "@/components/ui/Container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { roi } from "@/content/pricing";
 import { cn } from "@/lib/utils";
 
 /**
