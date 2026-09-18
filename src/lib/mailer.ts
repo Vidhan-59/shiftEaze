@@ -53,12 +53,12 @@ function transport(host: string, port: number, user: string, pass: string) {
       port,
       secure: port === 465,
       auth: { user, pass },
-      // Nodemailer's defaults run to minutes. A serverless invocation is
-      // killed long before that, which turns a diagnosable SMTP error into
-      // an opaque function timeout — so fail fast enough to report why.
-      connectionTimeout: 10_000,
-      greetingTimeout: 10_000,
-      socketTimeout: 15_000,
+      // Nodemailer's defaults run to minutes. Vercel kills the invocation at
+      // 10s by default, which turns a diagnosable SMTP error into an opaque
+      // function timeout — so give up early enough to still log why.
+      connectionTimeout: 6_000,
+      greetingTimeout: 6_000,
+      socketTimeout: 8_000,
     });
     cachedKey = key;
   }
