@@ -41,17 +41,46 @@ export function mailerConfig() {
 }
 
 let cachedTransport: ReturnType<typeof nodemailer.createTransport> | null = null;
+let cachedKey = "";
 
 function transport(host: string, port: number, user: string, pass: string) {
-  if (!cachedTransport) {
+  // Key the cache on the config, or a changed env var is silently ignored
+  // for the life of the warm instance.
+  const key = `${host}:${port}:${user}:${pass}`;
+  if (!cachedTransport || cachedKey !== key) {
     cachedTransport = nodemailer.createTransport({
       host,
       port,
       secure: port === 465,
       auth: { user, pass },
+      // Nodemailer's defaults run to minutes. A serverless invocation is
+      // killed long before that, which turns a diagnosable SMTP error into
+      // an opaque function timeout — so fail fast enough to report why.
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 15_000,
     });
+    cachedKey = key;
   }
   return cachedTransport;
+}
+
+/** Nodemailer hangs the SMTP reply off the error; the message alone rarely says why. */
+function describe(e: unknown): string {
+  if (!(e instanceof Error)) return "network error";
+  const { code, responseCode, response } = e as Error & {
+    code?: string;
+    responseCode?: number;
+    response?: string;
+  };
+  return [
+    e.message,
+    code && `code=${code}`,
+    responseCode && `responseCode=${responseCode}`,
+    response && `response=${response}`,
+  ]
+    .filter(Boolean)
+    .join(" | ");
 }
 
 export async function sendMail(opts: {
@@ -80,7 +109,7 @@ export async function sendMail(opts: {
     return {
       ok: false,
       reason: "provider",
-      detail: e instanceof Error ? e.message : "network error",
+      detail: describe(e),
     };
   }
 }
