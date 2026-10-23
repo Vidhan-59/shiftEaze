@@ -18,6 +18,8 @@ export function SmartShot({
   alt,
   kind = "manpower",
   priority = false,
+  quality,
+  sizes = "(max-width: 768px) 100vw, 1100px",
   className,
   imgClassName,
 }: {
@@ -25,6 +27,8 @@ export function SmartShot({
   alt: string;
   kind?: Kind;
   priority?: boolean;
+  quality?: number;
+  sizes?: string;
   className?: string;
   imgClassName?: string;
 }) {
@@ -40,7 +44,8 @@ export function SmartShot({
           alt={alt}
           fill
           priority={priority}
-          sizes="(max-width: 768px) 100vw, 1100px"
+          sizes={sizes}
+          quality={quality}
           className={cn("object-cover object-top", imgClassName)}
           onError={() => setFailed(true)}
         />

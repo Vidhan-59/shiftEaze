@@ -13,6 +13,8 @@ const nextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // 95 is used for the sharp dashboard screenshots on the Platform page.
+    qualities: [75, 95],
     // Dashboard screenshots live locally in /public/assets/reference.
     // Add remote hosts here if you later serve them from a CDN.
     remotePatterns: [],

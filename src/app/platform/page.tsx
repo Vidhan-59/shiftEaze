@@ -1,5 +1,5 @@
 import { PageHeroBand } from "@/components/layout/PageHeroBand";
-import { FeatureBody } from "@/components/sections/FeatureBody";
+import { FeatureSplit } from "@/components/sections/FeatureSplit";
 import { EndOfPageCTA } from "@/components/sections/EndOfPageCTA";
 import { page } from "@/content/siteMap";
 import { pageMetadata } from "@/lib/pageMetadata";
@@ -20,62 +20,110 @@ export default function PlatformPage() {
     <>
       <PageHeroBand pageKey="platform" tag={platformPage.name} h1="AI Workforce Operations Platform" />
 
-      <FeatureBody
+      {/* Zig-zag rows: copy and image alternate sides; odd rows get a white band instead of a divider rule. */}
+      <FeatureSplit
         id={sections[0].id}
         heading={platform.overview.heading}
         paragraphs={[platform.overview.intro, platform.overview.body]}
+        visual={{ kind: "photo", name: "control-room", alt: "ShiftEaze operations control room with live workforce screens" }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[1].id}
         heading={sections[1].name}
         paragraphs={[platform.rostering.intro]}
         bullets={platform.rostering.bullets}
         closing={platform.rostering.closing}
+        flip
+        tinted
+        visual={{
+          kind: "shot",
+          src: "/assets/reference/roster.png",
+          alt: "ShiftEaze Scheduler Dashboard showing a month roster grid",
+          mock: "roster",
+          url: "app.shifteaze.com/rostering",
+        }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[2].id}
         heading={sections[2].name}
         paragraphs={[platform.absence.intro]}
         bullets={platform.absence.bullets}
+        visual={{
+          kind: "shot",
+          src: "/assets/reference/shift-manager.png",
+          alt: "ShiftEaze Shift Manager with per-operator absence prediction",
+          mock: "shift",
+          url: "app.shifteaze.com/shift-manager",
+        }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[3].id}
         heading={sections[3].name}
         paragraphs={[platform.attendance.intro]}
         bullets={platform.attendance.bullets}
+        flip
+        tinted
+        visual={{
+          kind: "shot",
+          src: "/assets/reference/shift-attendance.png",
+          alt: "ShiftEaze Shift Attendance Summary dashboard",
+          mock: "attendance",
+          url: "app.shifteaze.com/attendance",
+        }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[4].id}
         heading={sections[4].name}
         paragraphs={[platform.analytics.intro]}
         bullets={platform.analytics.bullets}
+        visual={{
+          kind: "shot",
+          src: "/assets/reference/manpower.png",
+          alt: "ShiftEaze Manpower Summary dashboard",
+          mock: "manpower",
+          url: "app.shifteaze.com/dashboards",
+        }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[5].id}
         heading={sections[5].name}
         paragraphs={[platform.voice.intro]}
         bullets={platform.voice.bullets}
         closing={platform.voice.closing}
+        flip
+        tinted
+        visual={{ kind: "photo", name: "yard-operator-call", alt: "Terminal operator receiving an automated shift call on a crane gantry" }}
       />
-      <FeatureBody
+      <FeatureSplit
         id={sections[6].id}
         heading={sections[6].name}
         paragraphs={[platform.passbook.intro]}
         bullets={platform.passbook.bullets}
+        visual={{ kind: "photo", name: "terminal-aerial", alt: "Aerial view of a container terminal where operator moves are tracked" }}
       />
       {/* Employee Leave Management Software: blue paragraph first, grey bullets after (brief §8, order reversed). */}
-      <FeatureBody
+      <FeatureSplit
         id={sections[7].id}
         heading={sections[7].name}
         paragraphs={[platform.leave.blueIntro]}
         bullets={platform.leave.bullets}
+        flip
+        tinted
+        visual={{
+          kind: "shot",
+          src: "/assets/reference/leave.png",
+          alt: "ShiftEaze Leave Summary dashboard",
+          mock: "leave",
+          url: "app.shifteaze.com/leave",
+        }}
       />
       {/* Security: blue paragraph first, grey bullets after (brief §8, order reversed). */}
-      <FeatureBody
+      <FeatureSplit
         id={sections[8].id}
         heading={platform.security.heading}
         paragraphs={[platform.security.blueIntro]}
         bullets={platform.security.bullets}
+        visual={{ kind: "photo", name: "control-room-night", alt: "Night-shift control room monitoring a port terminal" }}
       />
 
       <EndOfPageCTA

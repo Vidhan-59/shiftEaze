@@ -136,6 +136,30 @@ const config: Config = {
           "66%": { transform: "translate3d(-3%,3%,0) scale(0.96)" },
         },
         "spin-slow": { to: { transform: "rotate(360deg)" } },
+        // 3D hero + footer scene. Transform/opacity only, so all of it composites.
+        "float-y": {
+          "0%,100%": { transform: "translate3d(0,0,0)" },
+          "50%": { transform: "translate3d(0,-10px,0)" },
+        },
+        sway: {
+          "0%,100%": { transform: "rotateY(-5deg) rotateX(2deg)" },
+          "50%": { transform: "rotateY(5deg) rotateX(-2deg)" },
+        },
+        "orbit-spin": { to: { transform: "rotateZ(360deg)" } },
+        "cube-spin": {
+          from: { transform: "rotateX(-24deg) rotateY(0deg)" },
+          to: { transform: "rotateX(-24deg) rotateY(360deg)" },
+        },
+        "scan-x": {
+          "0%": { transform: "translateX(-10%)", opacity: "0" },
+          "15%,85%": { opacity: "1" },
+          "100%": { transform: "translateX(110%)", opacity: "0" },
+        },
+        "ring-draw": {
+          from: { strokeDashoffset: "100" },
+          to: { strokeDashoffset: "8" },
+        },
+        "grid-flow": { to: { backgroundPosition: "0 48px" } },
         "gradient-x": {
           "0%,100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
@@ -170,6 +194,13 @@ const config: Config = {
         marquee: "marquee 32s linear infinite",
         aurora: "aurora 18s ease-in-out infinite",
         "spin-slow": "spin-slow 22s linear infinite",
+        "float-y": "float-y 5s ease-in-out infinite",
+        sway: "sway 9s ease-in-out infinite",
+        "orbit-spin": "orbit-spin 16s linear infinite",
+        "cube-spin": "cube-spin 12s linear infinite",
+        "scan-x": "scan-x 4.5s ease-in-out infinite",
+        "ring-draw": "ring-draw 2.4s cubic-bezier(0.16,1,0.3,1) both",
+        "grid-flow": "grid-flow 3s linear infinite",
         "gradient-x": "gradient-x 8s ease infinite",
         "yard-absence": "yard-absence 9s ease-in-out infinite",
         "yard-backfill": "yard-backfill 9s ease-in-out infinite",
