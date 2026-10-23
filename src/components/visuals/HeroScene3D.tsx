@@ -31,7 +31,7 @@ const HOLD_MS = 2200;
  * stack in any direction (with a little throw on release), then it eases back
  * to rest. Spring-smoothed, no canvas / WebGL, and the ambient loops freeze
  * when scrolled away. It is deliberately exempt from the global reduced-motion
- * rule (see `.hero-scene-motion` in globals.css): it is a small, contained,
+ * rule (see `.motion-always` in globals.css): it is a small, contained,
  * user-driven element, and the loops are slow and low-amplitude.
  */
 export function HeroScene3D({ className }: { className?: string }) {
@@ -112,7 +112,7 @@ export function HeroScene3D({ className }: { className?: string }) {
       onPointerCancel={onUp}
       onPointerLeave={onLeave}
       className={cn(
-        "hero-scene-motion relative mx-auto h-[380px] w-full max-w-[540px] select-none [perspective:1300px] [touch-action:pan-y]",
+        "motion-always relative mx-auto h-[380px] w-full max-w-[540px] select-none [perspective:1300px] [touch-action:pan-y]",
         grabbing ? "cursor-grabbing" : "cursor-grab",
         className
       )}

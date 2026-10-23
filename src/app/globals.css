@@ -202,11 +202,11 @@
   }
 }
 
-/* Honor reduced-motion globally: kill decorative loops. The hero's 3D scene is exempt (see HeroScene3D). */
+/* Honor reduced-motion globally: kill decorative loops. Elements marked .motion-always (hero 3D scene, footer) are exempt. */
 @media (prefers-reduced-motion: reduce) {
-  *:not(.hero-scene-motion, .hero-scene-motion *),
-  *:not(.hero-scene-motion, .hero-scene-motion *)::before,
-  *:not(.hero-scene-motion, .hero-scene-motion *)::after {
+  *:not(.motion-always, .motion-always *),
+  *:not(.motion-always, .motion-always *)::before,
+  *:not(.motion-always, .motion-always *)::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
