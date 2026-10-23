@@ -8,7 +8,7 @@ import { HeroScene3D } from "@/components/visuals/HeroScene3D";
  * The dark navy hero band at the top of every inner page (everything except
  * Home and Pricing — see ADR in the redesign plan). Carries the page's
  * breadcrumb, a category tag, the single H1, and an optional sub-line, beside
- * an interactive 3D scene (desktop only).
+ * a draggable 3D scene (desktop only).
  */
 export function PageHeroBand({
   pageKey,
@@ -41,19 +41,19 @@ export function PageHeroBand({
       <div className="relative">
         <Breadcrumbs pageKey={pageKey} tone="dark" />
         <Container className="mt-6">
-          <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
-            <div className="max-w-2xl">
+          <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-6">
+            <div className="max-w-3xl">
               <div className="animate-fade-up">
                 <Tag tone="dark">{tag}</Tag>
               </div>
               <h1
-                className="mt-4 animate-fade-up text-balance font-display text-[clamp(2.25rem,5vw,3.75rem)] font-extrabold leading-[1.02] tracking-tight text-white [text-shadow:0_6px_30px_rgba(0,0,30,0.35)]"
+                className="mt-4 animate-fade-up text-balance font-display text-[clamp(2.75rem,6vw,5rem)] font-extrabold leading-[1.02] tracking-tight text-white [text-shadow:0_6px_30px_rgba(0,0,30,0.35)]"
                 style={{ animationDelay: "0.1s" }}
               >
                 {h1}
               </h1>
               <span
-                className="mt-6 block h-1 w-20 animate-fade-up rounded-full bg-gradient-to-r from-white to-accent-400"
+                className="mt-7 block h-[5px] w-28 animate-fade-up rounded-full bg-gradient-to-r from-white to-accent-400"
                 style={{ animationDelay: "0.2s" }}
                 aria-hidden
               />
@@ -66,7 +66,7 @@ export function PageHeroBand({
                 </p>
               )}
             </div>
-            <HeroScene3D className="hidden lg:block" />
+            <HeroScene3D className="hidden lg:block xl:my-10 xl:scale-[1.2]" />
           </div>
         </Container>
       </div>

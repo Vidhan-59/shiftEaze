@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 import { Check } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
@@ -18,48 +17,109 @@ const CHIP: Record<string, string> = {
 
 const t3d = (z: number) => ({ transform: `translateZ(${z}px)` });
 
+/** Resting pose: an isometric-ish tilt. */
+const REST = { x: 8, y: -20 };
+/** How long a dragged pose is held before the scene eases back to rest. */
+const HOLD_MS = 2200;
+
 /**
  * A pure-CSS 3D "operations deck": a tilted glass roster floating over a grid
  * plate, with a KPI card, a verified-punch ring and an orbiting marker at
- * different depths. The whole stack follows the pointer (spring-smoothed) and
- * sways gently when idle. No canvas / WebGL, so it costs a few composited
- * layers; pointer tracking is off under prefers-reduced-motion and the loops
- * freeze when scrolled away.
+ * different depths.
+ *
+ * Interaction: hovering gives a light parallax; press-and-drag spins the whole
+ * stack in any direction (with a little throw on release), then it eases back
+ * to rest. Spring-smoothed, no canvas / WebGL, and the ambient loops freeze
+ * when scrolled away. It is deliberately exempt from the global reduced-motion
+ * rule (see `.hero-scene-motion` in globals.css): it is a small, contained,
+ * user-driven element, and the loops are slow and low-amplitude.
  */
 export function HeroScene3D({ className }: { className?: string }) {
-  const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   usePauseOffscreen(ref);
 
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 70, damping: 16, mass: 0.6 });
-  const sy = useSpring(py, { stiffness: 70, damping: 16, mass: 0.6 });
-  // Resting pose is an isometric-ish tilt; the pointer swings it around that.
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-34, -2]);
-  const rotateX = useTransform(sy, [-0.5, 0.5], [20, -2]);
+  const ry = useMotionValue(REST.y);
+  const rx = useMotionValue(REST.x);
+  const rotateY = useSpring(ry, { stiffness: 90, damping: 16, mass: 0.6 });
+  const rotateX = useSpring(rx, { stiffness: 90, damping: 16, mass: 0.6 });
+
+  const drag = useRef({ down: false, held: false, x: 0, y: 0, vx: 0, vy: 0 });
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+  /** Whole turns (in degrees) the scene is currently offset from REST. */
+  const turns = useRef(0);
+  const [grabbing, setGrabbing] = useState(false);
+  const [touched, setTouched] = useState(false);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  function toRest() {
+    // Settle on the nearest equivalent of the rest pose, so a scene that was
+    // spun several turns takes the short way home instead of unwinding.
+    turns.current = 360 * Math.round((ry.get() - REST.y) / 360);
+    ry.set(REST.y + turns.current);
+    rx.set(REST.x);
+    drag.current.held = false;
+  }
+
+  function onDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    clearTimeout(timer.current);
+    Object.assign(drag.current, { down: true, held: true, x: e.clientX, y: e.clientY, vx: 0, vy: 0 });
+    setGrabbing(true);
+    setTouched(true);
+  }
 
   function onMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (reduced) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width - 0.5);
-    py.set((e.clientY - r.top) / r.height - 0.5);
+    const d = drag.current;
+    if (d.down) {
+      const dx = e.clientX - d.x;
+      const dy = e.clientY - d.y;
+      d.x = e.clientX;
+      d.y = e.clientY;
+      d.vx = dx;
+      d.vy = dy;
+      ry.set(ry.get() + dx * 0.6);
+      rx.set(Math.max(-55, Math.min(75, rx.get() - dy * 0.45)));
+    } else if (!d.held) {
+      const r = e.currentTarget.getBoundingClientRect();
+      ry.set(REST.y + turns.current + ((e.clientX - r.left) / r.width - 0.5) * 34);
+      rx.set(REST.x - ((e.clientY - r.top) / r.height - 0.5) * 22);
+    }
   }
+
+  function onUp() {
+    const d = drag.current;
+    if (!d.down) return;
+    d.down = false;
+    setGrabbing(false);
+    // A little throw in the direction of the last movement.
+    ry.set(ry.get() + d.vx * 7);
+    rx.set(Math.max(-55, Math.min(75, rx.get() - d.vy * 5)));
+    timer.current = setTimeout(toRest, HOLD_MS);
+  }
+
   function onLeave() {
-    px.set(0);
-    py.set(0);
+    const d = drag.current;
+    if (!d.down && !d.held) toRest();
   }
 
   return (
     <div
       ref={ref}
+      onPointerDown={onDown}
       onPointerMove={onMove}
+      onPointerUp={onUp}
+      onPointerCancel={onUp}
       onPointerLeave={onLeave}
-      className={cn("relative mx-auto h-[380px] w-full max-w-[540px] [perspective:1300px]", className)}
+      className={cn(
+        "hero-scene-motion relative mx-auto h-[380px] w-full max-w-[540px] select-none [perspective:1300px] [touch-action:pan-y]",
+        grabbing ? "cursor-grabbing" : "cursor-grab",
+        className
+      )}
       aria-hidden
     >
       <motion.div
-        style={reduced ? { rotateX: 8, rotateY: -18 } : { rotateX, rotateY }}
+        style={{ rotateX, rotateY }}
         className="absolute inset-0 [transform-style:preserve-3d]"
       >
         <div className="absolute inset-0 animate-sway [transform-style:preserve-3d]">
@@ -203,6 +263,20 @@ export function HeroScene3D({ className }: { className?: string }) {
           </div>
         </div>
       </motion.div>
+
+      {(
+        <div
+          className={cn(
+            "pointer-events-none absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-white/80 backdrop-blur transition-opacity duration-500",
+            touched && "opacity-0"
+          )}
+        >
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4" />
+          </svg>
+          Drag to rotate
+        </div>
+      )}
     </div>
   );
 }

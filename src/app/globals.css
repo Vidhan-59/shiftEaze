@@ -202,11 +202,11 @@
   }
 }
 
-/* Honor reduced-motion globally: kill decorative loops. */
+/* Honor reduced-motion globally: kill decorative loops. The hero's 3D scene is exempt (see HeroScene3D). */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *:not(.hero-scene-motion, .hero-scene-motion *),
+  *:not(.hero-scene-motion, .hero-scene-motion *)::before,
+  *:not(.hero-scene-motion, .hero-scene-motion *)::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
