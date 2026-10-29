@@ -1,7 +1,15 @@
-import { PageHeroBand } from "@/components/layout/PageHeroBand";
-import { FeatureBody } from "@/components/sections/FeatureBody";
-import { UseCasesTable } from "@/components/sections/UseCasesTable";
-import { EndOfPageCTA } from "@/components/sections/EndOfPageCTA";
+import { SolutionsHero } from "@/components/heroes/SolutionsHero";
+import { SolutionSection } from "@/components/sections/SolutionSection";
+import { UseCasesGrid } from "@/components/sections/UseCasesGrid";
+import { CTABand } from "@/components/sections/CTABand";
+import {
+  ManagedRosteringVisual,
+  MultiSiteVisual,
+  OvertimeVisual,
+  PayrollVisual,
+  SchedulingVisual,
+  ShiftBasedVisual,
+} from "@/components/visuals/SolutionVisuals";
 import { page } from "@/content/siteMap";
 import { MANAGED_ROSTERING_PUBLISHED, isTrueProduction } from "@/content/config";
 import { pageMetadata } from "@/lib/pageMetadata";
@@ -10,9 +18,13 @@ import * as solutions from "@/content/solutions";
 const solutionsPage = page("solutions");
 const sections = solutionsPage.sections!;
 const useCasesSection = sections[sections.length - 1];
+const coreSections = sections.slice(0, 5);
 
 // Brief §5.4: render while off only outside true production, for review.
 const showManagedRostering = MANAGED_ROSTERING_PUBLISHED || !isTrueProduction;
+
+const visuals = [ShiftBasedVisual, MultiSiteVisual, SchedulingVisual, OvertimeVisual, PayrollVisual];
+const copy = [solutions.shiftBased, solutions.multiSite, solutions.scheduling, solutions.overtime, solutions.payroll];
 
 export const metadata = pageMetadata({
   title: "Shift-Based Workforce Management Solutions | ShiftEaze",
@@ -24,33 +36,18 @@ export const metadata = pageMetadata({
 export default function SolutionsPage() {
   return (
     <>
-      <PageHeroBand pageKey="solutions" tag={solutionsPage.name} h1={solutions.overviewHeading} />
+      <SolutionsHero heading={solutions.overviewHeading} stages={coreSections} />
 
-      <FeatureBody
-        id={sections[0].id}
-        heading={sections[0].name}
-        paragraphs={[solutions.shiftBased.grey, solutions.shiftBased.blue]}
-      />
-      <FeatureBody
-        id={sections[1].id}
-        heading={sections[1].name}
-        paragraphs={[solutions.multiSite.grey, solutions.multiSite.blue]}
-      />
-      <FeatureBody
-        id={sections[2].id}
-        heading={sections[2].name}
-        paragraphs={[solutions.scheduling.grey, solutions.scheduling.blue]}
-      />
-      <FeatureBody
-        id={sections[3].id}
-        heading={sections[3].name}
-        paragraphs={[solutions.overtime.grey, solutions.overtime.blue]}
-      />
-      <FeatureBody
-        id={sections[4].id}
-        heading={sections[4].name}
-        paragraphs={[solutions.payroll.grey, solutions.payroll.blue]}
-      />
+      {coreSections.map((s, i) => (
+        <SolutionSection
+          key={s.id}
+          id={s.id}
+          index={i}
+          heading={s.name}
+          paragraphs={[copy[i].grey, copy[i].blue]}
+          Visual={visuals[i]}
+        />
+      ))}
 
       {/*
         Hidden while MANAGED_ROSTERING_PUBLISHED is false in production: not
@@ -59,23 +56,18 @@ export default function SolutionsPage() {
         appears in the jump nav, dropdown or footer until the flag flips.
       */}
       {showManagedRostering && (
-        <FeatureBody
+        <SolutionSection
           id="managed-rostering-services"
+          index={5}
           heading="Managed Rostering Services"
-          paragraphs={[solutions.managedRostering]}
+          paragraphs={[solutions.managedRostering, solutions.managedRosteringDetail]}
+          Visual={ManagedRosteringVisual}
         />
       )}
 
-      <UseCasesTable
-        id={useCasesSection.id}
-        heading={solutions.useCasesHeading}
-        rows={solutions.useCases}
-      />
+      <UseCasesGrid id={useCasesSection.id} heading={solutions.useCasesHeading} rows={solutions.useCases} />
 
-      <EndOfPageCTA
-        label="Talk to Our Team About Your Operation"
-        href="/company?topic=sales-and-demos#contact"
-      />
+      <CTABand label="Talk to Our Team About Your Operation" href="/company?topic=sales-and-demos#contact" plain />
     </>
   );
 }

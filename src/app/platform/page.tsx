@@ -4,6 +4,7 @@ import { EndOfPageCTA } from "@/components/sections/EndOfPageCTA";
 import { page } from "@/content/siteMap";
 import { pageMetadata } from "@/lib/pageMetadata";
 import * as platform from "@/content/platform";
+import * as simple from "@/content/platformCards";
 
 const platformPage = page("platform");
 const sections = platformPage.sections!;
@@ -18,7 +19,7 @@ export const metadata = pageMetadata({
 export default function PlatformPage() {
   return (
     <>
-      <PageHeroBand pageKey="platform" tag={platformPage.name} h1="AI Workforce Operations Platform" />
+      <PageHeroBand pageKey="platform" tag={platformPage.name} h1="AI Workforce Operations Platform" showLogo />
 
       {/* Zig-zag rows: copy and image alternate sides; odd rows get a white band instead of a divider rule. */}
       <FeatureSplit
@@ -32,6 +33,8 @@ export default function PlatformPage() {
         heading={sections[1].name}
         paragraphs={[platform.rostering.intro]}
         bullets={platform.rostering.bullets}
+        cards={simple.rosteringSimple.cards}
+        cardTag={simple.rosteringSimple.tag}
         closing={platform.rostering.closing}
         flip
         tinted
@@ -48,19 +51,15 @@ export default function PlatformPage() {
         heading={sections[2].name}
         paragraphs={[platform.absence.intro]}
         bullets={platform.absence.bullets}
-        visual={{
-          kind: "shot",
-          src: "/assets/reference/shift-manager.png",
-          alt: "ShiftEaze Shift Manager with per-operator absence prediction",
-          mock: "shift",
-          url: "app.shifteaze.com/shift-manager",
-        }}
+        visual={{ kind: "panel", panel: "absence" }}
       />
       <FeatureSplit
         id={sections[3].id}
         heading={sections[3].name}
         paragraphs={[platform.attendance.intro]}
         bullets={platform.attendance.bullets}
+        cards={simple.attendanceSimple.cards}
+        cardTag={simple.attendanceSimple.tag}
         flip
         tinted
         visual={{
@@ -76,19 +75,15 @@ export default function PlatformPage() {
         heading={sections[4].name}
         paragraphs={[platform.analytics.intro]}
         bullets={platform.analytics.bullets}
-        visual={{
-          kind: "shot",
-          src: "/assets/reference/manpower.png",
-          alt: "ShiftEaze Manpower Summary dashboard",
-          mock: "manpower",
-          url: "app.shifteaze.com/dashboards",
-        }}
+        visual={{ kind: "panel", panel: "analytics" }}
       />
       <FeatureSplit
         id={sections[5].id}
         heading={sections[5].name}
         paragraphs={[platform.voice.intro]}
         bullets={platform.voice.bullets}
+        cards={simple.voiceSimple.cards}
+        cardTag={simple.voiceSimple.tag}
         closing={platform.voice.closing}
         flip
         tinted
@@ -107,6 +102,8 @@ export default function PlatformPage() {
         heading={sections[7].name}
         paragraphs={[platform.leave.blueIntro]}
         bullets={platform.leave.bullets}
+        cards={simple.leaveSimple.cards}
+        cardTag={simple.leaveSimple.tag}
         flip
         tinted
         visual={{
@@ -129,7 +126,6 @@ export default function PlatformPage() {
       <EndOfPageCTA
         label="Request a Demo"
         href="/request-demo"
-        caption={platform.seeOnYourOwnRoster}
       />
     </>
   );

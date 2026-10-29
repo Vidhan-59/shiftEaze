@@ -3,7 +3,6 @@ import { ProblemSection } from "@/components/sections/ProblemSection";
 import { PlatformTeaser } from "@/components/sections/PlatformTeaser";
 import { SolutionsTeaser } from "@/components/sections/SolutionsTeaser";
 import { IndustriesTeaser } from "@/components/sections/IndustriesTeaser";
-import { CaseStudyTeaser } from "@/components/sections/CaseStudyTeaser";
 import { HowItWorksStrip } from "@/components/sections/HowItWorksStrip";
 import { ImpactSection } from "@/components/sections/ImpactSection";
 import { ResourcesTeaser } from "@/components/sections/ResourcesTeaser";
@@ -29,7 +28,6 @@ export default function HomePage() {
       <PlatformTeaser />
       <SolutionsTeaser />
       <IndustriesTeaser />
-      <CaseStudyTeaser />
       <HowItWorksStrip />
       <ImpactSection />
       <ResourcesTeaser />

@@ -18,14 +18,13 @@ export function EndOfPageCTA({
   caption?: string;
 }) {
   return (
-    <section className="border-t border-line py-14 sm:py-16">
+    <section className="py-14 sm:py-16">
       <Container>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button href={href} size="lg">
+        <div className="flex justify-center">
+          <Button href={href} size="lg" className="h-[68px] gap-3 px-11 text-[19px]">
             {label}
-            <ArrowRight width={17} height={17} />
+            <ArrowRight width={22} height={22} />
           </Button>
-          {caption && <span className="text-[14px] text-fg-muted">{caption}</span>}
         </div>
       </Container>
     </section>

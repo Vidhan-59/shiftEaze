@@ -1,63 +1,67 @@
 import Link from "next/link";
-import { Logo } from "./Logo";
 import { BackToTop } from "./BackToTop";
+import { LogoFull } from "./Logo";
 import { Container } from "@/components/ui/Container";
-import { Aurora } from "@/components/visuals/Aurora";
 import { footerNav, site } from "@/content/site";
 
-/**
- * "Glass" type: the glyphs are filled with a translucent white gradient (so the
- * glow behind shows through), edged with a hairline highlight and lifted by a
- * soft coloured halo. No boxes, just the text itself.
- */
-const GLASS_HEADING =
-  "bg-gradient-to-b from-white via-white/85 to-white/45 bg-clip-text text-transparent [filter:drop-shadow(0_1px_0_rgba(255,255,255,0.35))_drop-shadow(0_6px_16px_rgba(150,160,255,0.45))]";
-const GLASS_BODY =
-  "bg-gradient-to-b from-white/90 to-white/55 bg-clip-text text-transparent [filter:drop-shadow(0_0_10px_rgba(170,180,255,0.18))]";
-/** A link whose glass fill sweeps across and glows on hover; slow, eased transitions keep it silky. */
-const GLASS_LINK =
-  "bg-gradient-to-r from-white/65 via-white to-white/65 bg-[length:220%_100%] bg-[position:100%_0] bg-clip-text text-transparent [filter:drop-shadow(0_0_0_rgba(190,200,255,0))] transition-[background-position,filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[position:0%_0] group-hover:[filter:drop-shadow(0_0_12px_rgba(190,200,255,0.65))]";
+const RIBBON = [
+  "AI Rostering",
+  "Absence Prediction",
+  "Geofenced Attendance",
+  "Leave Management",
+  "AI Voice Calling",
+  "Live Dashboards",
+  "Operator Passbook",
+];
 
 /** Dark navy site footer with an animated top rule, drifting glows and a scrolling perspective grid. */
 export function Footer() {
   return (
-    <footer className="motion-always relative overflow-hidden bg-gradient-to-b from-teal-700 to-teal-900 text-white">
+    <footer className="motion-always relative overflow-hidden bg-gradient-to-b from-teal-400 via-teal-500 to-teal-600 text-white">
       {/* Animated brand line along the top edge */}
       <div
         className="absolute inset-x-0 top-0 h-[3px] animate-gradient-x bg-gradient-to-r from-teal-300 via-accent-500 to-teal-300 bg-[length:200%_100%]"
         aria-hidden
       />
 
-      {/* Ambient depth: drifting glows + a perspective grid floor that scrolls toward the viewer */}
-      <Aurora variant="mixed" className="opacity-70 mix-blend-screen" />
+      {/* Scrolling feature ribbon */}
+      <div className="relative overflow-hidden border-b border-white/20 bg-white/10 py-3.5 backdrop-blur-sm [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+        <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
+          {[...RIBBON, ...RIBBON, ...RIBBON, ...RIBBON].map((t, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-3 font-mono text-[14px] font-bold uppercase tracking-[0.18em] text-white"
+            >
+              <span className="h-2 w-2 rotate-45 bg-[#ff5468] shadow-[0_0_10px_rgba(255,84,104,0.9)]" />
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Perspective grid floor that scrolls toward the viewer */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-72 [perspective:500px] [mask-image:linear-gradient(to_top,#000,transparent)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 [perspective:500px] [mask-image:linear-gradient(to_top,#000,transparent)]"
         aria-hidden
       >
         <div className="absolute -inset-x-1/2 bottom-0 h-[200%] origin-bottom animate-grid-flow bg-[linear-gradient(rgba(255,255,255,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.14)_1px,transparent_1px)] bg-[size:48px_48px] [transform:rotateX(62deg)]" />
       </div>
 
-      {/* Oversized outlined wordmark */}
-      <div
-        className="pointer-events-none absolute inset-x-0 -bottom-[0.18em] select-none text-center font-display text-[clamp(5rem,19vw,17rem)] font-extrabold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.14)]"
-        aria-hidden
-      >
-        ShiftEaze
-      </div>
-
-      <Container className="relative py-16 sm:py-20">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <Container className="relative pb-5 pt-8 sm:pt-9">
+        <div className="grid gap-8 md:grid-cols-[1.5fr_1fr_1fr_1fr] md:gap-10">
           <div>
-            <Logo variant="white" height={32} className="[filter:drop-shadow(0_4px_14px_rgba(150,160,255,0.45))]" />
-            <p className={`mt-5 max-w-xs text-[14.5px] leading-relaxed ${GLASS_BODY}`}>
+            <span className="inline-flex rounded-2xl bg-white px-4 py-2 shadow-[0_12px_28px_-12px_rgba(0,0,0,0.6)]">
+              <LogoFull className="h-10" />
+            </span>
+            <p className="mt-4 max-w-sm text-[16px] font-semibold leading-relaxed text-white">
               {site.tagline}. Auto-rostering, attendance prediction and
               workforce analytics, with {site.module} built in.
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-1.5">
               {["EN", "HI", "GU", "iOS", "Android", "Web"].map((t) => (
                 <span
                   key={t}
-                  className="rounded-md border border-white/20 bg-white/[0.07] px-2.5 py-1 font-mono text-[10.5px] text-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-md transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/15 hover:text-white"
+                  className="rounded-lg border border-white/30 bg-white/15 px-3 py-1.5 font-mono text-[13px] font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#ff5468] hover:bg-[#ff5468]/25"
                 >
                   {t}
                 </span>
@@ -67,22 +71,22 @@ export function Footer() {
 
           {footerNav.map((col) => (
             <div key={col.title}>
-              <h3 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.14em]">
-                <span className="h-[3px] w-5 rounded-full bg-accent-400 shadow-[0_0_10px_rgba(230,76,90,0.7)]" aria-hidden />
-                <span className={GLASS_HEADING}>{col.title}</span>
+              <h3 className="flex items-center gap-2.5 text-[15px] font-extrabold uppercase tracking-[0.16em] text-white">
+                <span className="h-[3px] w-6 animate-gradient-x rounded-full bg-gradient-to-r from-[#ff5468] via-white to-[#ff5468] bg-[length:200%_100%]" aria-hidden />
+                {col.title}
               </h3>
-              <ul className="mt-5 space-y-3.5">
+              <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="group inline-flex items-center text-[14.5px]"
+                      className="group inline-flex items-center text-[17px] font-bold text-white transition-all duration-300 hover:translate-x-1 hover:text-white"
                     >
                       <span
-                        className="mr-0 h-px w-0 bg-accent-400 shadow-[0_0_8px_rgba(230,76,90,0.8)] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:mr-2 group-hover:w-4"
+                        className="mr-0 h-[2px] w-0 rounded-full bg-[#ff5468] shadow-[0_0_8px_rgba(255,84,104,0.9)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:mr-2.5 group-hover:w-5"
                         aria-hidden
                       />
-                      <span className={GLASS_LINK}>{l.label}</span>
+                      <span>{l.label}</span>
                     </Link>
                   </li>
                 ))}
@@ -91,18 +95,23 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-5 border-t border-white/15 pt-6 text-[13px] sm:flex-row sm:items-center">
-          <span className={GLASS_BODY}>
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-5 text-[15px] font-semibold text-white sm:flex-row sm:items-center">
+          <span>
             © {new Date().getFullYear()} {site.name} · 6,000+ operators · 12+
             terminals
           </span>
           <div className="flex items-center gap-5">
-            <span className={`font-mono text-[11px] uppercase tracking-widest ${GLASS_BODY}`}>
+            <span className="inline-flex items-center gap-2.5 font-mono text-[13.5px] font-bold uppercase tracking-widest text-white">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inset-0 animate-pulse-ring rounded-full bg-emerald-300" />
+                <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-300" />
+              </span>
               {site.liveAt}
             </span>
             <BackToTop />
           </div>
         </div>
+
       </Container>
     </footer>
   );

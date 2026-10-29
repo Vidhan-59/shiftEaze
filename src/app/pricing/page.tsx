@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { PricingHero } from "@/components/heroes/PricingHero";
 import { ROIStats } from "@/components/sections/ROIStats";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
@@ -13,15 +13,17 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <>
-      {/* Restructure brief: only the shared breadcrumb/header/footer chrome
-          may change here. Content, prices, plan names and logic below are
-          untouched. */}
-      <div className="bg-teal-400 pb-4 pt-28 sm:pt-32">
-        <Breadcrumbs pageKey="pricing" tone="dark" />
-      </div>
+      {/* Only the hero is new; content, prices, plan names and logic below are untouched. */}
+      <PricingHero
+        tag="Pricing"
+        heading="Priced per operator under management"
+        lead="Every tier runs the same platform. What changes as you move up is scope and autonomy: more sites, more governance, and the AI that turns a predicted absence into a filled shift before a planner has to touch it."
+      />
       {/* Answer "what do we get back" before "what does it cost". */}
       <ROIStats />
-      <Pricing />
+      <div id="pricing-plans" className="scroll-mt-[76px]">
+        <Pricing />
+      </div>
       <FAQ />
     </>
   );

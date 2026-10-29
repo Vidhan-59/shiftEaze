@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 /** Decorative roster rows: D day, N night, W week-off, A absent (same legend as the product). */
 const ROWS = ["DDNNWWA", "NNWWDDN", "WWDDNNW", "DNWADDN", "ANNWWDD"];
 const CHIP: Record<string, string> = {
-  D: "bg-emerald-100 text-emerald-700",
-  N: "bg-indigo-100 text-indigo-700",
-  W: "bg-violet-100 text-violet-700",
-  A: "bg-red-100 text-red-600",
+  D: "bg-emerald-200 text-emerald-800",
+  N: "bg-indigo-200 text-indigo-900",
+  W: "bg-violet-200 text-violet-900",
+  A: "bg-red-200 text-red-700",
 };
 
 const t3d = (z: number) => ({ transform: `translateZ(${z}px)` });
@@ -21,6 +21,9 @@ const t3d = (z: number) => ({ transform: `translateZ(${z}px)` });
 const REST = { x: 8, y: -20 };
 /** How long a dragged pose is held before the scene eases back to rest. */
 const HOLD_MS = 2200;
+/** The "Active Employees" KPI counts up to this, then shows it with a "+". */
+const ACTIVE_TARGET = 6000;
+const COUNT_MS = 2600;
 
 /**
  * A pure-CSS 3D "operations deck": a tilted glass roster floating over a grid
@@ -49,8 +52,35 @@ export function HeroScene3D({ className }: { className?: string }) {
   const turns = useRef(0);
   const [grabbing, setGrabbing] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [active, setActive] = useState(0);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // Count the Active Employees KPI up each time the scene scrolls into view.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const run = () => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / COUNT_MS);
+        setActive(Math.round(ACTIVE_TARGET * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf);
+      if (e.isIntersecting) run();
+      else setActive(0);
+    });
+    io.observe(el);
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
+  }, []);
 
   function toRest() {
     // Settle on the nearest equivalent of the rest pose, so a scene that was
@@ -143,27 +173,27 @@ export function HeroScene3D({ className }: { className?: string }) {
 
           {/* Roster panel */}
           <div
-            className="absolute left-6 top-14 w-[330px] overflow-hidden rounded-xl bg-white shadow-[0_30px_60px_-20px_rgba(0,0,20,0.55)]"
+            className="absolute left-4 top-12 w-[372px] overflow-hidden rounded-xl bg-white shadow-[0_30px_60px_-20px_rgba(0,0,20,0.55)]"
             style={t3d(0)}
           >
-            <div className="flex items-center gap-1.5 bg-teal-400 px-3 py-2">
+            <div className="flex items-center gap-1.5 bg-teal-400 px-3.5 py-2.5">
               <span className="h-2 w-2 rounded-full bg-white/40" />
               <span className="h-2 w-2 rounded-full bg-white/40" />
               <span className="h-2 w-2 rounded-full bg-white/40" />
-              <span className="ml-2 font-mono text-[9px] uppercase tracking-widest text-white/80">
+              <span className="ml-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-white">
                 Scheduler Dashboard
               </span>
             </div>
-            <div className="relative space-y-1.5 p-3">
+            <div className="relative space-y-2 p-3.5">
               {ROWS.map((row, r) => (
                 <div key={r} className="flex items-center gap-2">
-                  <span className="h-2 w-12 shrink-0 rounded-full bg-ink-600" />
+                  <span className="h-2.5 w-12 shrink-0 rounded-full bg-ink-600" />
                   <div className="flex flex-1 justify-between gap-1">
                     {row.split("").map((c, i) => (
                       <span
                         key={i}
                         className={cn(
-                          "grid h-[22px] w-[22px] place-items-center rounded-md text-[9.5px] font-bold",
+                          "grid h-[27px] w-[27px] place-items-center rounded-md text-[13px] font-extrabold",
                           CHIP[c]
                         )}
                       >
@@ -179,12 +209,15 @@ export function HeroScene3D({ className }: { className?: string }) {
           </div>
 
           {/* KPI card */}
-          <div className="absolute right-3 top-5 w-[160px]" style={t3d(70)}>
-            <div className="animate-float-y rounded-xl bg-white p-3.5 shadow-[0_24px_50px_-16px_rgba(0,0,20,0.55)]">
-              <div className="font-mono text-[9px] uppercase tracking-widest text-fg-faint">Active</div>
-              <div className="mt-0.5 font-display text-[28px] font-extrabold leading-none text-fg">1,127</div>
-              <div className="mt-1 text-[10px] text-fg-muted">Active Employees</div>
-              <div className="mt-2.5 flex h-7 items-end gap-1">
+          <div className="absolute right-1 top-4 w-[184px]" style={t3d(70)}>
+            <div className="animate-float-y rounded-xl bg-white p-4 shadow-[0_24px_50px_-16px_rgba(0,0,20,0.55)]">
+              <div className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-ink-500">Active</div>
+              <div className="mt-1 font-display text-[36px] font-extrabold leading-none tabular-nums text-fg">
+                {active.toLocaleString("en-US")}
+                {active >= ACTIVE_TARGET && "+"}
+              </div>
+              <div className="mt-1.5 text-[13px] font-semibold text-fg-muted">Active Employees</div>
+              <div className="mt-3 flex h-8 items-end gap-1">
                 {[40, 62, 48, 80, 58, 92, 70].map((h, i) => (
                   <span
                     key={i}
@@ -197,9 +230,9 @@ export function HeroScene3D({ className }: { className?: string }) {
           </div>
 
           {/* Verified punch ring */}
-          <div className="absolute bottom-6 left-0 w-[176px]" style={t3d(115)}>
+          <div className="absolute bottom-5 left-0 w-[222px]" style={t3d(115)}>
             <div
-              className="animate-float-y rounded-xl border border-white/30 bg-white/15 p-3 text-white shadow-[0_24px_50px_-16px_rgba(0,0,20,0.6)] backdrop-blur-md"
+              className="animate-float-y rounded-xl border border-white/40 bg-[#1d1b63]/70 p-3.5 text-white shadow-[0_24px_50px_-16px_rgba(0,0,20,0.6)] backdrop-blur-md"
               style={{ animationDelay: "-2s" }}
             >
               <div className="flex items-center gap-3">
@@ -219,10 +252,10 @@ export function HeroScene3D({ className }: { className?: string }) {
                   />
                 </svg>
                 <div>
-                  <div className="flex items-center gap-1 text-[12px] font-semibold">
-                    <Check width={12} height={12} /> Punch verified
+                  <div className="flex items-center gap-1.5 text-[15px] font-bold">
+                    <Check width={14} height={14} /> Punch verified
                   </div>
-                  <div className="text-[10px] text-white/70">Inside terminal geofence</div>
+                  <div className="mt-0.5 text-[12.5px] font-medium text-white/90">Inside terminal geofence</div>
                 </div>
               </div>
             </div>
@@ -231,34 +264,14 @@ export function HeroScene3D({ className }: { className?: string }) {
           {/* Risk pill */}
           <div className="absolute bottom-10 right-2" style={t3d(150)}>
             <div
-              className="animate-float-y flex items-center gap-2 rounded-full bg-accent-500 px-3.5 py-2 text-[11px] font-semibold text-white shadow-[0_18px_36px_-12px_rgba(213,31,44,0.8)]"
+              className="animate-float-y flex items-center gap-2 rounded-full bg-accent-500 px-[18px] py-2.5 text-[14px] font-bold text-white shadow-[0_18px_36px_-12px_rgba(213,31,44,0.8)]"
               style={{ animationDelay: "-3.5s" }}
             >
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-white/80" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-white" />
               </span>
               Absence risk flagged
-            </div>
-          </div>
-
-          {/* Spinning wireframe cube */}
-          <div className="absolute left-3 top-1 h-12 w-12" style={t3d(90)}>
-            <div className="h-full w-full animate-cube-spin [transform-style:preserve-3d]">
-              {[
-                "rotateY(0deg)",
-                "rotateY(90deg)",
-                "rotateY(180deg)",
-                "rotateY(270deg)",
-                "rotateX(90deg)",
-                "rotateX(-90deg)",
-              ].map((f) => (
-                <span
-                  key={f}
-                  className="absolute inset-0 border border-white/60 bg-white/10 backdrop-blur-[1px]"
-                  style={{ transform: `${f} translateZ(24px)` }}
-                />
-              ))}
             </div>
           </div>
         </div>

@@ -40,10 +40,8 @@ export const GUIDE_URL = "";
  */
 export const CONTACT_EMAIL = "info@shifteaze.io";
 
-/**
- * No company phone number or address exists anywhere in the project (the
- * only digits found are a placeholder example inside the demo form's phone
- * *input field*, not a company contact number). Left `null` so the Contact
- * page hides that line rather than showing a guessed value.
- */
-export const CONTACT_PHONE: string | null = null;
+/** Company phone number, as supplied by the team (India, +91). */
+export const CONTACT_PHONE: string | null = "+91 94260 05911";
+
+/** Company location, as supplied by the team. */
+export const CONTACT_LOCATION: string | null = "Gujarat, India";

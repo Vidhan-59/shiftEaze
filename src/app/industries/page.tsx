@@ -1,12 +1,29 @@
-import { PageHeroBand } from "@/components/layout/PageHeroBand";
-import { FeatureBody } from "@/components/sections/FeatureBody";
-import { EndOfPageCTA } from "@/components/sections/EndOfPageCTA";
+import { IndustriesHero } from "@/components/heroes/IndustriesHero";
+import { IndustrySection } from "@/components/sections/IndustrySection";
+import { CTABand } from "@/components/sections/CTABand";
+import { LogisticsCard, ManufacturingCard, PortCard, StaffingCard } from "@/components/visuals/IndustryCards";
 import { page } from "@/content/siteMap";
 import { pageMetadata } from "@/lib/pageMetadata";
 import * as industries from "@/content/industries";
 
 const industriesPage = page("industries");
 const sections = industriesPage.sections!;
+const copy = [industries.port, industries.manufacturing, industries.logistics, industries.staffing];
+const CARDS = [PortCard, ManufacturingCard, LogisticsCard, StaffingCard];
+// Facts quoted from the port copy itself.
+const CHIPS: ({ value: string; label: string }[] | undefined)[] = [
+  [
+    { value: "6000+", label: "operators" },
+    { value: "12+", label: "terminals and divisions" },
+  ],
+];
+// Short capability tags, each a phrase lifted from that industry's own copy.
+const TAGS = [
+  ["Gate-pass QR punches", "Geofenced attendance", "Crane moves and GCR", "One combined Kronos picture"],
+  ["Configurable shift types", "Live headcount vs requirement", "Shift Extender", "Automated absence calls"],
+  ["Absence risk days ahead", "Reminder calls", "Priority Call", "Live on-site view"],
+  ["One portable RGID", "Clear employee status", "Performance passbook", "Early pattern flags"],
+];
 
 export const metadata = pageMetadata({
   title: "Rostering Software for Ports & Manufacturing | ShiftEaze",
@@ -18,30 +35,23 @@ export const metadata = pageMetadata({
 export default function IndustriesPage() {
   return (
     <>
-      <PageHeroBand pageKey="industries" tag={industriesPage.name} h1={industries.overviewHeading} />
+      <IndustriesHero tag={industriesPage.name} heading={industries.overviewHeading} industries={sections} />
 
-      <FeatureBody
-        id={sections[0].id}
-        heading={sections[0].name}
-        paragraphs={[industries.port.grey, industries.port.blue]}
-      />
-      <FeatureBody
-        id={sections[1].id}
-        heading={sections[1].name}
-        paragraphs={[industries.manufacturing.grey, industries.manufacturing.blue]}
-      />
-      <FeatureBody
-        id={sections[2].id}
-        heading={sections[2].name}
-        paragraphs={[industries.logistics.grey, industries.logistics.blue]}
-      />
-      <FeatureBody
-        id={sections[3].id}
-        heading={sections[3].name}
-        paragraphs={[industries.staffing.grey, industries.staffing.blue]}
-      />
+      {sections.map((s, i) => (
+        <IndustrySection
+          key={s.id}
+          id={s.id}
+          index={i}
+          total={sections.length}
+          heading={s.name}
+          paragraphs={[copy[i].grey, copy[i].blue]}
+          chips={CHIPS[i]}
+          Card={CARDS[i]}
+          tags={TAGS[i]}
+        />
+      ))}
 
-      <EndOfPageCTA label="Request a Demo for Your Industry" href="/request-demo" />
+      <CTABand label="Request a Demo for Your Industry" href="/request-demo" plain />
     </>
   );
 }

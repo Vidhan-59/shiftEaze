@@ -39,7 +39,7 @@ export const pricingTiers: PricingTier[] = [
     name: "Starter",
     tagline: "Get one site live on ShiftEaze.",
     bestFor: "Single-site pilots, small ops teams",
-    rate: { annual: "₹89", monthly: "₹106" },
+    rate: { annual: "₹89", monthly: "₹109" },
     unit: "/operator/mo",
     subLabels: [
       "Free forever up to 50 operators",
@@ -71,7 +71,7 @@ export const pricingTiers: PricingTier[] = [
     name: "Professional",
     tagline: "Run every terminal from one control tower.",
     bestFor: "Multi-terminal operations · 2–5 sites · 150–750 operators",
-    rate: { annual: "₹199", monthly: "₹238" },
+    rate: { annual: "₹199", monthly: "₹139" },
     unit: "/operator/mo",
     subLabels: [
       "For a minimum of 150 operators",

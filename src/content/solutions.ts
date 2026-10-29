@@ -46,3 +46,10 @@ export const payroll = {
 
 export const managedRostering =
   "Prefer not to build rosters in-house? Our team can set up and manage your rostering cycles on the platform.";
+
+/**
+ * Supporting paragraph for Managed Rostering Services. Drafted for review (not from the
+ * restructure brief); every claim restates a capability already described in the sections above.
+ */
+export const managedRosteringDetail =
+  "Our team builds your rotation once, such as Day, Day, Night, Night, Off, Off (DDNNOO), and applies it to every terminal, department or batch. Shift types stay configurable, and Generate once or Auto-repeat keeps the next window of at least 30 days ready. Your planners keep the live view: attendance, absence risk and ranked replacement candidates sit on the same dashboards, so cover is arranged days ahead rather than at the gate.";

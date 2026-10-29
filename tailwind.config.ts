@@ -120,6 +120,11 @@ const config: Config = {
           "100%": { opacity: "0" },
         },
         shimmer: { to: { backgroundPosition: "200% center" } },
+        sheen: {
+          "0%": { transform: "translateX(0) skewX(-18deg)", opacity: "0" },
+          "20%,60%": { opacity: "1" },
+          "100%": { transform: "translateX(320%) skewX(-18deg)", opacity: "0" },
+        },
         drift: {
           "0%,100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },

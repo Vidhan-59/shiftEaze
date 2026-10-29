@@ -9,7 +9,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { Logo } from "./Logo";
+import { LogoFull } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { Menu, Close, ChevronDown } from "@/components/ui/icons";
 import { nav, cta, site } from "@/content/site";
@@ -26,6 +26,13 @@ function dropdownItems(item: (typeof nav)[number]) {
   const p = page(item.dropdownOf);
   const rows = p.dropdownSections ?? p.sections ?? [];
   return rows.map((s) => ({ label: s.name, href: `${p.href}#${s.id}` }));
+}
+
+/** Splits links into columns of at most four, balanced (8 -> 4+4, 9 -> 3+3+3, 5 -> 3+2). */
+function toColumns<T>(rows: T[]) {
+  const cols = Math.max(1, Math.ceil(rows.length / 4));
+  const per = Math.ceil(rows.length / cols);
+  return Array.from({ length: cols }, (_, i) => rows.slice(i * per, (i + 1) * per)).filter((c) => c.length);
 }
 
 export function Navbar() {
@@ -132,23 +139,28 @@ export function Navbar() {
       animate={{ y: hidden ? -90 : 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       style={{ willChange: "transform", transform: "translateZ(0)" }}
-      className="fixed inset-x-0 top-0 z-50 isolate border-b border-line bg-white/85 shadow-[0_6px_24px_-16px_rgba(20,24,70,0.35)] backdrop-blur-md transition-colors duration-300 sm:bg-white/80"
+      className="fixed inset-x-0 top-0 z-50 isolate border-b border-line bg-white shadow-[0_6px_24px_-16px_rgba(20,24,70,0.35)] transition-colors duration-300"
     >
       <nav
-        className="container-page flex h-[68px] items-center justify-between"
+        className="mx-auto flex h-[72px] w-[94%] max-w-[1560px] items-center justify-between lg:w-[92%] xl:w-[88%] min-[1500px]:w-[80%]"
         aria-label="Primary"
       >
-        <Link href="/" className="rounded-md" aria-label="ShiftEaze home" onClick={closeAll}>
-          <Logo priority />
+        <Link
+          href="/"
+          className="flex items-center gap-1 rounded-md transition-transform duration-300 hover:scale-[1.03]"
+          aria-label="ShiftEaze home"
+          onClick={closeAll}
+        >
+          <LogoFull className="h-9 lg:h-10 xl:h-12" />
         </Link>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-0 md:flex xl:gap-1">
           {nav.map((item) => {
             const rows = dropdownItems(item);
             const hasDropdown = rows.length > 0;
             const isOpen = openDropdown === item.label;
             const linkClass =
-              "relative flex items-center gap-1 rounded-md px-3 py-2 text-[14px] text-fg-muted transition-colors after:absolute after:bottom-0.5 after:left-3 after:right-3 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100";
+              "relative flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-[13.5px] text-fg-muted transition-colors lg:px-2.5 lg:text-[14px] xl:px-3 xl:text-[15px] after:absolute after:bottom-0.5 after:left-2 after:right-2 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100";
 
             return (
               <li
@@ -167,51 +179,67 @@ export function Navbar() {
                   {item.label}
                   {hasDropdown && (
                     <ChevronDown
-                      width={13}
-                      height={13}
+                      width={14}
+                      height={14}
                       className={cn("transition-transform duration-200", isOpen && "rotate-180")}
                     />
                   )}
                 </Link>
 
                 {hasDropdown && (
-                  <div
-                    className={cn(
-                      "absolute left-0 top-full z-10 min-w-[17rem] rounded-xl border border-line bg-white/95 p-2 shadow-card backdrop-blur-md transition-all duration-150",
-                      isOpen
-                        ? "visible opacity-100 translate-y-0 pointer-events-auto"
-                        : "invisible opacity-0 -translate-y-1 pointer-events-none"
-                    )}
-                  >
-                    {rows.map((r) => (
-                      <Link
-                        key={r.href}
-                        href={r.href}
-                        onClick={closeAll}
-                        className="block rounded-lg px-3 py-2 text-[13.5px] text-fg-muted transition-colors hover:bg-teal-500/[0.06] hover:text-fg"
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        key="sub"
+                        initial={{ clipPath: "inset(0 100% 0 0 round 16px)", opacity: 0 }}
+                        animate={{ clipPath: "inset(0 0% 0 0 round 16px)", opacity: 1 }}
+                        exit={{ clipPath: "inset(0 100% 0 0 round 16px)", opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className={cn("absolute top-full z-10 pt-2", item.label === "Company" || item.label === "Resources" ? "right-0" : "left-0")}
                       >
-                        {r.label}
-                      </Link>
-                    ))}
-                  </div>
+                        <div className="flex w-max gap-1 rounded-2xl border border-line bg-white p-2 shadow-[0_22px_44px_-18px_rgba(20,24,70,0.38)]">
+                          {toColumns(rows).map((col, ci) => (
+                            <ul key={ci} className="flex w-[215px] flex-col">
+                              {col.map((r) => (
+                                <li key={r.href}>
+                                  <Link
+                                    href={r.href}
+                                    onClick={closeAll}
+                                    className="block rounded-lg px-3 py-2 text-[13px] font-medium leading-snug text-fg-muted transition-colors duration-200 hover:bg-[#302e86]/[0.07] hover:text-[#302e86]"
+                                  >
+                                    {r.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 )}
               </li>
             );
           })}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Real app login — external, so it opens in a new tab. */}
           <a
             href={site.loginUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeAll}
-            className="relative hidden text-[14px] font-medium text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 sm:block"
+            className="relative hidden whitespace-nowrap px-1 text-[15px] font-medium text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 lg:block"
           >
             Log in
           </a>
-          <Button href={cta.primary.href} size="md" className="hidden sm:inline-flex" onClick={closeAll}>
+          <Button
+            href={cta.primary.href}
+            size="md"
+            className="hidden whitespace-nowrap sm:inline-flex"
+            onClick={closeAll}
+          >
             {cta.primary.label}
           </Button>
           <button
@@ -236,7 +264,7 @@ export function Navbar() {
             transition={{ duration: 0.3 }}
             className="overflow-hidden border-t border-line bg-white/95 backdrop-blur-xl md:hidden"
           >
-            <div className="container-page max-h-[calc(100vh-68px)] overflow-y-auto py-4">
+            <div className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-4">
               <div className="flex flex-col gap-1">
                 {nav.map((item) => {
                   const rows = dropdownItems(item);

@@ -15,7 +15,48 @@ import { cn } from "@/lib/utils";
 const FIELD_BASE =
   "w-full rounded-xl border bg-ink-850 px-4 text-[14.5px] text-fg placeholder:text-fg-faint transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-400/25";
 
-export function ContactForm({ initialTopic }: { initialTopic?: string }) {
+const DARK_FIELD =
+  "w-full rounded-2xl border border-white/40 bg-white/5 bg-gradient-to-br from-white/[0.22] to-white/[0.06] px-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_10px_24px_-14px_rgba(0,0,10,0.6)] backdrop-blur-md text-[14.5px] text-white placeholder:text-white/55 transition-colors focus:border-white focus:from-white/30 focus:outline-none focus:ring-2 focus:ring-white/30";
+
+const ico = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+const FIELD_ICONS: Record<string, () => React.ReactElement> = {
+  name: () => (
+    <svg {...ico} aria-hidden>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+    </svg>
+  ),
+  email: () => (
+    <svg {...ico} aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  ),
+  company: () => (
+    <svg {...ico} aria-hidden>
+      <rect x="5" y="3" width="14" height="18" rx="1.5" />
+      <path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4" />
+    </svg>
+  ),
+  topic: () => (
+    <svg {...ico} aria-hidden>
+      <path d="M3 12V4h8l9.5 9.5a2 2 0 0 1 0 2.8l-4.7 4.7a2 2 0 0 1-2.8 0L3 12Z" />
+      <circle cx="7.5" cy="8.5" r="1.2" />
+    </svg>
+  ),
+  message: () => (
+    <svg {...ico} aria-hidden>
+      <path d="M4 5h16v11H9l-5 4V5Z" />
+      <path d="M8 9.5h8M8 12.5h5" />
+    </svg>
+  ),
+};
+
+export function ContactForm({ initialTopic, tone = "light" }: { initialTopic?: string; tone?: "light" | "navy" }) {
+  const dark = tone === "navy";
+  const base = dark ? DARK_FIELD : FIELD_BASE;
+  const edge = (invalid: boolean) =>
+    dark ? (invalid ? "!border-[#ffb3ba]" : "") : invalid ? "border-risk-high/60" : "border-line-strong focus:border-teal-400/60";
   const [data, setData] = useState<ContactPayload>(
     initialTopic ? { topic: initialTopic } : {}
   );
@@ -68,16 +109,16 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-start gap-4 rounded-2xl border border-teal-500/30 bg-teal-500/[0.08] px-5 py-6"
+        className={cn("flex items-start gap-4 rounded-2xl border px-5 py-6", dark ? "border-white/30 bg-white/10" : "border-teal-500/30 bg-teal-500/[0.08]")}
       >
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-teal-400 text-white">
           <Check width={17} height={17} />
         </span>
         <div>
-          <div className="text-[16px] font-semibold text-fg">Message received.</div>
-          <p className="mt-1 max-w-sm text-[14px] leading-relaxed text-fg-muted">
+          <div className={cn("text-[16px] font-semibold", dark ? "text-white" : "text-fg")}>Message received.</div>
+          <p className={cn("mt-1 max-w-sm text-[14px] leading-relaxed", dark ? "text-white/80" : "text-fg-muted")}>
             We'll get back to you at{" "}
-            <span className="font-medium text-fg">{data.email}</span> shortly.
+            <span className={cn("font-medium", dark ? "text-white" : "text-fg")}>{data.email}</span> shortly.
           </p>
         </div>
       </motion.div>
@@ -85,26 +126,33 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
   }
 
   return (
-    <form onSubmit={submit} className="mt-8" noValidate>
+    <form onSubmit={submit} className={dark ? "" : "mt-8"} noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         {contactFields.map((f) => {
           const id = `contact-${f.name}`;
           const err = errors[f.name];
           const invalid = Boolean(err);
+          const FieldIcon = dark ? FIELD_ICONS[f.name] : undefined;
           return (
             <div
               key={f.name}
               className={cn("flex flex-col gap-1.5", !f.half && "sm:col-span-2")}
             >
-              <label htmlFor={id} className="pl-0.5 text-[12.5px] font-medium text-fg-muted">
+              <label htmlFor={id} className={cn("pl-0.5 text-[12.5px] font-medium", dark ? "text-white/85" : "text-fg-muted")}>
                 {f.label}
                 {f.required && (
-                  <span className="ml-0.5 text-accent-500" aria-hidden>
+                  <span className={cn("ml-0.5", dark ? "text-[#ffb3ba]" : "text-accent-500")} aria-hidden>
                     *
                   </span>
                 )}
               </label>
 
+              <div className="relative">
+              {FieldIcon && (
+                <span className={cn("pointer-events-none absolute left-4 z-10 -translate-y-1/2 text-white/80", f.type === "textarea" ? "top-[24px]" : "top-[23px]")}>
+                  <FieldIcon />
+                </span>
+              )}
               {f.type === "textarea" ? (
                 <textarea
                   id={id}
@@ -116,9 +164,10 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
                   aria-invalid={invalid}
                   aria-describedby={err ? `${id}-err` : undefined}
                   className={cn(
-                    FIELD_BASE,
+                    base,
+                    dark && "pl-12",
                     "resize-y py-3 leading-relaxed",
-                    invalid ? "border-risk-high/60" : "border-line-strong focus:border-teal-400/60"
+                    edge(invalid)
                   )}
                 />
               ) : f.type === "select" ? (
@@ -130,12 +179,14 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
                   aria-invalid={invalid}
                   aria-describedby={err ? `${id}-err` : undefined}
                   className={cn(
-                    FIELD_BASE,
+                    base,
+                    dark && "pl-12",
                     "h-[46px] appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-10",
-                    (data[f.name] ?? "") === "" && "text-fg-faint",
-                    invalid ? "border-risk-high/60" : "border-line-strong focus:border-teal-400/60"
+                    (data[f.name] ?? "") === "" && (dark ? "text-white/55" : "text-fg-faint"),
+                    edge(invalid)
                   )}
                   style={{
+                    ...(dark ? { backgroundColor: "rgba(255,255,255,0.1)" } : null),
                     backgroundImage:
                       "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23868cac' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
                   }}
@@ -159,15 +210,17 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
                   aria-invalid={invalid}
                   aria-describedby={err ? `${id}-err` : undefined}
                   className={cn(
-                    FIELD_BASE,
+                    base,
+                    dark && "pl-12",
                     "h-[46px]",
-                    invalid ? "border-risk-high/60" : "border-line-strong focus:border-teal-400/60"
+                    edge(invalid)
                   )}
                 />
               )}
+              </div>
 
               {err && (
-                <p id={`${id}-err`} className="pl-0.5 text-[12.5px] text-risk-high">
+                <p id={`${id}-err`} className={cn("pl-0.5 text-[12.5px]", dark ? "text-[#ffb3ba]" : "text-risk-high")}>
                   {err}
                 </p>
               )}
@@ -190,10 +243,23 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-4">
-        <Button size="lg" type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Sending…" : "Contact Us"}
-          {status !== "sending" && <ArrowRight width={16} height={16} />}
-        </Button>
+        {dark ? (
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="group inline-flex h-[56px] items-center gap-3 rounded-full bg-white p-[5px] pr-7 text-[15.5px] font-bold text-[#302e86] shadow-[0_16px_34px_-14px_rgba(0,0,0,0.6)] transition-colors hover:bg-[#eaf0ff] disabled:opacity-70"
+          >
+            <span className="grid h-[46px] w-[46px] place-items-center rounded-full bg-[#302e86] text-white transition-transform duration-300 group-hover:translate-x-0.5">
+              <ArrowRight width={17} height={17} />
+            </span>
+            {status === "sending" ? "Sending…" : "Contact Us"}
+          </button>
+        ) : (
+          <Button size="lg" type="submit" disabled={status === "sending"}>
+            {status === "sending" ? "Sending…" : "Contact Us"}
+            {status !== "sending" && <ArrowRight width={16} height={16} />}
+          </Button>
+        )}
       </div>
 
       <AnimatePresence>
@@ -203,7 +269,7 @@ export function ContactForm({ initialTopic }: { initialTopic?: string }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             role="alert"
-            className="mt-3 rounded-lg border border-risk-high/30 bg-risk-high/[0.06] px-3 py-2 text-[13px] text-risk-high"
+            className={cn("mt-3 rounded-lg border px-3 py-2 text-[13px]", dark ? "border-white/30 bg-white/10 text-[#ffd0d4]" : "border-risk-high/30 bg-risk-high/[0.06] text-risk-high")}
           >
             {formError}
           </motion.p>
