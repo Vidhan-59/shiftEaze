@@ -153,7 +153,7 @@ export function ResourcesHero({ tag, heading, topics }: { tag: string; heading: 
             </div>
 
             {/* Topic chips: scroll sideways on phones */}
-            <ul className="no-scrollbar -mx-1 mt-5 flex animate-fade-up gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible" style={{ animationDelay: "0.34s" }}>
+            <ul data-lenis-prevent-horizontal className="no-scrollbar -mx-1 mt-5 flex animate-fade-up gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible" style={{ animationDelay: "0.34s" }}>
               {topics.map((t, i) => (
                 <li key={t.id} className="shrink-0">
                   <button

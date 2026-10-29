@@ -264,7 +264,7 @@ export function Navbar() {
             transition={{ duration: 0.3 }}
             className="overflow-hidden border-t border-line bg-white/95 backdrop-blur-xl md:hidden"
           >
-            <div className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-4">
+            <div data-lenis-prevent className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-4">
               <div className="flex flex-col gap-1">
                 {nav.map((item) => {
                   const rows = dropdownItems(item);

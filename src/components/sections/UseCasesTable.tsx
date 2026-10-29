@@ -17,7 +17,7 @@ export function UseCasesTable({
         <h2 className="text-balance font-display text-[clamp(1.6rem,3.2vw,2.25rem)] font-bold leading-[1.1] tracking-tight text-fg">
           {heading}
         </h2>
-        <div className="mt-6 overflow-x-auto rounded-xl border border-line">
+        <div data-lenis-prevent-horizontal className="mt-6 overflow-x-auto rounded-xl border border-line">
           <table className="w-full text-[13.5px]">
             <thead>
               <tr className="border-b border-line bg-ink-850 text-left">

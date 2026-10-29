@@ -134,7 +134,7 @@ function useCoverage() {
 /** Section tabs: one compact card shows a single section at a time instead of one very long table. */
 function SectionTabs({ groups, tab, setTab, className }: { groups: CompareGroup[]; tab: string; setTab: (g: string) => void; className?: string }) {
   return (
-    <div role="tablist" aria-label="Capability sections" className={cn("flex gap-2 overflow-x-auto px-1 py-2.5 lg:gap-3 lg:overflow-visible", className)}>
+    <div role="tablist" data-lenis-prevent-horizontal aria-label="Capability sections" className={cn("flex gap-2 overflow-x-auto px-1 py-2.5 lg:gap-3 lg:overflow-visible", className)}>
       {groups.map((g, gi) => {
         const on = g.group === tab;
         const Icon = GROUP_ICONS[gi % GROUP_ICONS.length];
@@ -622,7 +622,7 @@ export function PricingComparison() {
               ))}
             </div>
 
-            <div className="mt-4 flex max-h-[230px] flex-wrap gap-2 overflow-y-auto pr-1">
+            <div data-lenis-prevent className="mt-4 flex max-h-[230px] flex-wrap gap-2 overflow-y-auto pr-1">
               <AnimatePresence initial={false}>
                 {chipRows.map((r) => {
                   const on = picked.has(r.feature);

@@ -27,7 +27,7 @@ export function JumpNav({ items, label }: { items: { id: string; name: string }[
   return (
     <nav aria-label={label} className="sticky top-[58px] z-30 border-b border-line bg-white/85 backdrop-blur-lg">
       <div className="container-page">
-        <ul className="no-scrollbar flex gap-2 overflow-x-auto py-3">
+        <ul data-lenis-prevent-horizontal className="no-scrollbar flex gap-2 overflow-x-auto py-3">
           {items.map((i) => (
             <li key={i.id} className="shrink-0">
               <a

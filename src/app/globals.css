@@ -19,16 +19,22 @@
     scroll-behavior: smooth;
   }
 
-  /* Lenis smooth-scroll owns scrolling; disable native smooth to avoid conflict. */
+  /* Lenis smooth-scroll owns scrolling; disable native smooth to avoid conflict.
+     Scoped to all of .lenis, not just .lenis-smooth (only set mid-glide) —
+     otherwise route changes animate the new page sliding up to the top. */
   html.lenis,
   html.lenis body {
     height: auto;
   }
-  .lenis.lenis-smooth {
+  html.lenis {
     scroll-behavior: auto !important;
   }
-  .lenis.lenis-smooth [data-lenis-prevent] {
+  .lenis [data-lenis-prevent] {
     overscroll-behavior: contain;
+  }
+  /* Embeds would swallow wheel events mid-glide and stall the scroll. */
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
 
   body {
