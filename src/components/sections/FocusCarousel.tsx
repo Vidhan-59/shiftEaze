@@ -197,7 +197,7 @@ export function FocusCarousel({
               aria-label={`Show ${c.title}`}
               aria-current={i === active}
               onClick={() => select(i)}
-              className={`h-2.5 rounded-full transition-all duration-500 ${i === active ? "w-8 bg-[#302e86]" : "w-2.5 bg-[#302e86]/25 hover:bg-[#302e86]/50"}`}
+              className={`relative h-2.5 rounded-full transition-all duration-500 after:absolute after:-inset-x-1 after:-inset-y-4 ${i === active ? "w-8 bg-[#302e86]" : "w-2.5 bg-[#302e86]/25 hover:bg-[#302e86]/50"}`}
             />
           ))}
         </div>

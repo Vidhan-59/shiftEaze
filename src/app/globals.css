@@ -46,6 +46,35 @@
     overflow-x: hidden;
   }
 
+  /* Touch: swap the grey tap flash for a light press state, and drop the
+     double-tap-zoom wait on controls so taps register immediately. */
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  label,
+  summary {
+    touch-action: manipulation;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    a:active,
+    button:active,
+    [role="button"]:active {
+      opacity: 0.78;
+    }
+    /* iOS Safari zooms the whole page into any field under 16px on focus. */
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
   ::selection {
     background: rgba(48, 46, 134, 0.16);
     color: #14163a;

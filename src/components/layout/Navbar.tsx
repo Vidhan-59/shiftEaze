@@ -44,6 +44,10 @@ export function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState<Record<string, boolean>>({});
   const anchor = useRef(0);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Touch has no hover, so on tablets the first tap on a parent link opens its
+  // submenu and only a second tap navigates. Records whether that submenu was
+  // already open when a touch/pen press began (null for mouse presses).
+  const touchWasOpen = useRef<boolean | null>(null);
 
   const closeAll = () => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
@@ -78,23 +82,25 @@ export function Navbar() {
         closeAll();
       }
     };
-    const onDocClick = (e: MouseEvent) => {
+    // pointerdown, not click: iOS Safari doesn't fire click on plain page
+    // content, so a tap outside would otherwise never close the dropdown.
+    const onDocPointerDown = (e: PointerEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target?.closest("header")) {
         setOpenDropdown(null);
       }
     };
     const onResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1280) {
         setOpen(false);
       }
     };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("click", onDocClick);
+    document.addEventListener("pointerdown", onDocPointerDown);
     window.addEventListener("resize", onResize);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("pointerdown", onDocPointerDown);
       window.removeEventListener("resize", onResize);
     };
   }, []);
@@ -142,7 +148,7 @@ export function Navbar() {
       className="fixed inset-x-0 top-0 z-50 isolate border-b border-line bg-white shadow-[0_6px_24px_-16px_rgba(20,24,70,0.35)] transition-colors duration-300"
     >
       <nav
-        className="mx-auto flex h-[72px] w-[94%] max-w-[1560px] items-center justify-between lg:w-[92%] xl:w-[88%] min-[1500px]:w-[80%]"
+        className="mx-auto flex h-[72px] w-[94%] max-w-[1560px] items-center justify-between lg:w-[92%] min-[1500px]:w-[80%]"
         aria-label="Primary"
       >
         <Link
@@ -154,13 +160,13 @@ export function Navbar() {
           <LogoFull className="h-9 lg:h-10 xl:h-12" />
         </Link>
 
-        <ul className="hidden items-center gap-0 md:flex xl:gap-1">
+        <ul className="hidden items-center gap-0.5 xl:flex min-[1400px]:gap-1">
           {nav.map((item) => {
             const rows = dropdownItems(item);
             const hasDropdown = rows.length > 0;
             const isOpen = openDropdown === item.label;
             const linkClass =
-              "relative flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-[13.5px] text-fg-muted transition-colors lg:px-2.5 lg:text-[14px] xl:px-3 xl:text-[15px] after:absolute after:bottom-0.5 after:left-2 after:right-2 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100";
+              "relative flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-[13.5px] text-fg-muted transition-colors xl:px-2.5 xl:text-[15px] min-[1400px]:px-3 after:absolute after:bottom-0.5 after:left-2 after:right-2 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100";
 
             return (
               <li
@@ -175,7 +181,24 @@ export function Navbar() {
                   }
                 }}
               >
-                <Link href={item.href} className={linkClass} onClick={closeAll}>
+                <Link
+                  href={item.href}
+                  className={linkClass}
+                  aria-expanded={hasDropdown ? isOpen : undefined}
+                  onPointerDown={(e) => {
+                    touchWasOpen.current = e.pointerType === "mouse" ? null : isOpen;
+                  }}
+                  onClick={(e) => {
+                    const firstTouchTap = hasDropdown && touchWasOpen.current === false;
+                    touchWasOpen.current = null;
+                    if (firstTouchTap) {
+                      e.preventDefault();
+                      handleMouseEnter(item.label);
+                      return;
+                    }
+                    closeAll();
+                  }}
+                >
                   {item.label}
                   {hasDropdown && (
                     <ChevronDown
@@ -230,7 +253,7 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeAll}
-            className="relative hidden whitespace-nowrap px-1 text-[15px] font-medium text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 lg:block"
+            className="relative hidden whitespace-nowrap px-1 text-[15px] font-medium text-fg-muted transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-teal-400 after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 xl:block"
           >
             Log in
           </a>
@@ -244,7 +267,7 @@ export function Navbar() {
           </Button>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-lg border border-line text-fg transition-all duration-200 hover:border-teal-400/40 hover:bg-teal-500/[0.06] active:scale-95 md:hidden"
+            className="grid h-10 w-10 place-items-center rounded-lg border border-line text-fg transition-all duration-200 hover:border-teal-400/40 hover:bg-teal-500/[0.06] active:scale-95 xl:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -262,9 +285,9 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden border-t border-line bg-white/95 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-line bg-white/95 backdrop-blur-xl xl:hidden"
           >
-            <div data-lenis-prevent className="container-page max-h-[calc(100vh-72px)] overflow-y-auto py-4">
+            <div data-lenis-prevent className="container-page max-h-[calc(100dvh-72px)] overflow-y-auto py-4">
               <div className="flex flex-col gap-1">
                 {nav.map((item) => {
                   const rows = dropdownItems(item);

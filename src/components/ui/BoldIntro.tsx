@@ -16,7 +16,7 @@ export function BoldIntro({ text, className }: { text: string; className?: strin
   return (
     <div className={cn("relative isolate mx-auto max-w-4xl text-center", className)}>
       {/* texture + glow */}
-      <div aria-hidden className="pointer-events-none absolute -inset-x-6 -inset-y-8 -z-10">
+      <div aria-hidden className="pointer-events-none absolute -inset-x-5 -inset-y-8 -z-10 lg:-inset-x-6">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(48,46,134,0.16)_1.2px,transparent_1.2px)] bg-[size:20px_20px] [mask-image:radial-gradient(70%_80%_at_50%_50%,#000,transparent)]" />
         <div className="absolute left-[8%] top-0 h-40 w-40 animate-aurora rounded-full bg-[#2f6bff]/20 blur-3xl" />
         <div className="absolute bottom-0 right-[8%] h-40 w-40 animate-aurora rounded-full bg-accent-500/15 blur-3xl [animation-delay:-8s]" />

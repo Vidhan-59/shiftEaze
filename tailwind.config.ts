@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Only apply hover: styles on devices that can actually hover, so a tap on
+  // a phone doesn't leave cards lifted / buttons highlighted until the next tap.
+  future: { hoverOnlyWhenSupported: true },
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",

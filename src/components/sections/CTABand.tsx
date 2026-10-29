@@ -41,7 +41,7 @@ export function CTABand({
         <Container className="max-w-[1480px] lg:!px-6 xl:!px-10">
           <Reveal>
             <div className="flex min-h-[200px] flex-col items-center justify-center gap-6 py-6">
-              <div className="origin-center scale-[1.35] sm:scale-[1.7]">
+              <div className="origin-center sm:scale-[1.35] md:scale-[1.7]">
                 <FillButton href={href} tone="brand" className="shadow-[0_18px_44px_-14px_rgba(48,46,134,0.9)] ring-4 ring-[#302e86]/20">
                   {label}
                 </FillButton>

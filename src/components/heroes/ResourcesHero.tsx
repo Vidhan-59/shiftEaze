@@ -292,7 +292,7 @@ export function ResourcesHero({ tag, heading, topics }: { tag: string; heading: 
                       setActive(i);
                     }}
                     aria-label={`Show ${t.name}`}
-                    className={cn("h-1.5 rounded-full transition-all duration-500", i === active ? "w-7 bg-white" : "w-1.5 bg-white/35 hover:bg-white/60")}
+                    className={cn("relative h-1.5 rounded-full transition-all duration-500 after:absolute after:-inset-x-1 after:-inset-y-4", i === active ? "w-7 bg-white" : "w-1.5 bg-white/35 hover:bg-white/60")}
                   />
                 ))}
               </div>
