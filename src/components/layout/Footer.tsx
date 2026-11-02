@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { footerNav, site } from "@/content/site";
 
 const RIBBON = [
-  "AI Rostering",
+  "Smart Rostering",
   "Absence Prediction",
   "Geofenced Attendance",
   "Leave Management",

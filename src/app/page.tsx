@@ -6,7 +6,6 @@ import { IndustriesTeaser } from "@/components/sections/IndustriesTeaser";
 import { HowItWorksStrip } from "@/components/sections/HowItWorksStrip";
 import { ImpactSection } from "@/components/sections/ImpactSection";
 import { ResourcesTeaser } from "@/components/sections/ResourcesTeaser";
-import { SecurityTeaser } from "@/components/sections/SecurityTeaser";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { metaHome } from "@/content/home";
 import { pageMetadata } from "@/lib/pageMetadata";
@@ -19,7 +18,7 @@ export const metadata = pageMetadata({
 
 // Section order per brief §8 Home: Hero, Problem, Platform/Solutions/
 // Industries/Case-study teasers, How It Works, Impact, Resources teaser,
-// Security teaser, Final CTA (Home only).
+// Final CTA (Home only). Security has its own footer-only page.
 export default function HomePage() {
   return (
     <>
@@ -31,7 +30,6 @@ export default function HomePage() {
       <HowItWorksStrip />
       <ImpactSection />
       <ResourcesTeaser />
-      <SecurityTeaser />
       <FinalCTA />
     </>
   );

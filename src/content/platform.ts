@@ -17,7 +17,7 @@ export const rostering = {
     { lead: "Configurable Shift Master:", text: "shift types such as D, GEN, N, Standard 40 hrs/week and WO each carry their own colour and legend, so new shift types slot in without disruption." },
     { lead: "Shift Extender:", text: "extend a shift with precise OT timing on a dual-handle slider, with a safeguard against duplicate extensions." },
   ],
-  closing: "This is AI Rostering that removes date-by-date entry and keeps cycles consistent across every site.",
+  closing: "This removes date-by-date entry and keeps cycles consistent across every site.",
 };
 
 export const absence = {
@@ -83,22 +83,6 @@ export const leave = {
     { lead: "One-tap approvals:", text: "planners approve or reject from the same queue they manage shifts from." },
     { lead: "Automatic rejection follow-up:", text: "did the operator come to work or go absent anyway? That outcome feeds back into the AI Roster Planner." },
     { lead: "Live breakdowns:", text: "by designation, leave type and approval rate, filterable by terminal, department, batch and date range." },
-  ],
-};
-
-/**
- * New copy (brief §8 Platform › Built to be trusted with your workforce
- * data): blue paragraph first, then the grey Word bullets.
- */
-export const security = {
-  heading: "Built to be trusted with your workforce data",
-  blueIntro:
-    "ShiftEaze is built so that what happens on the floor is recorded once, checked at the moment it happens and open to audit later. These are the controls behind that.",
-  bullets: [
-    { text: "Attendance validated against terminal geofences at the moment of every punch" },
-    { text: "Call outcomes returned through a verified, HMAC-signed webhook" },
-    { text: "A single, auditable record for attendance, leave approvals and rejection reasons" },
-    { text: "Role-based access for operators, planners, managers and admins" },
   ],
 };
 

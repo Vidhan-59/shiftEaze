@@ -22,7 +22,7 @@ export function PlatformTeaser() {
   const platform = page("platform");
   const cards = platformTeaser.cards.map((id) => {
     const s = section("platform", id);
-    return { label: s.name, href: `${platform.href}#${s.id}` };
+    return { label: s.label ?? s.name, href: `${platform.href}#${s.id}` };
   });
 
   const sectionRef = useRef<HTMLElement>(null);

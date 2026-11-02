@@ -53,7 +53,16 @@ function ChatAnswer({ question, answer }: { question: string; answer: string }) 
   );
 }
 
-export function FAQ() {
+type Faq = { q: string; a: string };
+
+/** Pricing's FAQ by default; another page passes its own questions and lead. */
+export function FAQ({
+  faqs = pricingFaqs,
+  lead = "Everything ops and procurement usually ask before a pilot. Still unsure? Book a demo and we'll walk your terminals through it.",
+}: {
+  faqs?: readonly Faq[];
+  lead?: string;
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -72,7 +81,7 @@ export function FAQ() {
   }, []);
 
   const needle = q.trim().toLowerCase();
-  const items = pricingFaqs
+  const items = faqs
     .map((f, i) => ({ ...f, i }))
     .filter((f) => !needle || f.q.toLowerCase().includes(needle) || f.a.toLowerCase().includes(needle));
 
@@ -99,7 +108,7 @@ export function FAQ() {
               </span>
               <SectionTitle
                 title="Questions, answered."
-                lead="Everything ops and procurement usually ask before a pilot. Still unsure? Book a demo and we'll walk your terminals through it."
+                lead={lead}
                 align="left"
                 className="relative mt-3 max-w-none"
               />
@@ -134,7 +143,7 @@ export function FAQ() {
               <div className="relative mt-5">
                 <div className="flex items-center justify-between font-mono text-[11px] font-semibold uppercase tracking-wider text-fg-faint">
                   <span>
-                    <span className="text-[#2f6bff]">{items.length}</span> of {pricingFaqs.length} questions
+                    <span className="text-[#2f6bff]">{items.length}</span> of {faqs.length} questions
                   </span>
                   <span className="flex gap-3">
                     <button onClick={() => setOpenIndex(items[0]?.i ?? null)} className="text-[#2f6bff] hover:text-teal-400">
@@ -146,7 +155,7 @@ export function FAQ() {
                   </span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {pricingFaqs.map((_, i) => {
+                  {faqs.map((_, i) => {
                     const shown = items.some((it) => it.i === i);
                     const on = openIndex === i;
                     return (

@@ -18,6 +18,7 @@ export function PageHeroBand({
   h1,
   subline,
   showLogo,
+  children,
 }: {
   pageKey: string;
   tag: string;
@@ -25,6 +26,8 @@ export function PageHeroBand({
   subline?: string;
   /** Brand lockup + animated gradient headline (used on the Platform page). */
   showLogo?: boolean;
+  /** Optional buttons under the sub-line. */
+  children?: React.ReactNode;
 }) {
   const words = h1.split(" ");
   const last = words.pop();
@@ -102,7 +105,7 @@ export function PageHeroBand({
                   className="mt-6 flex max-w-[21rem] animate-fade-up flex-wrap gap-2.5 xl:max-w-lg"
                   style={{ animationDelay: "0.35s" }}
                 >
-                  {["AI Rostering", "Absence Prediction", "Geofenced Attendance", "Live Dashboards"].map(
+                  {["Smart Rostering", "Absence Prediction", "Geofenced Attendance", "Live Dashboards"].map(
                     (c) => (
                       <li
                         key={c}
@@ -120,11 +123,19 @@ export function PageHeroBand({
               )}
               {subline && (
                 <p
-                  className="mt-5 max-w-xl animate-fade-up text-[17px] leading-relaxed text-teal-100"
+                  className="mt-5 max-w-xl animate-fade-up text-[17px] leading-relaxed text-teal-100 lg:max-w-md"
                   style={{ animationDelay: "0.3s" }}
                 >
                   {subline}
                 </p>
+              )}
+              {children && (
+                <div
+                  className="mt-8 flex animate-fade-up flex-wrap gap-3"
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  {children}
+                </div>
               )}
             </div>
             <HeroScene3D className="hidden lg:block xl:my-10 xl:scale-[1.2]" />

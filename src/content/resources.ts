@@ -10,7 +10,7 @@ export const topics = [
     description: "Fundamentals for running shift-based operations without spreadsheets.",
     articles: [
       "Workforce management for frontline teams: where to start",
-      "Manpower Shift Management for contractors and agencies",
+      "Running a contract workforce: a guide for agencies",
       "Manual vs digital rostering: what it really costs",
     ],
   },
@@ -19,9 +19,9 @@ export const topics = [
     description: "Cycle design, shift patterns and overtime planning.",
     articles: [
       "DDNNOO rosters explained: building a rotation once and reusing it",
+      "Habits of shift planners who never scramble",
+      "Planning plant-floor shifts: what to look for in a roster tool",
       "Employee Shift Management: from roster to payroll",
-      "Effective Shift Management: habits of planners who never scramble",
-      "Rostering Software for Manufacturing Industries: what to look for",
     ],
   },
   {
@@ -55,7 +55,7 @@ export const topics = [
     name: "Port Workforce Management",
     description: "Terminal operations, moves and productivity.",
     articles: [
-      "Rostering Software for Ports: what terminals actually need",
+      "What container terminals actually need from a roster",
       "Crane moves, moves-per-hour and GCR explained",
       "Managing contractors across multiple terminals",
     ],

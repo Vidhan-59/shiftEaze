@@ -114,14 +114,6 @@ export default function PlatformPage() {
           url: "app.shifteaze.com/leave",
         }}
       />
-      {/* Security: blue paragraph first, grey bullets after (brief §8, order reversed). */}
-      <FeatureSplit
-        id={sections[8].id}
-        heading={platform.security.heading}
-        paragraphs={[platform.security.blueIntro]}
-        bullets={platform.security.bullets}
-        visual={{ kind: "photo", name: "control-room-night", alt: "Night-shift control room monitoring a port terminal" }}
-      />
 
       <EndOfPageCTA
         label="Request a Demo"

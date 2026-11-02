@@ -6,7 +6,12 @@ import { MANAGED_ROSTERING_PUBLISHED } from "./config";
  * file"). The header dropdowns, the footer, the breadcrumbs and
  * sitemap.xml all read from this file.
  */
-export type Section = { id: string; name: string };
+export type Section = {
+  id: string;
+  name: string;
+  /** Header dropdown / home teaser label, when `name` holds an SEO keyword that must appear on its page only. */
+  label?: string;
+};
 
 export type SitePage = {
   key: string;
@@ -25,14 +30,24 @@ export type SitePage = {
 
 const platformSections: Section[] = [
   { id: "ai-workforce-operations-platform", name: "AI Workforce Operations Platform" },
-  { id: "ai-rostering-shift-scheduling-software", name: "AI Rostering & Shift Scheduling Software" },
+  { id: "ai-rostering-shift-scheduling-software", name: "AI Rostering & Shift Scheduling Software", label: "Rostering & Shift Scheduling Software" },
   { id: "ai-absence-prediction-overtime-backfill", name: "AI Absence Prediction & Overtime Backfill" },
   { id: "geofenced-employee-attendance-software", name: "Geofenced Employee Attendance Software" },
   { id: "workforce-analytics-real-time-dashboards", name: "Workforce Analytics & Real-Time Dashboards" },
   { id: "ai-voice-calling-workforce-management", name: "AI Voice Calling for Workforce Management" },
   { id: "workforce-performance-worker-passbook", name: "Workforce Performance & Worker Passbook" },
   { id: "employee-leave-management-software", name: "Employee Leave Management Software" },
-  { id: "security", name: "Security" },
+];
+
+// Security is reached from the footer only: no header item, no teasers.
+const securitySections: Section[] = [
+  { id: "role-based-access", name: "Role-based access" },
+  { id: "data-protection-privacy", name: "Data protection and privacy" },
+  { id: "secure-integrations", name: "Secure integrations" },
+  { id: "audit-trail-approvals", name: "Audit trail and approvals" },
+  { id: "responsible-ai", name: "Responsible AI" },
+  { id: "round-the-clock-operations", name: "Built for round-the-clock operations" },
+  { id: "security-documentation", name: "Security documentation" },
 ];
 
 // The 5 fixed Solutions sections — also the full header dropdown list
@@ -105,6 +120,7 @@ export const siteMap: SitePage[] = [
     ],
   },
   { key: "request-demo", name: "Request a Demo", href: "/request-demo" },
+  { key: "security", name: "Security", href: "/security", sections: securitySections },
 ];
 
 export function page(key: string): SitePage {

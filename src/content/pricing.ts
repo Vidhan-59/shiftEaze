@@ -91,7 +91,7 @@ export const pricingTiers: PricingTier[] = [
       { label: "Three-layer RBAC: level, designation, override" },
       { label: "Payroll export and webhooks" },
       { label: "Operator mobile app: English + Hindi" },
-      { label: "AI Rostering Prediction Engine", addon: true },
+      { label: "AI Roster Prediction Engine", addon: true },
       { label: "ShiftEaze Voice: punch reminders", addon: true },
       { label: "RGID Worker Passbook: basic", addon: true },
       { label: "GCR & Equipment Analytics", addon: true },
@@ -114,7 +114,7 @@ export const pricingTiers: PricingTier[] = [
     ],
     featuresIntro: "Everything in Professional, plus all four AI modules",
     features: [
-      { label: "AI Rostering Prediction Engine", badge: "~0.87 AUC" },
+      { label: "AI Roster Prediction Engine", badge: "~0.87 AUC" },
       { label: "ShiftEaze Voice: all five scenarios, EN / HI / GU" },
       { label: "RGID — full portable identity, cross-employer history" },
       { label: "Gross Crane Rate, MOVES and operator scorecards" },
@@ -228,7 +228,7 @@ export const pricingComparison: CompareGroup[] = [
     group: "AI & advanced",
     rows: [
       {
-        feature: "AI Rostering Prediction Engine",
+        feature: "AI Roster Prediction Engine",
         values: [none(), addon("₹59/op/mo"), full("~0.87 AUC, OT backfill planning")],
       },
       {
@@ -295,7 +295,7 @@ export const aiBundle = {
   body: "Add every AI module to Professional and you reach ₹381 per operator per month — 34% more than Enterprise at ₹250. If you need the AI, Enterprise is the cheaper way to buy it.",
   lines: [
     { label: "Professional base", value: "₹199" },
-    { label: "AI Rostering Prediction Engine", value: "₹59" },
+    { label: "AI Roster Prediction Engine", value: "₹59" },
     { label: "ShiftEaze Voice — AI calling", value: "₹51" },
     { label: "RGID Worker Passbook", value: "₹32" },
     { label: "GCR & Equipment Analytics", value: "₹40" },

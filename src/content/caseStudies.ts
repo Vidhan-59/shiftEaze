@@ -5,7 +5,7 @@ export const customerStoriesIntro =
 
 export const mundra = {
   summary:
-    "Mundra shows what Rostering Software for Ports looks like at scale. ShiftEaze supports 6000+ operators across 12+ terminals and divisions, with six terminals rostered live. Planners work in three languages, and AI voice calling runs five scenarios in production.",
+    "Mundra shows what ShiftEaze looks like at scale on a working port. ShiftEaze supports 6000+ operators across 12+ terminals and divisions, with six terminals rostered live. Planners work in three languages, and AI voice calling runs five scenarios in production.",
   before:
     "manual spreadsheet rosters, informal leave on calls and paper, no live view of attendance, and absences discovered only at shift start.",
   after: [

@@ -4,7 +4,7 @@
  */
 
 export const hero = {
-  h1: "AI based Shift Management Software Built for Large Frontline Teams",
+  h1: "AI Shift Planning Built for Large Frontline Teams",
   headline: "Know who will show up, before the shift starts.",
   text: "ShiftEaze is an AI workforce operations platform that connects the field to the back office. Rostering, attendance, leave and performance run on one platform, with one app for operators and one portal for managers.",
   trustStrip: [
@@ -14,19 +14,19 @@ export const hero = {
     "Powering workforce operations at Mundra Port",
   ],
   intro:
-    "Large shift-based teams still run on spreadsheets, phone calls and paper leave registers. ShiftEaze replaces that with AI based Employee Scheduling Software that predicts absences, suggests backfills and records every punch where it happens. Planners get a calmer shift start, and workers get a record that belongs to them.",
+    "Large shift-based teams still run on spreadsheets, phone calls and paper leave registers. ShiftEaze replaces that with AI scheduling that predicts absences, suggests backfills and records every punch where it happens. Planners get a calmer shift start, and workers get a record that belongs to them.",
 };
 
 export const metaHome = {
-  title: "ShiftEaze | AI based Shift Management Software & AI Rostering for Frontline Teams",
+  title: "ShiftEaze | AI Shift Planning & Attendance for Frontline Teams",
   description:
-    "ShiftEaze is AI based Employee Scheduling Software for shift teams. Predict absences, automate rosters, track geofenced attendance and see every site live.",
+    "ShiftEaze is the AI workforce platform for shift teams. Predict absences, automate rosters, track geofenced attendance and see every site live.",
 };
 
 export const problem = {
   heading: "Two sides of the same broken process",
   intro:
-    "Employee shift management in large frontline operations still depends on spreadsheets, calls and paper. The cost lands on both the operations team and the worker.",
+    "Shift planning in large frontline operations still depends on spreadsheets, calls and paper. The cost lands on both the operations team and the worker.",
   forOperations: [
     { lead: "Manual rostering:", text: "spreadsheets every cycle, at every terminal." },
     { lead: "No live attendance:", text: "no view of who is actually on site." },
@@ -81,7 +81,7 @@ export const industriesTeaser = {
 export const caseStudyTeaser = {
   heading: "Mundra Port Workforce Management Case Study",
   summary:
-    "Mundra shows what Rostering Software for Ports looks like at scale. ShiftEaze supports 6000+ operators across 12+ terminals and divisions, with six terminals rostered live. Planners work in three languages, and AI voice calling runs five scenarios in production.",
+    "Mundra shows what ShiftEaze looks like at scale on a working port. ShiftEaze supports 6000+ operators across 12+ terminals and divisions, with six terminals rostered live. Planners work in three languages, and AI voice calling runs five scenarios in production.",
 };
 
 export const howItWorks = {
@@ -96,7 +96,7 @@ export const impact = {
     "Fewer attendance and payroll disputes",
     "Absences handled proactively, with no shift-start panic",
     "Productivity that is visible and improvable",
-    "Employee shift management on one paperless source of truth",
+    "Rosters, attendance and leave on one paperless source of truth",
   ],
   forWorkers: [
     "A portable, verified track record",
@@ -108,10 +108,6 @@ export const impact = {
 
 export const resourcesTeaser = {
   guide: "The Shift Planner's Checklist: 10 things to fix before your next roster cycle.",
-};
-
-export const securityTeaser = {
-  heading: "Built to be trusted with your workforce data",
 };
 
 export const finalCta = {

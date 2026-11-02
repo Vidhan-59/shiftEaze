@@ -40,7 +40,7 @@ export const footerNav = [
     title: "Platform",
     links: [
       { label: "Platform", href: "/platform" },
-      { label: "Security", href: "/platform#security" },
+      { label: "Security", href: "/security" },
     ],
   },
   {

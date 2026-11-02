@@ -25,7 +25,7 @@ function dropdownItems(item: (typeof nav)[number]) {
   if (!("dropdownOf" in item) || !item.dropdownOf) return [];
   const p = page(item.dropdownOf);
   const rows = p.dropdownSections ?? p.sections ?? [];
-  return rows.map((s) => ({ label: s.name, href: `${p.href}#${s.id}` }));
+  return rows.map((s) => ({ label: s.label ?? s.name, href: `${p.href}#${s.id}` }));
 }
 
 /** Splits links into columns of at most four, balanced (8 -> 4+4, 9 -> 3+3+3, 5 -> 3+2). */
