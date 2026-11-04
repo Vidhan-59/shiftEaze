@@ -235,7 +235,7 @@ export const sections: PolicySection[] = [
       },
       {
         type: "p",
-        text: "Email [privacy@shifteaze.io](mailto:privacy@shifteaze.io). We may ask you to verify your identity. We aim to respond within 30 days. If you are not satisfied, you may complain to the Data Protection Board of India after first using our grievance process.",
+        text: "Email [team@shifteaze.io](mailto:team@shifteaze.io). We may ask you to verify your identity. We aim to respond within 30 days. If you are not satisfied, you may complain to the Data Protection Board of India after first using our grievance process.",
       },
     ],
   },
@@ -269,10 +269,10 @@ export const sections: PolicySection[] = [
       {
         type: "contact",
         rows: [
-          { label: "Email", value: "[privacy@shifteaze.io](mailto:privacy@shifteaze.io)" },
+          { label: "Email", value: "[team@shifteaze.io](mailto:team@shifteaze.io)" },
           {
             label: "Grievance Officer / Data Protection contact",
-            value: "[grievance@shifteaze.io](mailto:grievance@shifteaze.io)",
+            value: "[info@shifteaze.io](mailto:info@shifteaze.io)",
           },
         ],
       },
