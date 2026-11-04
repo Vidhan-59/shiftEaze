@@ -17,11 +17,71 @@ export const hero = {
     "Large shift-based teams still run on spreadsheets, phone calls and paper leave registers. ShiftEaze replaces that with AI scheduling that predicts absences, suggests backfills and records every punch where it happens. Planners get a calmer shift start, and workers get a record that belongs to them.",
 };
 
+/** Full positioning statement supplied by the SEO team for the home page. */
+export const positioning =
+  "ShiftEaze is an AI workforce operations platform that connects the field to the back office. It brings rostering, attendance, leave management and workforce performance together in one workforce management platform, with one app for operators and one portal for managers.";
+
 export const metaHome = {
-  title: "ShiftEaze | AI Shift Planning & Attendance for Frontline Teams",
+  title: "ShiftEaze | AI Workforce Operations Platform for Shift Teams",
+  // Shortened from `positioning` to fit Google's ~160-character snippet.
   description:
-    "ShiftEaze is the AI workforce platform for shift teams. Predict absences, automate rosters, track geofenced attendance and see every site live.",
-};
+    "ShiftEaze is an AI workforce operations platform for rostering, attendance, leave and performance, with one app for operators and one portal for managers.",
+  keywords: [
+    "ShiftEaze",
+    "AI workforce operations platform",
+    "workforce management platform",
+    "workforce management software",
+    "AI rostering software",
+    "shift rostering",
+    "attendance management software",
+    "leave management software",
+    "workforce performance management",
+    "operator app",
+    "manager portal",
+    "field to back office",
+    "shift workforce management",
+  ],
+} as const;
+
+/** Home page FAQ; also emitted as FAQPage structured data. */
+export const homeFaqs = [
+  {
+    q: "What is ShiftEaze?",
+    a: positioning,
+  },
+  {
+    q: "What is the difference between the operator app and the manager portal?",
+    a: "Operators use the app to see their roster, confirm shifts, punch in and out with a QR code, apply for leave and raise helpdesk tickets. Managers use the portal to plan rosters with AI, watch live attendance, approve leave and resolve tickets. Both work from the same data, updated in real time.",
+  },
+  {
+    q: "How does ShiftEaze use AI for rostering?",
+    a: "ShiftEaze builds rosters automatically, predicts which shifts are at risk of absences before they start, and suggests backfills in advance. ShiftEaze AI Voice Calling can then call workers to confirm shifts and fill gaps.",
+  },
+  {
+    q: "How does attendance tracking work?",
+    a: "Operators punch in and out by scanning a QR code at the site, and each punch is geofenced so it is recorded where it happens. Managers see who is actually on site, live. ShiftEaze also integrates with biometric attendance systems.",
+  },
+  {
+    q: "How is leave managed in ShiftEaze?",
+    a: "Operators apply for leave in the app and managers approve it in the portal. Every request and decision is recorded, replacing paper registers and phone calls.",
+  },
+  {
+    q: "How does ShiftEaze track workforce performance?",
+    a: "Each worker builds a verified performance record covering output, attendance and punctuality. Managers can see who is reliable, and workers get a track record that belongs to them.",
+  },
+  {
+    q: "Which industries is ShiftEaze built for?",
+    a: "Any operation that runs in shifts, including ports and terminals, manufacturing, logistics and warehousing, and staffing and manpower agencies.",
+  },
+  {
+    q: "Which languages does ShiftEaze support?",
+    a: "English, Hindi and Gujarati, so planners and operators can work in the language they are most comfortable with.",
+  },
+  {
+    q: "How do we get started?",
+    a: "Request a demo and we will walk your team through the platform. Most operations start at one site and expand site by site.",
+  },
+] as const;
 
 export const problem = {
   heading: "Two sides of the same broken process",

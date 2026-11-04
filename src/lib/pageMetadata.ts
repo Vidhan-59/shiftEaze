@@ -10,14 +10,18 @@ export function pageMetadata({
   title,
   description,
   path,
+  keywords,
 }: {
   title: string;
   description: string;
   path: string;
+  /** Overrides the root layout's site-wide keywords for this page. */
+  keywords?: readonly string[];
 }): Metadata {
   return {
     title: { absolute: title },
     description,
+    ...(keywords ? { keywords: [...keywords] } : {}),
     alternates: { canonical: path },
     openGraph: { title, description, url: path },
   };
