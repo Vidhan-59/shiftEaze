@@ -4,9 +4,9 @@ import { pageMetadata } from "@/lib/pageMetadata";
 import { lastUpdated, sections } from "@/content/privacyPolicy";
 
 export const metadata = pageMetadata({
-  title: "Privacy Policy | ShiftEaze",
+  title: "Privacy Policy | How ShiftEaze Collects and Uses Your Data",
   description:
-    "How ShiftEaze collects, uses, shares and protects personal data, and the rights you have under India's Digital Personal Data Protection Act, 2023.",
+    "Read the ShiftEaze Privacy Policy to see what personal data we collect, why we use it, how long we keep it and the choices you have over your information.",
   path: "/privacy-policy",
 });
 

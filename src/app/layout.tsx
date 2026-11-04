@@ -6,6 +6,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { site } from "@/content/site";
 
+// Render every page on the server for each request (SSR) rather than pre-building
+// it at deploy time. Set once here so all routes below inherit it. Required by
+// the SEO team: crawlers always get server-rendered HTML.
+export const dynamic = "force-dynamic";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",

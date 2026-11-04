@@ -80,7 +80,7 @@ export function IndustriesHero({
         </div>
 
         <div
-          className="mt-8 flex h-[620px] animate-fade-up flex-col gap-3 md:h-[480px] md:flex-row lg:h-[520px]"
+          className="mt-8 flex h-[680px] animate-fade-up flex-col gap-3 md:h-[480px] md:flex-row lg:h-[520px]"
           style={{ animationDelay: "0.3s" }}
           onPointerLeave={() => setHovered(false)}
         >
@@ -119,14 +119,20 @@ export function IndustriesHero({
                   )}
                 />
 
-                <span className="absolute left-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white/15 font-mono text-[13px] font-bold text-white ring-1 ring-white/30 backdrop-blur-md">
+                {/* Phones stack the panels, so a folded one is a slim strip: badge and label sit side by side, centred. */}
+                <span
+                  className={cn(
+                    "absolute grid h-10 w-10 place-items-center rounded-full bg-white/15 font-mono text-[13px] font-bold text-white ring-1 ring-white/30 backdrop-blur-md transition-all duration-500 md:left-5 md:top-5 md:translate-y-0",
+                    on ? "left-5 top-5" : "left-4 top-1/2 -translate-y-1/2",
+                  )}
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
 
                 {/* Collapsed label */}
                 <span
                   className={cn(
-                    "absolute bottom-5 left-5 right-5 font-display text-[16px] font-bold leading-tight text-white transition-opacity duration-500 md:bottom-6 md:left-1/2 md:right-auto md:-translate-x-1/2 md:text-[17px] md:[writing-mode:vertical-rl] md:rotate-180",
+                    "absolute left-[64px] right-4 top-1/2 -translate-y-1/2 font-display text-[15px] font-bold leading-tight text-white transition-opacity duration-500 md:bottom-6 md:left-1/2 md:right-auto md:top-auto md:-translate-x-1/2 md:translate-y-0 md:text-[17px] md:[writing-mode:vertical-rl] md:rotate-180",
                     on ? "pointer-events-none opacity-0" : "opacity-100",
                   )}
                 >

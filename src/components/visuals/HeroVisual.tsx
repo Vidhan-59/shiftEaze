@@ -119,15 +119,15 @@ export function HeroVisual() {
       <div className="overflow-hidden rounded-[22px] bg-white/90 text-left backdrop-blur-xl">
         {/* Title bar */}
         <div className="flex items-center gap-2 bg-gradient-to-r from-[#1f1c52] via-[#262261] to-[#302e86] px-4 py-3.5 sm:px-5">
-          <div className="flex gap-1.5" aria-hidden>
+          <div className="hidden gap-1.5 sm:flex" aria-hidden>
             <span className="h-3 w-3 rounded-full bg-white/40" />
             <span className="h-3 w-3 rounded-full bg-white/40" />
             <span className="h-3 w-3 rounded-full bg-white/40" />
           </div>
-          <span className="ml-2 font-mono text-[13px] tracking-wide text-white/90">
+          <span className="min-w-0 font-mono text-[12.5px] leading-snug tracking-wide text-white/90 sm:ml-2 sm:text-[13px]">
             Scheduler · CT2 · Jul 2026
           </span>
-          <span className="ml-auto flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-widest text-white">
+          <span className="ml-auto flex shrink-0 items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-widest text-white">
             <span className="relative flex h-2 w-2">
               {!reduced && (
                 <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-[#ff5468]" />
@@ -148,7 +148,9 @@ export function HeroVisual() {
               <Kpi label="Backfilled" value="48" tone="fill" />
             </div>
 
-            <div className="mt-5 grid grid-cols-[minmax(104px,150px)_repeat(6,minmax(0,1fr))] sm:grid-cols-[170px_repeat(6,minmax(0,1fr))] items-center gap-x-1.5 gap-y-2 sm:gap-x-2">
+            {/* Phones: six day columns can't fit legibly, so the roster scrolls sideways inside its card. */}
+            <div className="-mx-1 mt-5 overflow-x-auto px-1 pb-2 sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0">
+            <div className="grid min-w-[372px] grid-cols-[minmax(104px,150px)_repeat(6,minmax(0,1fr))] items-center gap-x-1.5 gap-y-2 sm:min-w-0 sm:grid-cols-[170px_repeat(6,minmax(0,1fr))] sm:gap-x-2">
               <span className="font-mono text-[11px] uppercase tracking-wider text-fg-faint">
                 Operator
               </span>
@@ -170,6 +172,7 @@ export function HeroVisual() {
                   onCycle={(ci) => cycle(ri, ci)}
                 />
               ))}
+            </div>
             </div>
           </div>
 

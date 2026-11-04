@@ -132,3 +132,32 @@ export const ChevronDown = (p: IconProps) => (
     <path d="m6 9 6 6 6-6" />
   </svg>
 );
+
+/* Brand marks for the social links: solid fills, unlike the stroked UI icons above. */
+const brand = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "currentColor" };
+
+export const Facebook = (p: IconProps) => (
+  <svg {...brand} {...p}>
+    <path d="M14 8.5V6.9c0-.8.2-1.2 1.3-1.2H17V2.2C16.7 2.1 15.7 2 14.6 2 12.2 2 10.5 3.5 10.5 6.2v2.3H8v3.5h2.5V22H14V12h2.6l.4-3.5H14Z" />
+  </svg>
+);
+
+export const Instagram = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const XSocial = (p: IconProps) => (
+  <svg {...brand} {...p}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
+export const LinkedIn = (p: IconProps) => (
+  <svg {...brand} {...p}>
+    <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11.5H3V9.75Zm6.5 0h3.8v1.6h.06c.53-1 1.82-2 3.74-2 4 0 4.75 2.6 4.75 6v5.9h-4v-5.2c0-1.25-.02-2.85-1.75-2.85-1.75 0-2.02 1.35-2.02 2.75v5.3h-4V9.75Z" />
+  </svg>
+);

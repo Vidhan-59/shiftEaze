@@ -16,14 +16,16 @@ const ICONS = [Target, Shield, Layers, Bolt];
 const TONES = ["#2f6bff", "#ff5468", "#4db8ff", "#34d399"];
 /** Resting angle of each belief in degrees: North, East, South, West. */
 const BASE = [-90, 0, 90, 180];
-const R = 25; // distance from the logo centre to each pill’s inner edge, in % of the stage
+/** Distance from the logo centre to each pill’s inner edge, in % of the stage. Phones use a tighter orbit so the side pills stay on screen. */
+const R_WIDE = 25;
+const R_COMPACT = 19;
 
 type Belief = { lead: string; text: string };
 
 /** The point a belief sits at for a given rotation, in % of the stage. */
-function useSpot(rot: MotionValue<number>, base: number) {
-  const x = useTransform(rot, (r) => 50 + R * Math.cos(((base + r) * Math.PI) / 180));
-  const y = useTransform(rot, (r) => 50 + R * Math.sin(((base + r) * Math.PI) / 180));
+function useSpot(rot: MotionValue<number>, radius: MotionValue<number>, base: number) {
+  const x = useTransform([rot, radius], ([r, R]: number[]) => 50 + R * Math.cos(((base + r) * Math.PI) / 180));
+  const y = useTransform([rot, radius], ([r, R]: number[]) => 50 + R * Math.sin(((base + r) * Math.PI) / 180));
   return { x, y };
 }
 
@@ -32,16 +34,18 @@ function BeliefNode({
   belief,
   index,
   rot,
+  radius,
   active,
   onActivate,
 }: {
   belief: Belief;
   index: number;
   rot: MotionValue<number>;
+  radius: MotionValue<number>;
   active: boolean;
   onActivate: () => void;
 }) {
-  const { x, y } = useSpot(rot, BASE[index]);
+  const { x, y } = useSpot(rot, radius, BASE[index]);
   const left = useTransform(x, (v) => `${v}%`);
   const top = useTransform(y, (v) => `${v}%`);
   const tx = useTransform(rot, (r) => `${-50 + 50 * Math.cos(((BASE[index] + r) * Math.PI) / 180)}%`);
@@ -59,12 +63,12 @@ function BeliefNode({
     >
       <span
         className={cn(
-          "flex items-center gap-2 whitespace-nowrap rounded-full border px-3 py-2 text-[12.5px] font-bold backdrop-blur-md transition-all duration-500",
+          "flex items-center gap-2 whitespace-nowrap rounded-full border px-3 py-2 text-[12.5px] font-bold backdrop-blur-md transition-all duration-500 max-[599px]:max-w-[100px] max-[599px]:whitespace-normal max-[599px]:px-2.5 max-[599px]:py-1.5 max-[599px]:text-center max-[599px]:text-[11.5px] max-[599px]:leading-[1.15]",
           active ? "scale-110 border-transparent text-[#0d0c2b]" : "border-white bg-white text-[#12153d] shadow-[0_10px_26px_-10px_rgba(0,0,0,0.7),0_0_0_3px_rgba(77,184,255,0.25)] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.8),0_0_0_4px_rgba(77,184,255,0.45)]",
         )}
         style={active ? { background: TONES[index], boxShadow: `0 0 0 6px ${TONES[index]}33, 0 0 38px 6px ${TONES[index]}88, 0 18px 36px -12px ${TONES[index]}` } : undefined}
       >
-        <Icon width={14} height={14} className={active ? undefined : "text-[#2f6bff]"} />
+        <Icon width={14} height={14} className={cn("shrink-0 max-[599px]:hidden", !active && "text-[#2f6bff]")} />
         {belief.lead}
       </span>
     </motion.button>
@@ -72,8 +76,8 @@ function BeliefNode({
 }
 
 /** The line from the logo to a belief; the lit one glows and carries a travelling pulse. */
-function Spoke({ index, rot, active }: { index: number; rot: MotionValue<number>; active: boolean }) {
-  const { x, y } = useSpot(rot, BASE[index]);
+function Spoke({ index, rot, radius, active }: { index: number; rot: MotionValue<number>; radius: MotionValue<number>; active: boolean }) {
+  const { x, y } = useSpot(rot, radius, BASE[index]);
   const t = useMotionValue(0);
   const px = useTransform([t, x], ([tt, xx]: number[]) => 50 + (xx - 50) * tt);
   const py = useTransform([t, y], ([tt, yy]: number[]) => 50 + (yy - 50) * tt);
@@ -127,7 +131,17 @@ export function CompanyHero({
   const [active, setActive] = useLoopStep(beliefs.length, 3800, inView && !hovered);
   const [pulse, setPulse] = useState(0);
   const rot = useMotionValue(0);
+  const radius = useMotionValue(R_WIDE);
   const turns = useRef(0);
+
+  // Tighter orbit on phones, matching the max-[599px] classes below.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 599px)");
+    const sync = () => radius.set(mq.matches ? R_COMPACT : R_WIDE);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, [radius]);
 
   const rotate = () => {
     turns.current += 1;
@@ -191,13 +205,13 @@ export function CompanyHero({
               <span className="absolute inset-[6%] animate-pulse rounded-full bg-[#2f6bff]/25 blur-3xl" aria-hidden />
               <span className="absolute inset-[22%] rounded-full blur-2xl transition-colors duration-700" style={{ background: `${TONES[active]}40` }} aria-hidden />
               <span className="absolute inset-[8%] rounded-full border border-dashed border-[#7cc4ff]/45 shadow-[0_0_40px_rgba(77,184,255,0.3)]" style={{ animation: "orbit-spin 60s linear infinite" }} aria-hidden />
-              <span className="absolute inset-[25%] rounded-full border border-[#7cc4ff]/50 shadow-[0_0_30px_rgba(47,107,255,0.35)]" aria-hidden />
+              <span className="absolute inset-[31%] rounded-full border border-[#7cc4ff]/50 min-[600px]:inset-[25%] shadow-[0_0_30px_rgba(47,107,255,0.35)]" aria-hidden />
               {/* N / E / S / W tick marks */}
               {[
-                "left-1/2 top-[25%] -translate-x-1/2 -translate-y-1/2",
-                "right-[25%] top-1/2 translate-x-1/2 -translate-y-1/2",
-                "bottom-[25%] left-1/2 -translate-x-1/2 translate-y-1/2",
-                "left-[25%] top-1/2 -translate-x-1/2 -translate-y-1/2",
+                "left-1/2 top-[31%] -translate-x-1/2 -translate-y-1/2 min-[600px]:top-[25%]",
+                "right-[31%] top-1/2 translate-x-1/2 -translate-y-1/2 min-[600px]:right-[25%]",
+                "bottom-[31%] left-1/2 -translate-x-1/2 translate-y-1/2 min-[600px]:bottom-[25%]",
+                "left-[31%] top-1/2 -translate-x-1/2 -translate-y-1/2 min-[600px]:left-[25%]",
               ].map((c, i) => (
                 <span key={i} className={cn("absolute h-2 w-2 rounded-full bg-[#7cc4ff] shadow-[0_0_10px_2px_rgba(124,196,255,0.8)]", c)} aria-hidden />
               ))}
@@ -214,7 +228,7 @@ export function CompanyHero({
                   </filter>
                 </defs>
                 {beliefs.map((b, i) => (
-                  <Spoke key={b.lead} index={i} rot={rot} active={i === active} />
+                  <Spoke key={b.lead} index={i} rot={rot} radius={radius} active={i === active} />
                 ))}
               </svg>
 
@@ -223,19 +237,19 @@ export function CompanyHero({
                 type="button"
                 onClick={rotate}
                 aria-label="Turn the beliefs a quarter-turn"
-                className="group absolute left-1/2 top-1/2 z-10 grid h-[112px] w-[112px] -translate-x-1/2 -translate-y-1/2 place-items-center"
+                className="group absolute left-1/2 top-1/2 z-10 grid h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 place-items-center min-[600px]:h-[112px] min-[600px]:w-[112px]"
               >
                 <span className="absolute inset-[-10px] animate-spin rounded-full opacity-80 [animation-duration:8s]" style={{ background: `conic-gradient(from 0deg, transparent 0 55%, ${TONES[active]} 85%, transparent)`, WebkitMask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))", mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px))" }} />
                 <span className="absolute inset-0 animate-pulse-ring rounded-full" style={{ background: `${TONES[active]}55` }} />
                 <span className="absolute inset-0 animate-pulse-ring rounded-full bg-white/30 [animation-delay:1.1s]" />
                 <span key={pulse} className="absolute inset-0 rounded-full border-2" style={{ borderColor: TONES[active], animation: pulse ? "ripple-out 0.8s ease-out both" : undefined }} />
-                <span className="relative grid h-[104px] w-[104px] place-items-center rounded-full bg-white shadow-[0_0_50px_10px_rgba(77,184,255,0.45)] ring-4 ring-white/40 transition-transform duration-300 group-hover:scale-105 group-active:scale-95">
-                  <LogoIcon className="h-[48px]" />
+                <span className="relative grid h-[80px] w-[80px] place-items-center rounded-full bg-white min-[600px]:h-[104px] min-[600px]:w-[104px] shadow-[0_0_50px_10px_rgba(77,184,255,0.45)] ring-4 ring-white/40 transition-transform duration-300 group-hover:scale-105 group-active:scale-95">
+                  <LogoIcon className="h-[38px] min-[600px]:h-[48px]" />
                 </span>
               </button>
 
               {beliefs.map((b, i) => (
-                <BeliefNode key={b.lead} belief={b} index={i} rot={rot} active={i === active} onActivate={() => setActive(i)} />
+                <BeliefNode key={b.lead} belief={b} index={i} rot={rot} radius={radius} active={i === active} onActivate={() => setActive(i)} />
               ))}
             </div>
             <p className="mt-3 text-center font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55">Tap the logo to turn</p>

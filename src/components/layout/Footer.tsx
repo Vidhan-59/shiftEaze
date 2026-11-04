@@ -2,7 +2,10 @@ import Link from "next/link";
 import { BackToTop } from "./BackToTop";
 import { LogoFull } from "./Logo";
 import { Container } from "@/components/ui/Container";
-import { footerNav, site } from "@/content/site";
+import { Facebook, Instagram, LinkedIn, XSocial } from "@/components/ui/icons";
+import { footerNav, site, social } from "@/content/site";
+
+const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, x: XSocial, linkedin: LinkedIn } as const;
 
 const RIBBON = [
   "Smart Rostering",
@@ -67,6 +70,25 @@ export function Footer() {
                 </span>
               ))}
             </div>
+            <ul className="mt-5 flex flex-wrap gap-2.5" aria-label="ShiftEaze on social media">
+              {social.map((s) => {
+                const Icon = SOCIAL_ICONS[s.id];
+                return (
+                  <li key={s.id}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`ShiftEaze on ${s.label}`}
+                      title={s.label}
+                      className="grid h-11 w-11 place-items-center rounded-xl border border-white/30 bg-white/15 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#ff5468] hover:bg-[#ff5468]/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    >
+                      <Icon width={20} height={20} aria-hidden />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
           {footerNav.map((col) => (

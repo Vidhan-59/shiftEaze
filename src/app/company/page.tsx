@@ -10,9 +10,9 @@ const companyPage = page("company");
 const sections = companyPage.sections!;
 
 export const metadata = pageMetadata({
-  title: "About & Contact | ShiftEaze",
+  title: "About ShiftEaze | AI Scheduling Software for Shift Teams",
   description:
-    "ShiftEaze is a workforce operations platform built for large, shift-based frontline teams. Talk to us about rollout, integrations, pricing or support.",
+    "Meet the team behind ShiftEaze. We build AI rostering and shift management tools that help ports, factories and multi-site businesses run schedules smoothly.",
   path: "/company",
 });
 

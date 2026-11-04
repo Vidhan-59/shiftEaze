@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 /**
  * Builds a page's title/description/canonical/Open Graph from the same
  * values (restructure brief §5.2) — avoids four near-duplicate fields per
- * page.tsx. Not used by /pricing, whose existing metadata is left alone.
+ * page.tsx. The title is used exactly as given (`absolute`) so the root
+ * layout's " · ShiftEaze" template is not appended a second time.
  */
 export function pageMetadata({
   title,
@@ -15,7 +16,7 @@ export function pageMetadata({
   path: string;
 }): Metadata {
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: path },
     openGraph: { title, description, url: path },

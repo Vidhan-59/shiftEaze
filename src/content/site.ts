@@ -4,13 +4,21 @@ export const site = {
   name: "ShiftEaze",
   module: "ShiftEaze AI Voice Calling",
   tagline: "Shift-based manpower management, for any industry that runs in shifts",
-  domain: "shifteaze.com",
+  domain: "shifteaze.io",
   description:
     "ShiftEaze auto-builds rosters, predicts no-shows before they cost you a shift, and turns workforce data into decisions. Then it places the calls automatically with ShiftEaze AI Voice Calling. Built for any manpower operation that runs in shifts.",
   liveAt: "Deployed across major Indian port & terminal operations",
   /** Customer-facing app login. */
   loginUrl: "https://shifteaze.riddhicorporate.net/web/login",
 } as const;
+
+/** Social profiles shown in the footer; `id` picks the icon. */
+export const social = [
+  { id: "facebook", label: "Facebook", href: "https://www.facebook.com/ShiftEaze" },
+  { id: "instagram", label: "Instagram", href: "https://www.instagram.com/shifteaze.in" },
+  { id: "x", label: "X", href: "https://x.com/shifteazein" },
+  { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/shifteaze-in/home/" },
+] as const;
 
 /**
  * Top-level header menu (brief §4). `dropdownOf` names the siteMap page key
@@ -40,7 +48,6 @@ export const footerNav = [
     title: "Platform",
     links: [
       { label: "Platform", href: "/platform" },
-      { label: "Security", href: "/security" },
     ],
   },
   {
@@ -56,6 +63,7 @@ export const footerNav = [
     links: [
       { label: "Case Studies", href: "/case-studies" },
       { label: "Resources", href: "/resources" },
+      { label: "Security", href: "/security" },
       { label: "About ShiftEaze", href: "/company#about-shiftease" },
       { label: "Contact", href: "/company#contact" },
     ],

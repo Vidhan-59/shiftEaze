@@ -126,7 +126,7 @@ function FeatureBlock({ pillar, flip }: { pillar: Pillar; flip: boolean }) {
       {/* Visual */}
       <Reveal delay={0.1} className={cn(flip && "lg:order-1")}>
         <ParallaxVisual className="group relative transition-transform duration-500 hover:-translate-y-1">
-          <BrowserFrame url={`app.shifteaze.com/${pillar.id}`}>
+          <BrowserFrame url={`app.shifteaze.io/${pillar.id}`}>
             <SmartShot
               src={pillar.screenshot.src}
               alt={pillar.screenshot.alt}

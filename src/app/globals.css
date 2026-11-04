@@ -37,6 +37,14 @@
     pointer-events: none;
   }
 
+  /* A grid's implicit column is `auto`, whose minimum is its widest child. On a
+     phone that lets a wide mock dashboard or table stretch a "single column"
+     grid far past the viewport, clipping every sibling. Give every grid a
+     shrinkable base track; grid-cols-* utilities still win at their breakpoints. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   body {
     background-color: var(--bg);
     color: theme("colors.fg.DEFAULT");

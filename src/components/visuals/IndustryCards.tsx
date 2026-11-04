@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 function Glass({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl bg-[#14134a]/85 p-4 text-white shadow-[0_24px_60px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/25 backdrop-blur-xl sm:p-5"
+      className="relative w-full overflow-hidden rounded-2xl bg-[#14134a]/85 p-3 text-white shadow-[0_24px_60px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/25 backdrop-blur-xl min-[420px]:p-4 sm:p-5"
       aria-hidden
     >
       <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4db8ff] to-transparent" />
@@ -124,7 +124,7 @@ export function PortCard() {
         </div>
 
         <Label>Crane productivity</Label>
-        <div className="grid grid-cols-[1fr_1.1fr] gap-3">
+        <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-[1fr_1.1fr]">
           <div className="grid grid-cols-1 gap-2">
             {[
               { k: "Crane moves", v: (1240 + step * 7).toLocaleString("en-US") },
@@ -137,7 +137,7 @@ export function PortCard() {
               </div>
             ))}
           </div>
-          <div className="relative overflow-hidden rounded-lg bg-white/[0.07] p-2">
+          <div className="relative h-24 overflow-hidden rounded-lg bg-white/[0.07] p-2 min-[420px]:h-auto">
             <svg viewBox="0 0 160 70" className="h-full w-full">
               <defs>
                 <linearGradient id="port-area" x1="0" y1="0" x2="0" y2="1">
@@ -155,7 +155,7 @@ export function PortCard() {
         <Label>Recent punches</Label>
         <ul className="space-y-1.5">
           {feed.map((f) => (
-            <li key={f.t} className={cn("flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-[12px]", f.ok ? "bg-white/[0.07]" : "bg-[#ff5468]/15")} style={{ animation: "fade-up 0.5s ease both" }}>
+            <li key={f.t} className={cn("flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[12px] min-[420px]:gap-2.5 min-[420px]:px-3", f.ok ? "bg-white/[0.07]" : "bg-[#ff5468]/15")} style={{ animation: "fade-up 0.5s ease both" }}>
               <span className="font-mono text-[10.5px] font-bold text-white/50">{f.t}</span>
               <span className="flex-1 truncate font-bold">{f.n}</span>
               <span className={cn("truncate text-[11px] font-semibold", f.ok ? "text-white/55" : "text-[#ff8a98]")}>{f.m}</span>
@@ -241,14 +241,14 @@ export function ManufacturingCard() {
           })}
         </div>
 
-        <div className="mt-4 grid grid-cols-[1.1fr_1fr] gap-3">
+        <div className="mt-4 grid grid-cols-1 gap-3 min-[420px]:grid-cols-[1.1fr_1fr]">
           <div className="rounded-lg bg-white/[0.07] p-2">
             <div className="px-1 text-[10.5px] font-semibold text-white/50">Attendance trend</div>
             <svg viewBox="0 0 160 46" className="mt-1 h-10 w-full">
               <path d={spark(MFG_TREND, 160, 46)} fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
           </div>
-          <div className={cn("flex items-center gap-2 rounded-lg px-3 text-[11.5px] font-bold transition-colors duration-500", done ? "bg-[#34d399]/20 text-[#34d399]" : calling ? "bg-[#2f6bff]/30 text-white" : "bg-white/[0.07] text-white/55")}>
+          <div className={cn("flex items-center gap-2 rounded-lg px-3 py-2.5 text-[11.5px] font-bold transition-colors duration-500 min-[420px]:py-0", done ? "bg-[#34d399]/20 text-[#34d399]" : calling ? "bg-[#2f6bff]/30 text-white" : "bg-white/[0.07] text-white/55")}>
             <span className={cn("grid h-5 w-5 shrink-0 place-items-center rounded-full", done ? "bg-[#34d399] text-[#0d0c2b]" : calling ? "animate-pulse bg-[#4db8ff] text-[#0d0c2b]" : "bg-white/15")}>
               <Check width={10} height={10} />
             </span>
@@ -311,9 +311,9 @@ export function LogisticsCard() {
           {AT_RISK.map((r, i) => {
             const cleared = done && i === 0;
             return (
-              <li key={r.n} className="flex items-center gap-3 rounded-lg bg-white/[0.07] px-3 py-1.5">
+              <li key={r.n} className="flex items-center gap-2 rounded-lg bg-white/[0.07] px-3 py-1.5 min-[420px]:gap-3">
                 <span className="flex-1 truncate text-[12.5px] font-bold">{r.n}</span>
-                <span className="h-1.5 w-16 overflow-hidden rounded-full bg-white/15">
+                <span className="h-1.5 w-8 overflow-hidden min-[420px]:w-16 rounded-full bg-white/15">
                   <span className={cn("block h-full rounded-full transition-all duration-700", cleared ? "bg-[#34d399]" : r.p >= 70 ? "bg-[#ff5468]" : "bg-[#fbbf24]")} style={{ width: `${cleared ? 12 : r.p}%` }} />
                 </span>
                 <span className={cn("w-9 text-right font-mono text-[11px] font-bold tabular-nums", cleared ? "text-[#34d399]" : "text-white/70")}>{cleared ? 12 : r.p}%</span>
@@ -326,7 +326,7 @@ export function LogisticsCard() {
         <div className="grid grid-cols-3 gap-2">
           {SITES.map((s, i) => (
             <div key={s.n} className="rounded-lg bg-white/[0.07] px-2.5 py-2">
-              <div className="truncate text-[10.5px] font-semibold text-white/55">{s.n}</div>
+              <div className="text-[10.5px] font-semibold leading-tight text-white/55 min-[420px]:truncate">{s.n}</div>
               <div className="font-display text-[16px] font-extrabold tabular-nums">{Math.min(s.v, s.v - 6 + step)}%</div>
               <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/15">
                 <span className="block h-full rounded-full bg-gradient-to-r from-[#2f6bff] to-[#4db8ff] transition-all duration-700" style={{ width: `${Math.min(s.v, s.v - 6 + step)}%` }} />
@@ -413,7 +413,7 @@ export function StaffingCard() {
           {STATUSES.map((s) => (
             <div key={s.k} className="rounded-lg bg-white/[0.07] px-2.5 py-2">
               <div className={cn("font-display text-[16px] font-extrabold tabular-nums", s.c)}>{s.v.toLocaleString("en-US")}</div>
-              <div className="truncate text-[10px] font-semibold text-white/55">{s.k}</div>
+              <div className="text-[10px] font-semibold leading-tight text-white/55 min-[420px]:truncate">{s.k}</div>
             </div>
           ))}
         </div>

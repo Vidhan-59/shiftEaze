@@ -26,9 +26,9 @@ const TAGS = [
 ];
 
 export const metadata = pageMetadata({
-  title: "Rostering Software for Ports & Manufacturing | ShiftEaze",
+  title: "Rostering Software for Ports and Manufacturing | ShiftEaze",
   description:
-    "Workforce management for ports, manufacturing, logistics, warehousing and manpower agencies, built for operations that never stop.",
+    "Rostering software for manufacturing industries and ports that simplifies manpower shift management across 24/7 operations, crews and changing daily demand.",
   path: "/industries",
 });
 

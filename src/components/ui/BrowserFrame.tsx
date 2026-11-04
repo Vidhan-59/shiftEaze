@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 /** Browser-chrome mockup: traffic-light dots + a URL bar, wraps a preview. */
 export function BrowserFrame({
-  url = "shifteaze.com",
+  url = "shifteaze.io",
   live = true,
   children,
   className,

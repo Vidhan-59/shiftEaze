@@ -91,5 +91,5 @@ layout or motion code. Placeholder metrics are marked `[FILL IN]`.
 - Replace `[FILL IN]` metrics in `src/content/sections.ts` with verified figures.
 - Swap the placeholder wordmarks in `TrustBar` for real client logos.
 - Point the demo form (`CTA.tsx`) at your CRM / form endpoint.
-- Add an OG image and confirm `metadataBase` in `layout.tsx` (`shifteaze.com`).
+- Add an OG image and confirm `metadataBase` in `layout.tsx` (`shifteaze.io`).
 - Thanks

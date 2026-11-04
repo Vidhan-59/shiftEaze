@@ -69,7 +69,7 @@ export function DashboardShowcase() {
             className="pointer-events-none absolute -inset-x-10 -top-10 bottom-10 -z-10 bg-hero-glow opacity-60"
             aria-hidden
           />
-          <BrowserFrame url={`app.shifteaze.com/dashboards/${current.id}`}>
+          <BrowserFrame url={`app.shifteaze.io/dashboards/${current.id}`}>
             <Carousel
               active={active}
               onChange={setActive}

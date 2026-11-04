@@ -26,7 +26,7 @@ export function MotionShowcase() {
               className="pointer-events-none absolute -inset-x-10 -top-10 bottom-10 -z-10 bg-hero-glow opacity-60"
               aria-hidden
             />
-            <BrowserFrame url="app.shifteaze.com/tour" live={false}>
+            <BrowserFrame url="app.shifteaze.io/tour" live={false}>
               <ProductVideo fallbackKind="roster" />
             </BrowserFrame>
           </div>

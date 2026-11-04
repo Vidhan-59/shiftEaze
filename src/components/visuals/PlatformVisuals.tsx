@@ -262,7 +262,8 @@ export function RosterVisual() {
               <AnimatePresence mode="wait">
                 <motion.span
                   key={step}
-                  className="truncate"
+                  // Phones wrap the status (two lines reserved so the card doesn't jump); wider cards keep one truncated line.
+                  className="leading-snug max-[559px]:flex max-[559px]:min-h-[2.5em] max-[559px]:items-center min-[560px]:truncate"
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}

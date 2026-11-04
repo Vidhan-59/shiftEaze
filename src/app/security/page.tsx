@@ -13,9 +13,9 @@ const securityPage = page("security");
 const sections = securityPage.sections!;
 
 export const metadata = pageMetadata({
-  title: "Security | ShiftEaze",
+  title: "ShiftEaze Security: How We Keep Your Workforce Data Safe",
   description:
-    "How ShiftEaze protects workforce data: role-based access, data protection, secure integrations, audit trails and responsible AI, live at Mundra Port.",
+    "Learn how ShiftEaze protects employee schedules, time records and personal data with access controls, encryption and secure practices. Questions? Contact us.",
   path: "/security",
 });
 
@@ -75,7 +75,7 @@ export default function SecurityPage() {
           src: "/assets/reference/leave.png",
           alt: "ShiftEaze Leave Summary dashboard with recorded approval decisions",
           mock: "leave",
-          url: "app.shifteaze.com/leave",
+          url: "app.shifteaze.io/leave",
         }}
       />
       <FeatureSplit

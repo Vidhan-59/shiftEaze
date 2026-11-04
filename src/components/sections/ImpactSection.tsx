@@ -152,7 +152,7 @@ function ImpactPanel({
             >
               {dark ? <Chart width={20} height={20} /> : <Shield width={20} height={20} />}
             </span>
-            <h3 className={cn("truncate font-mono text-[13px] font-bold uppercase tracking-[0.18em]", t.label)}>{label}</h3>
+            <h3 className={cn("min-w-0 break-words font-mono text-[13px] font-bold uppercase tracking-[0.18em]", t.label)}>{label}</h3>
           </div>
 
           <div className="flex shrink-0 items-center gap-3">

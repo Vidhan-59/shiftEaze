@@ -79,7 +79,7 @@ export function Hero() {
       <Container className="relative z-10 max-w-[1600px] lg:!px-8 xl:!px-14">
         {/* First screen: copy, artwork and intro all fit one viewport */}
         <div className="flex flex-col justify-center pt-24 lg:h-[100svh] lg:min-h-[560px] lg:pb-4 lg:pt-[72px]">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1fr] xl:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-16">
           {/* Copy */}
           <div>
             <motion.h1
@@ -171,7 +171,7 @@ export function Hero() {
                     className="flex items-center gap-3.5 rounded-2xl border border-white/25 bg-black/50 px-4 py-2.5 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-md transition-colors hover:border-[#4db8ff] hover:bg-black/60"
                   >
                     {stat ? (
-                      <span className="font-display text-[30px] font-extrabold leading-none text-white">
+                      <span className="shrink-0 whitespace-nowrap font-display text-[30px] font-extrabold leading-none text-white">
                         <CountUp value={stat.num} delay={1.2 + i * 0.1} />
                         {stat.plus}
                       </span>

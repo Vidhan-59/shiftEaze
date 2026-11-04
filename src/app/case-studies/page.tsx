@@ -12,9 +12,9 @@ const sections = caseStudiesPage.sections!;
 const LINK_TEXT = "Mundra Port Workforce Management Case Study";
 
 export const metadata = pageMetadata({
-  title: "Mundra Port Workforce Management Case Study | ShiftEaze",
+  title: "ShiftEaze Case Studies: Real Results in Shift Scheduling",
   description:
-    "ShiftEaze supports 6000+ operators across 12+ terminals and divisions at Mundra Port, with six terminals rostered live and AI voice calling in production.",
+    "Read how ShiftEaze helps ports, manufacturers and multi-site teams cut overtime, reduce scheduling errors and save hours every week. Real numbers, real teams.",
   path: "/case-studies",
 });
 

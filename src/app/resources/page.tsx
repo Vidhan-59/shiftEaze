@@ -19,9 +19,9 @@ const topics = resources.topics.map((t, i) => ({
 }));
 
 export const metadata = pageMetadata({
-  title: "Workforce Management Guides & Checklists | ShiftEaze",
+  title: "Employee Shift Management Guides and Insights | ShiftEaze",
   description:
-    "Practical guides, checklists and explainers for planners, HR teams and operations heads on scheduling, attendance, AI workforce management and analytics.",
+    "Practical guides, templates and expert tips on employee shift management, rostering and workforce scheduling. Learn what actually works from the ShiftEaze team.",
   path: "/resources",
 });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -40,13 +40,26 @@ function QuoteText({ text }: { text: string }) {
 
 const STEP_MS = 4200;
 
+/** True below 560px, where the story stages switch to their stacked phone layouts. */
+function useCompactStage() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 559px)");
+    const sync = () => setCompact(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return compact;
+}
+
 function SourceCard({ title, children, rotate, delay }: { title: string; children: React.ReactNode; rotate: number; delay: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24, rotate: 0 }}
       animate={{ opacity: 1, y: 0, rotate }}
       transition={{ duration: 0.6, ease: easeExpo, delay }}
-      className="w-[128px] rounded-xl bg-white p-2.5 text-[#12153d] shadow-[0_20px_36px_-12px_rgba(0,0,0,0.65)]"
+      className="w-[104px] rounded-xl bg-white p-2.5 text-[#12153d] shadow-[0_20px_36px_-12px_rgba(0,0,0,0.65)] min-[560px]:w-[128px]"
     >
       <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay }}>
         <div className="mb-2 text-[11px] font-extrabold uppercase tracking-wide text-[#6b7392]">{title}</div>
@@ -58,7 +71,7 @@ function SourceCard({ title, children, rotate, delay }: { title: string; childre
 
 function ScatteredStage() {
   return (
-    <div className="relative flex h-full items-center justify-center gap-3">
+    <div className="relative flex h-full flex-wrap content-center items-center justify-center gap-3">
       <SourceCard title="Spreadsheets" rotate={-6} delay={0}>
         <div className="grid grid-cols-3 gap-[3px]">
           {Array.from({ length: 12 }).map((_, i) => (
@@ -103,22 +116,22 @@ const ENTRIES = ["Shift completed on time", "Safety induction passed", "Equipmen
 
 function CapturedStage() {
   return (
-    <div className="grid h-full grid-cols-[auto_1fr_auto] items-center gap-3">
-      <ul className="space-y-2">
+    <div className="grid h-full grid-cols-1 content-center gap-3 min-[560px]:grid-cols-[auto_1fr_auto] min-[560px]:items-center">
+      <ul className="flex flex-wrap gap-1.5 min-[560px]:flex-col min-[560px]:gap-2">
         {SOURCES.map((s, i) => (
-          <motion.li key={s} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1, duration: 0.5 }} className="rounded-lg border border-white/25 bg-white/15 px-3 py-2 text-[12px] font-bold text-white">
+          <motion.li key={s} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1, duration: 0.5 }} className="rounded-lg border border-white/25 bg-white/15 px-2.5 py-1.5 text-[11px] font-bold text-white min-[560px]:px-3 min-[560px]:py-2 min-[560px]:text-[12px]">
             {s}
           </motion.li>
         ))}
       </ul>
-      <div className="relative h-full min-h-[120px]" aria-hidden>
+      <div className="relative hidden h-full min-h-[120px] min-[560px]:block" aria-hidden>
         {[0, 1, 2].map((i) => (
           <span key={i} className="absolute left-0 right-0 h-px bg-gradient-to-r from-white/10 via-[#7cc4ff] to-white/10" style={{ top: `${22 + i * 28}%` }}>
             <span className="absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_4px_rgba(124,196,255,0.9)]" style={{ animation: `packet-x 1.8s linear ${i * 0.4}s infinite` }} />
           </span>
         ))}
       </div>
-      <div className="w-[170px] rounded-2xl bg-white p-3 text-[#12153d] shadow-[0_22px_46px_-16px_rgba(0,0,0,0.7)] ring-2 ring-[#7cc4ff]/70">
+      <div className="w-full rounded-2xl bg-white p-3 text-[#12153d] min-[560px]:w-[170px] shadow-[0_22px_46px_-16px_rgba(0,0,0,0.7)] ring-2 ring-[#7cc4ff]/70">
         <div className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#eaf0ff]">
             <LogoIcon className="h-4" />
@@ -144,19 +157,21 @@ function CapturedStage() {
 }
 
 function CarriedStage() {
+  const compact = useCompactStage();
+  const reach = compact ? "45%" : "90%";
   return (
     <div className="relative flex h-full items-center justify-between gap-2">
-      <div className="w-[104px] shrink-0 rounded-xl bg-white/15 p-2.5 text-center text-white/75 ring-1 ring-white/25">
+      <div className="w-[78px] shrink-0 rounded-xl bg-white/15 p-2 text-center text-white/75 ring-1 ring-white/25 min-[560px]:w-[104px] min-[560px]:p-2.5">
         <div className="text-[10px] font-bold uppercase tracking-wide">Last employer</div>
         <div className="mt-1 text-[12px] font-extrabold text-white">Site A</div>
       </div>
-      <div className="relative flex-1">
+      <div className="relative flex flex-1 items-center justify-center min-[560px]:block">
         <span className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-white/10 via-[#7cc4ff] to-white/10" aria-hidden />
         <motion.div
-          initial={{ x: "-90%" }}
-          animate={{ x: ["-90%", "90%"] }}
+          initial={{ x: `-${reach}` }}
+          animate={{ x: [`-${reach}`, reach] }}
           transition={{ duration: 2.4, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.6 }}
-          className="relative mx-auto w-[132px] rounded-xl bg-white p-2.5 text-[#12153d] shadow-[0_18px_40px_-14px_rgba(0,0,0,0.7)] ring-2 ring-[#7cc4ff]/70"
+          className="relative mx-auto w-[112px] shrink-0 rounded-xl bg-white p-2.5 text-[#12153d] min-[560px]:w-[132px] shadow-[0_18px_40px_-14px_rgba(0,0,0,0.7)] ring-2 ring-[#7cc4ff]/70"
         >
           <div className="flex items-center gap-1.5">
             <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#eaf0ff]">
@@ -179,7 +194,7 @@ function CarriedStage() {
           </div>
         </motion.div>
       </div>
-      <div className="w-[104px] shrink-0 rounded-xl bg-[#2f6bff] p-2.5 text-center ring-1 ring-white/40">
+      <div className="w-[78px] shrink-0 rounded-xl bg-[#2f6bff] p-2 text-center ring-1 ring-white/40 min-[560px]:w-[104px] min-[560px]:p-2.5">
         <div className="text-[10px] font-bold uppercase tracking-wide text-white/75">New employer</div>
         <div className="mt-1 text-[12px] font-extrabold text-white">Site B</div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 1, 0] }} transition={{ duration: 3, repeat: Infinity, times: [0.5, 0.65, 0.95, 1] }} className="mt-1 inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9.5px] font-extrabold text-[#302e86]">
@@ -261,7 +276,7 @@ function Story({ intro }: { intro: string }) {
           </div>
 
           {/* stage */}
-          <div className="relative mt-4 h-[236px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#3f3dba] via-[#302e86] to-[#1f1c52] p-3 shadow-[inset_0_0_60px_rgba(77,184,255,0.18)] ring-1 ring-[#302e86] sm:p-4">
+          <div className="relative mt-4 h-[270px] overflow-hidden rounded-2xl sm:h-[236px] bg-gradient-to-br from-[#3f3dba] via-[#302e86] to-[#1f1c52] p-3 shadow-[inset_0_0_60px_rgba(77,184,255,0.18)] ring-1 ring-[#302e86] sm:p-4">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div key={step} className="h-full" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }}>
                 {step === 0 && <ScatteredStage />}
@@ -321,10 +336,11 @@ function Beliefs({ beliefs }: { beliefs: { lead: string; text: string }[] }) {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7, ease: easeExpo, delay: i * 0.08 }}
               className={cn(
-                "group relative isolate overflow-hidden rounded-[32px] bg-gradient-to-br p-7 text-left lg:p-9 text-white shadow-float transition-[flex-grow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                "group relative isolate overflow-hidden rounded-[32px] bg-gradient-to-br p-5 text-left sm:p-7 lg:p-9 text-white shadow-float transition-[flex-grow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex-[var(--grow)_1_0%]",
                 GRADS[i % GRADS.length],
               )}
-              style={{ flexGrow: on ? 4.2 : 1, flexBasis: 0 }}
+              // Side-by-side only on desktop; stacked on phones each card keeps its natural height.
+              style={{ "--grow": on ? 4.2 : 1 } as CSSProperties}
             >
               <span className="pointer-events-none absolute -right-10 -top-10 -z-10 h-40 w-40 rounded-full bg-white/20 blur-3xl" />
               <span className="pointer-events-none absolute -bottom-6 right-2 -z-10 font-display text-[170px] font-extrabold leading-none text-white/10">{String(i + 1).padStart(2, "0")}</span>
@@ -335,13 +351,13 @@ function Beliefs({ beliefs }: { beliefs: { lead: string; text: string }[] }) {
               <div className={cn("grid transition-all duration-500", on ? "grid-rows-[1fr] opacity-100 delay-200" : "grid-rows-[0fr] opacity-0")}>
                 <div className="overflow-hidden">
                   <p className="mt-4 max-w-xl text-[18px] font-medium leading-relaxed text-white/95">{b.text}</p>
-                  <div className="mt-6 max-w-xl rounded-3xl bg-black/20 p-6 ring-1 ring-white/20 backdrop-blur-sm">
+                  <div className="mt-6 max-w-xl rounded-3xl bg-black/20 p-4 ring-1 sm:p-6 ring-white/20 backdrop-blur-sm">
                     <div className="font-mono text-[12.5px] font-bold uppercase tracking-[0.16em] text-white/75">{detail.heading}</div>
                     <ul className="mt-4 space-y-3.5">
                       {detail.points.map((pt, k) => (
                         <li
                           key={pt}
-                          className={cn("flex items-start gap-3 text-[16.5px] font-semibold leading-snug transition-all duration-500", on ? "translate-x-0 opacity-100" : "-translate-x-3 opacity-0")}
+                          className={cn("flex items-start gap-3 text-[15.5px] font-semibold leading-snug transition-all duration-500 sm:text-[16.5px]", on ? "translate-x-0 opacity-100" : "-translate-x-3 opacity-0")}
                           style={{ transitionDelay: on ? `${350 + k * 110}ms` : "0ms" }}
                         >
                           <span className="mt-[1px] grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-[#302e86]">
@@ -493,7 +509,7 @@ export function ContactSection({
     <section id={id} className="relative scroll-mt-[76px] overflow-hidden bg-[#eef1fa] py-12 sm:py-14 lg:py-16">
       <Container className="max-w-[1480px] lg:!px-6 xl:!px-10">
         <Reveal>
-          <div className="relative isolate grid gap-8 overflow-hidden rounded-[34px] bg-white p-5 shadow-float ring-1 ring-[#302e86]/10 sm:p-7 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:p-8">
+          <div className="relative isolate grid gap-8 overflow-hidden rounded-[34px] bg-white p-3 shadow-float ring-1 ring-[#302e86]/10 min-[420px]:p-5 sm:p-7 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:p-8">
             <ContactBackdrop />
             <div className="flex flex-col justify-center px-1 py-2 lg:px-6">
               <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#302e86]/25 bg-[#eef1ff] py-1 pl-1 pr-4 font-mono text-[12px] font-bold uppercase tracking-[0.14em] text-[#302e86]">
@@ -515,7 +531,7 @@ export function ContactSection({
               </div>
             </div>
 
-            <div className="relative isolate overflow-hidden rounded-[26px] bg-gradient-to-br from-[#3b3fd0] via-[#2b2aa0] to-[#1a1870] p-6 text-white shadow-[0_30px_60px_-24px_rgba(38,34,97,0.8),inset_0_0_80px_rgba(77,184,255,0.18)] ring-1 ring-white/30 sm:p-9">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-gradient-to-br from-[#3b3fd0] via-[#2b2aa0] to-[#1a1870] p-5 text-white shadow-[0_30px_60px_-24px_rgba(38,34,97,0.8),inset_0_0_80px_rgba(77,184,255,0.18)] ring-1 ring-white/30 min-[420px]:p-6 sm:p-9">
               <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 -z-10 h-56 w-56 animate-aurora rounded-full bg-[#4d7cff]/50 blur-3xl" />
               <span aria-hidden className="pointer-events-none absolute -bottom-10 left-6 -z-10 h-40 w-40 animate-aurora rounded-full bg-[#7cc4ff]/40 blur-3xl [animation-delay:-6s]" />
               <span aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/[0.14] via-transparent to-transparent" />

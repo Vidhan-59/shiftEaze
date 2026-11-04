@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { PricingHero } from "@/components/heroes/PricingHero";
 import { ROIStats } from "@/components/sections/ROIStats";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 
-export const metadata: Metadata = {
-  title: "Pricing: priced per operator under management",
+export const metadata = pageMetadata({
+  title: "ShiftEaze Pricing: Plans for AI Shift Scheduling Software",
   description:
-    "ShiftEaze pricing by tier: Starter, Professional and Enterprise, priced per operator, with a full feature comparison and implementation fees.",
-};
+    "See ShiftEaze pricing for AI shift scheduling and rostering. Compare plans by team size and sites, then book a demo to get a quote that fits your workforce.",
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (

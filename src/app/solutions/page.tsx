@@ -27,9 +27,9 @@ const visuals = [ShiftBasedVisual, MultiSiteVisual, SchedulingVisual, OvertimeVi
 const copy = [solutions.shiftBased, solutions.multiSite, solutions.scheduling, solutions.overtime, solutions.payroll];
 
 export const metadata = pageMetadata({
-  title: "Shift-Based Workforce Management Solutions | ShiftEaze",
+  title: "AI Based Shift Management Software | ShiftEaze Solutions",
   description:
-    "Shift-based, multi-site, scheduling optimization, overtime and backfill, and attendance and payroll accuracy solutions for large frontline teams.",
+    "Make effective shift management simple with AI based employee scheduling software that fills gaps, cuts overtime and keeps every shift covered. Book a demo.",
   path: "/solutions",
 });
 

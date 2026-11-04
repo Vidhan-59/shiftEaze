@@ -75,9 +75,9 @@ export function IndustrySection({
 
       <Container className="relative max-w-[1480px] lg:!px-6 xl:!px-10">
         {/* Header */}
-        <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <div className="flex flex-wrap items-end gap-x-4 gap-y-3 sm:gap-x-6">
           <motion.span
-            className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl font-display text-[24px] font-extrabold text-white shadow-float"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl font-display text-[20px] font-extrabold text-white shadow-float sm:h-16 sm:w-16 sm:text-[24px]"
             style={{ background: a.solid }}
             initial={{ opacity: 0, rotate: -12, scale: 0.8 }}
             whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
@@ -127,7 +127,7 @@ export function IndustrySection({
             <motion.div
               {...tile(0.12)}
               className={cn(
-                "relative isolate flex items-center justify-center overflow-hidden rounded-[30px] bg-[#0d0c2b] p-5 shadow-float sm:p-8 lg:row-span-2",
+                "relative isolate flex items-center justify-center overflow-hidden rounded-[30px] bg-[#0d0c2b] p-3 shadow-float min-[420px]:p-5 sm:p-8 lg:row-span-2",
                 flip ? "lg:col-span-5 lg:col-start-1 lg:row-start-1" : "lg:col-span-5 lg:col-start-8",
               )}
             >

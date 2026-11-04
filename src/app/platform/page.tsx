@@ -10,9 +10,9 @@ const platformPage = page("platform");
 const sections = platformPage.sections!;
 
 export const metadata = pageMetadata({
-  title: "AI Workforce Operations Platform | ShiftEaze",
+  title: "AI Rostering Software to Plan Shifts Faster | ShiftEaze",
   description:
-    "AI Rostering & Shift Scheduling Software, absence prediction, geofenced attendance, leave management, AI voice calling and live dashboards on one platform.",
+    "Build rosters automatically with ShiftEaze AI Rostering, plus AI based time tracking software for multi-site workforce teams. See how it cuts scheduling work.",
   path: "/platform",
 });
 
@@ -43,7 +43,7 @@ export default function PlatformPage() {
           src: "/assets/reference/roster.png",
           alt: "ShiftEaze Scheduler Dashboard showing a month roster grid",
           mock: "roster",
-          url: "app.shifteaze.com/rostering",
+          url: "app.shifteaze.io/rostering",
         }}
       />
       <FeatureSplit
@@ -67,7 +67,7 @@ export default function PlatformPage() {
           src: "/assets/reference/shift-attendance.png",
           alt: "ShiftEaze Shift Attendance Summary dashboard",
           mock: "attendance",
-          url: "app.shifteaze.com/attendance",
+          url: "app.shifteaze.io/attendance",
         }}
       />
       <FeatureSplit
@@ -111,7 +111,7 @@ export default function PlatformPage() {
           src: "/assets/reference/leave.png",
           alt: "ShiftEaze Leave Summary dashboard",
           mock: "leave",
-          url: "app.shifteaze.com/leave",
+          url: "app.shifteaze.io/leave",
         }}
       />
 
