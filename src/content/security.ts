@@ -1,8 +1,9 @@
 /**
  * Security page copy, from "ShiftEaze Security Page New Draft" (Oct 29, 2026),
- * Part 1 only. Left out until confirmed (draft Part 2): the Hosting and
- * infrastructure section, and the FAQs on data location, AI training and
- * worker exit. Part 3 is internal and never published.
+ * Part 1, plus the Hosting section and the data location, AI training and
+ * worker exit FAQs, which were published on the owner's confirmation that
+ * they are true. Part 2's bracketed gaps (hosting provider, retention figure)
+ * are left out of the wording. Part 3 is internal and never published.
  */
 
 export const hero = {
@@ -40,6 +41,15 @@ export const dataProtection = {
     { lead: "Portable worker identity (RGID):", text: "each worker has a single identifier, so records stay consistent without copying personal details across systems." },
     { lead: "Controlled access:", text: "access to sensitive records is limited by role and logged." },
     { lead: "Built to support the DPDP Act, 2023:", text: "our design supports your obligations under India's Digital Personal Data Protection Act." },
+  ],
+};
+
+export const hosting = {
+  intro: "ShiftEaze runs in controlled environments designed for continuous, multi-shift operations.",
+  bullets: [
+    "Encrypted data in transit and at rest.",
+    "Regular automated backups with a defined recovery process.",
+    "Separate environments for development, testing and production.",
   ],
 };
 
@@ -93,11 +103,23 @@ export const faqs = [
   },
   {
     q: "Can you complete our security questionnaire?",
-    a: "Yes. Use Request Security Overview below and our team will get in touch.",
+    a: "Yes. Use Request Security Overview below or write to security@shifteaze.io.",
   },
   {
     q: "Who owns our data?",
     a: "You do. ShiftEaze processes workforce data on your behalf to deliver the service.",
+  },
+  {
+    q: "Where is our data stored?",
+    a: "Hosted in India. All customer data, including backups and AI calling, stays in India.",
+  },
+  {
+    q: "Do you use our data to train AI models?",
+    a: "Your data is never used to train AI models. It is used only for your own deployment.",
+  },
+  {
+    q: "What happens when a worker leaves?",
+    a: "When a worker leaves, their account is deactivated immediately. Records are retained for the period required, then deleted or anonymised.",
   },
 ];
 

@@ -43,6 +43,7 @@ const platformSections: Section[] = [
 const securitySections: Section[] = [
   { id: "role-based-access", name: "Role-based access" },
   { id: "data-protection-privacy", name: "Data protection and privacy" },
+  { id: "hosting-infrastructure", name: "Hosting and infrastructure" },
   { id: "secure-integrations", name: "Secure integrations" },
   { id: "audit-trail-approvals", name: "Audit trail and approvals" },
   { id: "responsible-ai", name: "Responsible AI" },

@@ -52,16 +52,24 @@ export default function SecurityPage() {
       <FeatureSplit
         id={sections[2].id}
         heading={sections[2].name}
-        paragraphs={[security.integrations.intro]}
-        bullets={security.integrations.bullets}
+        paragraphs={[security.hosting.intro]}
+        bullets={security.hosting.bullets}
         tinted
-        visual={{ kind: "photo", name: "yard-operator-call", alt: "Terminal operator receiving an automated shift call on a crane gantry" }}
+        visual={{ kind: "photo", name: "factory-assembly", alt: "Factory floor running continuous multi-shift operations" }}
       />
       <FeatureSplit
         id={sections[3].id}
         heading={sections[3].name}
-        bullets={security.auditTrail.bullets}
+        paragraphs={[security.integrations.intro]}
+        bullets={security.integrations.bullets}
         flip
+        visual={{ kind: "photo", name: "yard-operator-call", alt: "Terminal operator receiving an automated shift call on a crane gantry" }}
+      />
+      <FeatureSplit
+        id={sections[4].id}
+        heading={sections[4].name}
+        bullets={security.auditTrail.bullets}
+        tinted
         visual={{
           kind: "shot",
           src: "/assets/reference/leave.png",
@@ -71,19 +79,19 @@ export default function SecurityPage() {
         }}
       />
       <FeatureSplit
-        id={sections[4].id}
-        heading={sections[4].name}
+        id={sections[5].id}
+        heading={sections[5].name}
         paragraphs={[security.responsibleAi.intro]}
         bullets={security.responsibleAi.bullets}
-        tinted
+        flip
         visual={{ kind: "panel", panel: "absence" }}
       />
       <FeatureSplit
-        id={sections[5].id}
-        heading={sections[5].name}
+        id={sections[6].id}
+        heading={sections[6].name}
         paragraphs={[security.roundTheClock.intro]}
         bullets={security.roundTheClock.bullets}
-        flip
+        tinted
         visual={{ kind: "photo", name: "terminal-aerial", alt: "Aerial view of a container terminal that runs around the clock" }}
       />
 
@@ -92,7 +100,7 @@ export default function SecurityPage() {
         lead="What IT and compliance teams usually ask about workforce data. Still unsure? Book a demo and we'll walk you through it."
       />
 
-      <SecurityClosing id={sections[6].id} heading={sections[6].name} />
+      <SecurityClosing id={sections[7].id} heading={sections[7].name} />
     </>
   );
 }
