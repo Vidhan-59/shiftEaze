@@ -96,10 +96,18 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-5 text-[15px] font-semibold text-white sm:flex-row sm:items-center">
-          <span>
-            © {new Date().getFullYear()} {site.name} · 6,000+ operators · 12+
-            terminals
-          </span>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+            <span>
+              © {new Date().getFullYear()} {site.name} · 6,000+ operators · 12+
+              terminals
+            </span>
+            <Link
+              href="/privacy-policy"
+              className="underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
+            >
+              Privacy Policy
+            </Link>
+          </div>
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-2.5 font-mono text-[13.5px] font-bold uppercase tracking-widest text-white">
               <span className="relative flex h-2.5 w-2.5">

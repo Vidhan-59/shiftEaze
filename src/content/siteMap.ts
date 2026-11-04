@@ -88,6 +88,23 @@ const resourcesSections: Section[] = [
   { id: "featured-guide", name: "Featured guide" },
 ];
 
+// Legal page, linked from the footer's bottom bar only.
+const privacyPolicySections: Section[] = [
+  { id: "who-we-are", name: "Who we are" },
+  { id: "data-we-collect", name: "Data we collect" },
+  { id: "how-we-use-data", name: "How we use data" },
+  { id: "ai-features", name: "AI features" },
+  { id: "sharing-and-recipients", name: "Sharing and recipients" },
+  { id: "data-location", name: "Data location" },
+  { id: "cookies", name: "Cookies" },
+  { id: "retention", name: "Retention" },
+  { id: "security", name: "Security" },
+  { id: "your-rights", name: "Your rights" },
+  { id: "children", name: "Children" },
+  { id: "policy-changes", name: "Policy changes" },
+  { id: "contact-and-grievances", name: "Contact and grievances" },
+];
+
 export const siteMap: SitePage[] = [
   { key: "home", name: "Home", href: "/" },
   { key: "platform", name: "Platform", href: "/platform", sections: platformSections },
@@ -121,6 +138,7 @@ export const siteMap: SitePage[] = [
   },
   { key: "request-demo", name: "Request a Demo", href: "/request-demo" },
   { key: "security", name: "Security", href: "/security", sections: securitySections },
+  { key: "privacy-policy", name: "Privacy Policy", href: "/privacy-policy", sections: privacyPolicySections },
 ];
 
 export function page(key: string): SitePage {
