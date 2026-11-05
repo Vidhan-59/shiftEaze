@@ -50,17 +50,15 @@ export default function SolutionsPage() {
       ))}
 
       {/*
-        Hidden while MANAGED_ROSTERING_PUBLISHED is false in production: not
-        rendered to the HTML at all (brief §5.4), only shown here in dev/
-        preview for review. Deliberately not in `sections` above, so it never
-        appears in the jump nav, dropdown or footer until the flag flips.
+        Gated by MANAGED_ROSTERING_PUBLISHED (now true). Rendered outside
+        `coreSections` because it has no hero stage of its own.
       */}
       {showManagedRostering && (
         <SolutionSection
           id="managed-rostering-services"
           index={5}
           heading="Managed Rostering Services"
-          paragraphs={[solutions.managedRostering, solutions.managedRosteringDetail]}
+          paragraphs={[solutions.managedRostering]}
           Visual={ManagedRosteringVisual}
         />
       )}

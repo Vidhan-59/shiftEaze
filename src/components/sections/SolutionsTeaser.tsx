@@ -10,7 +10,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ArrowRight } from "@/components/ui/icons";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { solutionsTeaser } from "@/content/home";
-import { useCases } from "@/content/solutions";
+import { managedRosteringLine, useCases } from "@/content/solutions";
 import { page, section } from "@/content/siteMap";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,7 @@ const META: Record<string, { photo: string; useCase: string }> = {
   "workforce-scheduling-optimization": { photo: "control-room", useCase: "Automated Employee Scheduling" },
   "overtime-backfill-management": { photo: "warehouse-fulfillment", useCase: "Overtime & Backfill" },
   "workforce-attendance-payroll-accuracy": { photo: "factory-assembly", useCase: "Geofenced Attendance" },
+  "managed-rostering-services": { photo: "control-room-night", useCase: "" },
 };
 
 export function SolutionsTeaser() {
@@ -40,7 +41,10 @@ export function SolutionsTeaser() {
       label: s.name,
       href: `${solutions.href}#${s.id}`,
       photo: meta.photo,
-      line: useCases.find((u) => u.useCase === meta.useCase)?.line ?? "",
+      line:
+        id === "managed-rostering-services"
+          ? managedRosteringLine
+          : (useCases.find((u) => u.useCase === meta.useCase)?.line ?? ""),
     };
   });
 

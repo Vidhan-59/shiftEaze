@@ -3,10 +3,16 @@
  * Kept out of components so copy can be checked against the brief directly.
  */
 
+import { MANAGED_ROSTERING_PUBLISHED } from "./config";
+
+/** Positioning statement supplied by the SEO team; used in the hero and the FAQ. */
+export const positioning =
+  "ShiftEaze is an AI workforce operations platform that connects the field to the back office. It brings rostering, attendance, leave management and workforce performance together in one workforce management platform, with one app for operators and one portal for managers.";
+
 export const hero = {
-  h1: "AI Shift Planning Built for Large Frontline Teams",
+  h1: "AI based Shift Management Software Built for Large Frontline Teams",
   headline: "Know who will show up, before the shift starts.",
-  text: "ShiftEaze is an AI workforce operations platform that connects the field to the back office. Rostering, attendance, leave and performance run on one platform, with one app for operators and one portal for managers.",
+  text: positioning,
   trustStrip: [
     "6000+ operators",
     "12+ terminals and divisions",
@@ -14,20 +20,19 @@ export const hero = {
     "Powering workforce operations at Mundra Port",
   ],
   intro:
-    "Large shift-based teams still run on spreadsheets, phone calls and paper leave registers. ShiftEaze replaces that with AI scheduling that predicts absences, suggests backfills and records every punch where it happens. Planners get a calmer shift start, and workers get a record that belongs to them.",
+    "Large shift-based teams still run on spreadsheets, phone calls and paper leave registers. ShiftEaze replaces that with AI based Employee Scheduling Software that predicts absences, suggests backfills and records every punch where it happens. Planners get a calmer shift start, and workers get a record that belongs to them.",
 };
 
-/** Full positioning statement supplied by the SEO team for the home page. */
-export const positioning =
-  "ShiftEaze is an AI workforce operations platform that connects the field to the back office. It brings rostering, attendance, leave management and workforce performance together in one workforce management platform, with one app for operators and one portal for managers.";
-
 export const metaHome = {
-  title: "ShiftEaze | AI Workforce Operations Platform for Shift Teams",
-  // Shortened from `positioning` to fit Google's ~160-character snippet.
+  title: "ShiftEaze | AI Shift Management & Rostering Software",
   description:
-    "ShiftEaze is an AI workforce operations platform for rostering, attendance, leave and performance, with one app for operators and one portal for managers.",
+    "ShiftEaze is AI based Employee Scheduling Software for shift teams. Predict absences, automate rosters, track geofenced attendance and see every site live.",
   keywords: [
     "ShiftEaze",
+    "AI shift management software",
+    "rostering software",
+    "AI based employee scheduling software",
+    "employee scheduling software",
     "AI workforce operations platform",
     "workforce management platform",
     "workforce management software",
@@ -43,43 +48,33 @@ export const metaHome = {
   ],
 } as const;
 
-/** Home page FAQ; also emitted as FAQPage structured data. */
+/** Home page FAQ (SEO team, section 14); also emitted as FAQPage structured data. */
+export const homeFaqHeading = "Frequently Asked Questions About ShiftEaze";
+
 export const homeFaqs = [
   {
     q: "What is ShiftEaze?",
-    a: positioning,
+    a: "ShiftEaze is an AI-powered workforce management platform that helps businesses manage shift scheduling, employee attendance, leave requests, and workforce performance through one connected system.",
   },
   {
-    q: "What is the difference between the operator app and the manager portal?",
-    a: "Operators use the app to see their roster, confirm shifts, punch in and out with a QR code, apply for leave and raise helpdesk tickets. Managers use the portal to plan rosters with AI, watch live attendance, approve leave and resolve tickets. Both work from the same data, updated in real time.",
+    q: "How does ShiftEaze help businesses manage employee shifts?",
+    a: "ShiftEaze simplifies shift planning with AI-assisted scheduling, helping managers organize employee rosters, identify staffing gaps, and manage shift coverage more efficiently.",
   },
   {
-    q: "How does ShiftEaze use AI for rostering?",
-    a: "ShiftEaze builds rosters automatically, predicts which shifts are at risk of absences before they start, and suggests backfills in advance. ShiftEaze AI Voice Calling can then call workers to confirm shifts and fill gaps.",
+    q: "Can employees track their shifts and attendance using ShiftEaze?",
+    a: "Yes. Employees can use the ShiftEaze mobile app to view assigned shifts, record attendance, check schedules, and submit leave requests. Managers can monitor updates through the portal.",
   },
   {
-    q: "How does attendance tracking work?",
-    a: "Operators punch in and out by scanning a QR code at the site, and each punch is geofenced so it is recorded where it happens. Managers see who is actually on site, live. ShiftEaze also integrates with biometric attendance systems.",
+    q: "What makes ShiftEaze different from other staff scheduling solutions?",
+    a: "Unlike traditional scheduling tools, ShiftEaze connects rostering with attendance tracking, absence prediction, leave management, and workforce analytics. It is designed for businesses searching for the best staff scheduling software to manage large frontline teams.",
   },
   {
-    q: "How is leave managed in ShiftEaze?",
-    a: "Operators apply for leave in the app and managers approve it in the portal. Every request and decision is recorded, replacing paper registers and phone calls.",
+    q: "Can ShiftEaze help businesses manage unexpected employee absences?",
+    a: "Yes. ShiftEaze uses AI-powered absence prediction to help managers identify potential staffing gaps and find suitable backfill options before a shift begins.",
   },
   {
-    q: "How does ShiftEaze track workforce performance?",
-    a: "Each worker builds a verified performance record covering output, attendance and punctuality. Managers can see who is reliable, and workers get a track record that belongs to them.",
-  },
-  {
-    q: "Which industries is ShiftEaze built for?",
-    a: "Any operation that runs in shifts, including ports and terminals, manufacturing, logistics and warehousing, and staffing and manpower agencies.",
-  },
-  {
-    q: "Which languages does ShiftEaze support?",
-    a: "English, Hindi and Gujarati, so planners and operators can work in the language they are most comfortable with.",
-  },
-  {
-    q: "How do we get started?",
-    a: "Request a demo and we will walk your team through the platform. Most operations start at one site and expand site by site.",
+    q: "Which industries can benefit from ShiftEaze?",
+    a: "ShiftEaze supports shift-based industries such as ports and terminals, manufacturing, logistics, warehousing, and staffing agencies. Its AI workforce operations platform helps managers coordinate frontline teams and daily operations.",
   },
 ] as const;
 
@@ -105,7 +100,7 @@ export const problem = {
 export const platformTeaser = {
   heading: "One platform, two faces: an operator app and a manager portal",
   intro:
-    "ShiftEaze is a single source of truth, updated in real time. Whatever an operator taps in the app, the planner sees on the portal instantly.",
+    "ShiftEaze brings everything together in one place, making it one of the best staff scheduling software solutions for large frontline teams. From shift planning and attendance tracking to leave management, every update is reflected in real time, keeping operators and managers connected through a single source of truth.",
   cards: [
     "ai-rostering-shift-scheduling-software",
     "ai-absence-prediction-overtime-backfill",
@@ -125,6 +120,7 @@ export const solutionsTeaser = {
     "workforce-scheduling-optimization",
     "overtime-backfill-management",
     "workforce-attendance-payroll-accuracy",
+    ...(MANAGED_ROSTERING_PUBLISHED ? ["managed-rostering-services"] : []),
   ],
 };
 

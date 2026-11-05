@@ -25,7 +25,7 @@ export const shiftBased = {
 };
 
 export const multiSite = {
-  grey: "See every terminal on one screen, with shared filters that work the same way on every dashboard. ShiftEaze tracks time across every site in one place, so head office and site managers work from the same numbers.",
+  grey: "See every terminal on one screen, with shared filters that work the same way on every dashboard. ShiftEaze acts as AI Based Time Tracking Software for Multi-Site Workforce teams, so head office and site managers work from the same numbers.",
   blue: "With several terminals to run, ShiftEaze keeps head office and site managers on one source of truth, updated in real time. One portal and four dashboards (Manpower, Shift Attendance, Attendance, and a combined Leave/Helpdesk view) give operations, HR and site leadership the same live picture. KPI cards show active headcount, present today, on leave, absent and OT today, and designation-wise strength is shown against requirement. One filter bar covers terminal, department, batch, designation, work type and timeframe, so a view built for one site works the same way for the next, and anything that needs to leave the screen can be exported. At Mundra Port this approach supports 12+ terminals and divisions, with cycle-based rosters built once and reused across terminals.",
 };
 
@@ -47,9 +47,5 @@ export const payroll = {
 export const managedRostering =
   "Prefer not to build rosters in-house? Our team can set up and manage your rostering cycles on the platform.";
 
-/**
- * Supporting paragraph for Managed Rostering Services. Drafted for review (not from the
- * restructure brief); every claim restates a capability already described in the sections above.
- */
-export const managedRosteringDetail =
-  "Our team builds your rotation once, such as Day, Day, Night, Night, Off, Off (DDNNOO), and applies it to every terminal, department or batch. Shift types stay configurable, and Generate once or Auto-repeat keeps the next window of at least 30 days ready. Your planners keep the live view: attendance, absence risk and ranked replacement candidates sit on the same dashboards, so cover is arranged days ahead rather than at the gate.";
+/** One-line summary used on the Home page's Solutions teaser. */
+export const managedRosteringLine = "Our team sets up and manages your rostering cycles on the platform.";

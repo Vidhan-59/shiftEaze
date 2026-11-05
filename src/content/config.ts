@@ -7,12 +7,11 @@
 export const DEMO_CTA_LABEL = "Request a Demo";
 
 /**
- * Gates /solutions/managed-rostering-services everywhere: nav, footer,
- * dropdowns, Solutions landing cards, Home's Solutions teaser, sitemap.xml,
- * and the route's own indexability. Flip to `true` to publish it (see
- * src/app/solutions/managed-rostering-services/page.tsx for the detail).
+ * Gates the Managed Rostering Services section (/solutions#managed-rostering-services)
+ * everywhere: the Solutions page, the Solutions menu dropdown, the footer and
+ * Home's Solutions teaser. Published Nov 2026 at the SEO team's request.
  */
-export const MANAGED_ROSTERING_PUBLISHED = false;
+export const MANAGED_ROSTERING_PUBLISHED = true;
 
 /**
  * True only on a real production deploy (Vercel's `production` env, or

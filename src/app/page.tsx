@@ -8,7 +8,7 @@ import { ImpactSection } from "@/components/sections/ImpactSection";
 import { ResourcesTeaser } from "@/components/sections/ResourcesTeaser";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
-import { homeFaqs, metaHome } from "@/content/home";
+import { homeFaqHeading, homeFaqs, metaHome } from "@/content/home";
 import { pageMetadata } from "@/lib/pageMetadata";
 
 export const metadata = pageMetadata({
@@ -49,6 +49,7 @@ export default function HomePage() {
       <ResourcesTeaser />
       <FAQ
         faqs={homeFaqs}
+        title={homeFaqHeading}
         lead="What teams usually ask about running rostering, attendance, leave and performance on ShiftEaze. Still unsure? Book a demo and we'll walk you through it."
       />
       <FinalCTA />

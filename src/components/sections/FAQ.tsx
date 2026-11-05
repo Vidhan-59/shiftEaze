@@ -58,9 +58,11 @@ type Faq = { q: string; a: string };
 /** Pricing's FAQ by default; another page passes its own questions and lead. */
 export function FAQ({
   faqs = pricingFaqs,
+  title = "Questions, answered.",
   lead = "Everything ops and procurement usually ask before a pilot. Still unsure? Book a demo and we'll walk your terminals through it.",
 }: {
   faqs?: readonly Faq[];
+  title?: string;
   lead?: string;
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -107,7 +109,7 @@ export function FAQ({
                 FAQ
               </span>
               <SectionTitle
-                title="Questions, answered."
+                title={title}
                 lead={lead}
                 align="left"
                 className="relative mt-3 max-w-none"

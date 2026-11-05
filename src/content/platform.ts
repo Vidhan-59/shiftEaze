@@ -5,7 +5,7 @@
 export const overview = {
   heading: "One platform, two faces: an operator app and a manager portal",
   intro:
-    "ShiftEaze is a single source of truth, updated in real time. Whatever an operator taps in the app, the planner sees on the portal instantly.",
+    "ShiftEaze brings everything together in one place, making it one of the best staff scheduling software solutions for large frontline teams. From shift planning and attendance tracking to leave management, every update is reflected in real time, keeping operators and managers connected through a single source of truth.",
   body: "ShiftEaze is built for large frontline teams. Operators get a simple app for punch-in, leave, helpdesk and their own performance passbook. Managers and admins run the same operation from a web portal.",
 };
 
