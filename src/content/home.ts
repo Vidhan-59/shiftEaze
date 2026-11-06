@@ -24,17 +24,18 @@ export const hero = {
 };
 
 export const metaHome = {
-  title: "ShiftEaze | AI Shift Management & Rostering Software",
+  title: "Workforce Management Platform for Shift Teams | ShiftEaze",
   description:
-    "ShiftEaze is AI based Employee Scheduling Software for shift teams. Predict absences, automate rosters, track geofenced attendance and see every site live.",
+    "Explore the best staff scheduling software with an AI workforce operations platform for smarter shift planning, attendance tracking and workforce visibility.",
   keywords: [
+    "workforce management platform",
     "ShiftEaze",
+    "best staff scheduling software",
     "AI shift management software",
     "rostering software",
     "AI based employee scheduling software",
     "employee scheduling software",
     "AI workforce operations platform",
-    "workforce management platform",
     "workforce management software",
     "AI rostering software",
     "shift rostering",
