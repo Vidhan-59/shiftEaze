@@ -15,7 +15,7 @@ export const site = {
 /** Social profiles shown in the footer; `id` picks the icon. */
 export const social = [
   { id: "facebook", label: "Facebook", href: "https://www.facebook.com/ShiftEaze" },
-  { id: "instagram", label: "Instagram", href: "https://www.instagram.com/shifteaze.in" },
+  { id: "instagram", label: "Instagram", href: "https://www.instagram.com/shifteaze.io/" },
   { id: "x", label: "X", href: "https://x.com/shifteazein" },
   { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/shifteaze-in/home/" },
 ] as const;
