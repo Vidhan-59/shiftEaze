@@ -63,6 +63,8 @@ export const metadata: Metadata = {
     description: site.description,
   },
   icons: { icon: "/favicon.svg" },
+  // Google Search Console ownership verification (renders <meta name="google-site-verification">).
+  verification: { google: "EoWYQtGuYWtDRUHfb2ecTui1vxl5hTn8eOa-e1fhcvs" },
   robots: { index: true, follow: true },
 };
 
