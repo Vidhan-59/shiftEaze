@@ -11,6 +11,9 @@ import { site } from "@/content/site";
 // the SEO team: crawlers always get server-rendered HTML.
 export const dynamic = "force-dynamic";
 
+/** Google Tag Manager container (Google Analytics is configured inside GTM). */
+const GTM_ID = "GTM-PP5KW4L3";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -84,6 +87,14 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${mono.variable} ${bricolage.variable}`}
     >
+      <head>
+        {/* Google Tag Manager: standard loader. It sets up dataLayer, sends gtm.start, then loads gtm.js async. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`,
+          }}
+        />
+      </head>
       {/*
         suppressHydrationWarning here only ignores mismatched *attributes* on
         this element (not children) — needed because browser extensions like
@@ -91,6 +102,15 @@ export default function RootLayout({
         hydrates, which otherwise logs a false-positive hydration error.
       */}
       <body className="min-h-screen antialiased" suppressHydrationWarning>
+        {/* Google Tag Manager (noscript fallback) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {/*
           Targets <main>, not the hero. It used to point at `#top` — the very
           top of the page, above the navbar — so "skip to content" skipped
